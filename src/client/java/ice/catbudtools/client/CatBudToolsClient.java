@@ -2,8 +2,9 @@ package ice.catbudtools.client;
 
 import ice.catbudtools.CatBudTools;
 import net.fabricmc.api.ClientModInitializer;
-import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
+import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
+import net.fabricmc.fabric.api.client.screen.v1.ScreenEvents;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
 import net.minecraft.text.Text;
@@ -14,7 +15,7 @@ public class CatBudToolsClient implements ClientModInitializer {
 			CatBudTools.id("item_query")
 	);
 
-	private static final KeyBinding OPEN_ITEM_QUERY_KEY = KeyBindingHelper.registerKeyBinding(
+	public static final KeyBinding OPEN_ITEM_QUERY_KEY = KeyBindingHelper.registerKeyBinding(
 			new KeyBinding(
 					"key.catbud-tools.open_item_query",
 					InputUtil.Type.KEYSYM,
@@ -25,12 +26,20 @@ public class CatBudToolsClient implements ClientModInitializer {
 
 	@Override
 	public void onInitializeClient() {
-		ClientTickEvents.END_CLIENT_TICK.register(client -> {
-			while (OPEN_ITEM_QUERY_KEY.wasPressed()) {
-				if (client.player != null) {
-					client.player.sendMessage(Text.literal("貓芽特殊物品查詢：功能準備中"), false);
-				}
+		ItemTooltipCallback.EVENT.register((stack, context, type, lines) -> {
+			if (SpecialItemDetector.isSpecial(stack)) {
+				SpecialItemInfoOverlay.observe(stack);
+				lines.add(Text.translatable("tooltip.catbud-tools.special_item_hint"));
 			}
+		});
+
+		ScreenEvents.AFTER_INIT.register((client, screen, scaledWidth, scaledHeight) -> {
+			ScreenEvents.beforeRender(screen).register((currentScreen, drawContext, mouseX, mouseY, tickDelta) ->
+					SpecialItemInfoOverlay.beginFrame()
+			);
+			ScreenEvents.afterRender(screen).register((currentScreen, drawContext, mouseX, mouseY, tickDelta) ->
+					SpecialItemInfoOverlay.render(drawContext, mouseX, mouseY)
+			);
 		});
 	}
 }
