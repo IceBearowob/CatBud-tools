@@ -2,6 +2,10 @@ package ice.catbudtools.client;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import net.minecraft.client.util.InputUtil;
+import org.lwjgl.glfw.GLFW;
+
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.resource.language.I18n;
@@ -9,39 +13,54 @@ import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.ItemEnchantmentsComponent;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
-import org.lwjgl.glfw.GLFW;
+import net.minecraft.text.MutableText;
 
 /**
  * Keeps track of the special item currently under the cursor and renders its information card.
  */
 public final class SpecialItemInfoOverlay {
 	private static final String CATBUD_ENCHANTMENT_NAMESPACE = "addons";
-	private static ItemStack hoveredStack = ItemStack.EMPTY;
-	private static boolean observedThisFrame;
+	private static MutableText catbudTranslate(String key) {
 
+		String override = TranslationOverride.get(key);
+
+		if (override != null) {
+			return Text.literal(override);
+		}
+
+		return Text.translatable(key);
+	}
+	private static boolean hasCatbudTranslation(String key) {
+
+		return TranslationOverride.get(key) != null
+				|| I18n.hasTranslation(key);
+	}
+	private static ItemStack hoveredStack = ItemStack.EMPTY;
 	private SpecialItemInfoOverlay() {
 	}
-
-	public static void beginFrame() {
-		observedThisFrame = false;
-	}
-
 	public static void observe(ItemStack stack) {
 		hoveredStack = stack.copy();
-		observedThisFrame = true;
 	}
 
 	public static void render(DrawContext context, int mouseX, int mouseY) {
 		MinecraftClient client = MinecraftClient.getInstance();
-		if (!observedThisFrame || hoveredStack.isEmpty() || client.getWindow() == null) {
+		if (hoveredStack.isEmpty() || client.getWindow() == null) {
 			return;
 		}
 
-		long windowHandle = client.getWindow().getHandle();
-		if (GLFW.glfwGetKey(windowHandle, GLFW.GLFW_KEY_G) != GLFW.GLFW_PRESS) {
+		InputUtil.Key key = CatBudToolsClient.getOpenItemQueryKey();
+
+		if (key.getCategory() != InputUtil.Type.KEYSYM) {
 			return;
 		}
 
+		if (GLFW.glfwGetKey(
+				client.getWindow().getHandle(),
+				key.getCode()
+		) != GLFW.GLFW_PRESS) {
+			return;
+		}
+		
 		List<Text> lines = getInfoLines(hoveredStack);
 		if (lines.isEmpty()) {
 			return;
@@ -78,18 +97,22 @@ public final class SpecialItemInfoOverlay {
 					String path = key.getValue().getPath();
 					String translationKey = "enchantment.addons." + path;
 					int level = storedEnchantments.getLevel(enchantment);
-					lines.add(Text.translatable(translationKey).append(Text.literal(" " + level)));
+					lines.add(catbudTranslate(translationKey)
+						.append(Text.literal(" " + level)));
 
 					for (int loreIndex = 0; ; loreIndex++) {
 						String loreKey = translationKey + ".lore." + loreIndex;
-						if (!I18n.hasTranslation(loreKey)) {
+						if (!hasCatbudTranslation(loreKey)) {
 							break;
 						}
-						lines.add(Text.literal("  ").append(Text.translatable(loreKey)));
+						lines.add(Text.literal("  ").append(catbudTranslate(loreKey)));
 					}
 				}));
 
-		lines.add(Text.literal("按住 G 顯示，放開關閉"));
+		lines.add(Text.translatable(
+				"overlay.catbud-tools.close_hint",
+				CatBudToolsClient.OPEN_ITEM_QUERY_KEY.getBoundKeyLocalizedText()
+		));
 		return lines;
 	}
 }
