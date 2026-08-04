@@ -3,7 +3,7 @@
 	"id": "catbud-tools",
 	"version": "${version}",
 	"name": "CatBud tools",
-	"description": "This is an example description! Tell everyone what your mod is about!",
+	"description": "貓芽伺服器限定的輔助模組，目前功能正在逐漸開發中!",
 	"authors": [
 		"Ice//2026"
 	],
