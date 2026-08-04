@@ -44,7 +44,7 @@ public final class SpecialItemInfoOverlay {
 
 	public static void render(DrawContext context, int mouseX, int mouseY) {
 		MinecraftClient client = MinecraftClient.getInstance();
-		if (hoveredStack.isEmpty() || client.getWindow() == null) {
+		if (hoveredStack.isEmpty() || !SpecialItemDetector.isSpecial(hoveredStack) || client.getWindow() == null) {
 			return;
 		}
 
@@ -69,8 +69,43 @@ public final class SpecialItemInfoOverlay {
 		var textRenderer = client.textRenderer;
 		int width = lines.stream().mapToInt(textRenderer::getWidth).max().orElse(0) + 12;
 		int height = lines.size() * 11 + 8;
-		int x = mouseX + 14;
-		int y = mouseY + 14;
+
+		ice.catbudtools.client.config.CatBudConfig config = ice.catbudtools.client.config.CatBudConfig.getInstance();
+		int scaledWidth = client.getWindow().getScaledWidth();
+		int scaledHeight = client.getWindow().getScaledHeight();
+		int x, y;
+
+		// 依據玩家的 Config 設定動態計算 Tooltip 在螢幕上的 X, Y 繪製座標
+		switch (config.tooltipPosition) {
+			case TOP_LEFT -> {
+				x = config.offsetX;
+				y = config.offsetY;
+			}
+			case TOP_RIGHT -> {
+				x = scaledWidth - width - config.offsetX;
+				y = config.offsetY;
+			}
+			case BOTTOM_LEFT -> {
+				x = config.offsetX;
+				y = scaledHeight - height - config.offsetY;
+			}
+			case BOTTOM_RIGHT -> {
+				x = scaledWidth - width - config.offsetX;
+				y = scaledHeight - height - config.offsetY;
+			}
+			case CENTER -> {
+				x = (scaledWidth - width) / 2 + config.offsetX;
+				y = (scaledHeight - height) / 2 + config.offsetY;
+			}
+			case FOLLOW_MOUSE -> {
+				x = mouseX + config.offsetX;
+				y = mouseY + config.offsetY;
+			}
+			default -> {
+				x = mouseX + 14;
+				y = mouseY + 14;
+			}
+		}
 
 		context.fill(x - 4, y - 4, x + width, y + height, 0xE0101010);
 		for (int index = 0; index < lines.size(); index++) {

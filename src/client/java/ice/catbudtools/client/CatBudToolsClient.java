@@ -11,6 +11,7 @@ import net.minecraft.client.util.InputUtil;
 import net.minecraft.text.Text;
 import net.minecraft.resource.ResourceType;
 import net.minecraft.util.Identifier;
+import net.minecraft.item.ItemStack;
 import net.fabricmc.fabric.api.resource.v1.ResourceLoader;
 import org.lwjgl.glfw.GLFW;
 
@@ -37,6 +38,7 @@ public class CatBudToolsClient implements ClientModInitializer {
 	}
 	@Override
 	public void onInitializeClient() {
+		ice.catbudtools.client.config.CatBudConfig.load();
 
 		// 語言覆蓋
 		ResourceLoader
@@ -68,6 +70,9 @@ public class CatBudToolsClient implements ClientModInitializer {
 		);
 		// tooltip
 		ScreenEvents.AFTER_INIT.register((client, screen, scaledWidth, scaledHeight) -> {
+			ScreenEvents.beforeRender(screen).register((currentScreen, drawContext, mouseX, mouseY, tickDelta) -> {
+				SpecialItemInfoOverlay.observe(ItemStack.EMPTY);
+			});
 
 			ScreenEvents.afterRender(screen).register(
 					(currentScreen, drawContext, mouseX, mouseY, tickDelta) -> {
