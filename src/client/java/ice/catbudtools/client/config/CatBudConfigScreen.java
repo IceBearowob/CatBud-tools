@@ -6,6 +6,7 @@ import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.CyclingButtonWidget;
 import net.minecraft.screen.ScreenTexts;
 import net.minecraft.text.Text;
+import ice.catbudtools.client.config.widget.OffsetSlider;
 
 /**
  * 遊戲內 GUI 設定選單畫面，允許玩家調整 Tooltip 位置與 X/Y 軸偏移量。
@@ -15,7 +16,9 @@ public class CatBudConfigScreen extends Screen {
 	private TooltipPosition position;
 	private int offsetX;
 	private int offsetY;
-
+	
+	private OffsetSlider xSlider;
+	private OffsetSlider ySlider;
 	public CatBudConfigScreen(Screen parent) {
 		super(Text.literal("CatBud Tools 設定"));
 		this.parent = parent;
@@ -43,29 +46,65 @@ public class CatBudConfigScreen extends Screen {
 		);
 
 		// X 軸偏移量按鈕
+		this.xSlider = this.addDrawableChild(
+			new OffsetSlider(
+					centerX - 100,
+					startY + 28,
+					160,
+					20,
+					this.offsetX,
+					"X Offset",
+					value -> this.offsetX = value
+			)
+		);
 		this.addDrawableChild(
 			ButtonWidget.builder(
-				Text.literal("X 軸偏移: " + this.offsetX),
-				button -> {
-					this.offsetX += 5;
-					if (this.offsetX > 200) this.offsetX = -200;
-					button.setMessage(Text.literal("X 軸偏移: " + this.offsetX));
-				}
-			).dimensions(centerX - 100, startY + 28, 200, 20).build()
-		);
+					Text.literal("↺"),
+					button -> {
 
+						this.offsetX = 14;
+						this.xSlider.resetTo(14);
+
+					}
+			)
+			.dimensions(
+					centerX + 65,
+					startY + 28,
+					35,
+					20
+			)
+			.build()
+		);
 		// Y 軸偏移量按鈕
+		this.ySlider = this.addDrawableChild(
+			new OffsetSlider(
+					centerX - 100,
+					startY + 56,
+					160,
+					20,
+					this.offsetY,
+					"Y Offset",
+					value -> this.offsetY = value
+			)
+		);
 		this.addDrawableChild(
 			ButtonWidget.builder(
-				Text.literal("Y 軸偏移: " + this.offsetY),
-				button -> {
-					this.offsetY += 5;
-					if (this.offsetY > 200) this.offsetY = -200;
-					button.setMessage(Text.literal("Y 軸偏移: " + this.offsetY));
-				}
-			).dimensions(centerX - 100, startY + 56, 200, 20).build()
-		);
+					Text.literal("↺"),
+					button -> {
 
+						this.offsetY = 14;
+						this.ySlider.resetTo(14);
+
+					}
+			)
+			.dimensions(
+					centerX + 65,
+					startY + 56,
+					35,
+					20
+			)
+			.build()
+		);
 		// 恢復預設值按鈕
 		this.addDrawableChild(
 			ButtonWidget.builder(
