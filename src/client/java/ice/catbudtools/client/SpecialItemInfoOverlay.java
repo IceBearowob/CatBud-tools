@@ -75,16 +75,24 @@ public final class SpecialItemInfoOverlay {
 			return;
 		}
 		// 決定tooltip的內容
-		List<Text> lines;
-
+		List<Text> lines = new ArrayList<>();
+		lines.add(hoveredStack.getName());
 		if (isEnchant) {
-			lines = getEnchantInfoLines(hoveredStack);
-		} else {
-			lines = getSpecialItemInfoLines(hoveredStack);
+			lines.addAll(
+					getEnchantInfoLines(hoveredStack)
+			);
 		}
-		if (lines.isEmpty()) {
-			return;
+
+		if (isSpecialItem) {
+			lines.addAll(
+					getSpecialItemInfoLines(hoveredStack)
+			);
 		}
+		lines.add(
+			Text.translatable(
+						"overlay.catbud-tools.close_hint",
+						CatBudToolsClient.OPEN_ITEM_QUERY_KEY.getBoundKeyLocalizedText())
+				.styled(style -> style.withColor(Formatting.GRAY)));
 
 		var textRenderer = client.textRenderer;
 		int width = lines.stream().mapToInt(textRenderer::getWidth).max().orElse(0) + 12;
@@ -136,7 +144,6 @@ public final class SpecialItemInfoOverlay {
 	// 特附info
 	private static List<Text> getEnchantInfoLines(ItemStack stack) {
 		List<Text> lines = new ArrayList<>();
-		lines.add(stack.getName());
 
 		ItemEnchantmentsComponent enchantments = getSpecialEnchantments(stack);
 
@@ -168,11 +175,6 @@ public final class SpecialItemInfoOverlay {
 					}
 				}));
 
-		lines.add(
-			Text.translatable(
-						"overlay.catbud-tools.close_hint",
-						CatBudToolsClient.OPEN_ITEM_QUERY_KEY.getBoundKeyLocalizedText())
-				.styled(style -> style.withColor(Formatting.GRAY)));
 		return lines;
 	}
 	private static ItemEnchantmentsComponent getSpecialEnchantments(ItemStack stack) {
@@ -197,8 +199,6 @@ public final class SpecialItemInfoOverlay {
 		if (id == null) {
 			return lines;
 		}
-
-		lines.add(stack.getName());
 		// Lore
 		for (int i = 0; ; i++) {
 
@@ -208,15 +208,19 @@ public final class SpecialItemInfoOverlay {
 			}
 			lines.add(catbudTranslate(loreKey).styled(style -> style.withColor(Formatting.WHITE)));
 		}
-		if (stack.getName().getString().contains("擬人化盔甲座靈魂")){
-			lines.add(catbudTranslate("humanoid_armor_stand_spirit.common.0").styled(style -> style.withColor(Formatting.GRAY)));
-			lines.add(catbudTranslate("humanoid_armor_stand_spirit.common.1").styled(style -> style.withColor(Formatting.GRAY)));
+		// TIP
+		String tip;
+		for (int i = 0 ; ; i++){
+			if (stack.getName().getString().contains("擬人化盔甲座靈魂")){
+				tip = "humanoid_armor_stand_spirit.tip." + i;
+			}else{
+				tip = id + ".tip." + i;
+			}
+			if (!hasCatbudTranslation(tip)) {
+				break;
+			}
+			lines.add(catbudTranslate(tip).styled(style -> style.withColor(Formatting.GRAY)));
 		}
-		lines.add(
-			Text.translatable(
-						"overlay.catbud-tools.close_hint",
-						CatBudToolsClient.OPEN_ITEM_QUERY_KEY.getBoundKeyLocalizedText())
-				.styled(style -> style.withColor(Formatting.GRAY)));
 
 		return lines;
 	}

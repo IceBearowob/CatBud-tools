@@ -1,29 +1,36 @@
 package ice.catbudtools.client;
 
-import java.util.HashSet;
 import java.util.Set;
 
 public final class SpecialItemRegistry {
 
-    private static final Set<String> ITEMS = new HashSet<>();
 
+    private static final Set<String> PREFIXES = Set.of(
 
-    static {
+            "humanoid_armor_stand",
+            "mimicry_card.",
+            "catnip",
+            "player_doll",
+            "enderman_exile_core",
+            "power_disable_alarm",
+            "power_enable_alarm",
+            "armor_stand_",
+            "item_frame_transparent_masking",
+            "command_proxy",
+            "slient_mod_needle"
 
-        register(
-                "humanoid_armor_stand_spirit_enthusiastic"
-        );
-
-    }
-
-
-    private static void register(String uniqueKey) {
-        ITEMS.add(uniqueKey);
-    }
+    );
 
 
     public static boolean has(String uniqueKey) {
-        return ITEMS.contains(uniqueKey);
+
+        if (uniqueKey == null) {
+            return false;
+        }
+
+
+        return PREFIXES.stream()
+                .anyMatch(uniqueKey::startsWith);
     }
 
 
