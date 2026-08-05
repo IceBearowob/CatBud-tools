@@ -7,10 +7,23 @@ version = project.mod_version
 group = project.maven_group
 
 repositories {
-	maven {
-		name = "TerraformersMC"
-		url = "https://maven.terraformersmc.com/releases/"
-	}
+
+    mavenCentral()
+
+    maven {
+        name = "Fabric"
+        url = "https://maven.fabricmc.net/"
+    }
+
+    maven {
+        name = "Quilt"
+        url = "https://maven.quiltmc.org/repository/release/"
+    }
+
+    maven {
+        name = "Terraformers"
+        url = "https://maven.terraformersmc.com/"
+    }
 }
 
 loom {
@@ -32,7 +45,7 @@ dependencies {
 
 	// Fabric API. This is technically optional, but you probably want it anyway.
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
-
+	modImplementation "dev.isxander:yet-another-config-lib:${project.yacl_version}"
 	// ModMenu API
 	modCompileOnly "com.terraformersmc:modmenu:11.0.3"
 }

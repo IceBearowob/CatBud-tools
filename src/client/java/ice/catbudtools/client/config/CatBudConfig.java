@@ -14,6 +14,9 @@ import java.nio.file.Path;
 public class CatBudConfig {
 	private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 	private static final Path CONFIG_FILE = FabricLoader.getInstance().getConfigDir().resolve("catbud-tools.json");
+	public static final int DEFAULT_OFFSET_X = 14;
+	public static final int DEFAULT_OFFSET_Y = 14;
+	public static final TooltipPosition DEFAULT_TOOLTIP_POSITION = TooltipPosition.FOLLOW_MOUSE;
 
 	public TooltipPosition tooltipPosition = TooltipPosition.FOLLOW_MOUSE;
 	public int offsetX = 14;
@@ -24,7 +27,13 @@ public class CatBudConfig {
 	public static CatBudConfig getInstance() {
 		return INSTANCE;
 	}
+	public void reset() {
 
+		this.offsetX = DEFAULT_OFFSET_X;
+		this.offsetY = DEFAULT_OFFSET_Y;
+		this.tooltipPosition = DEFAULT_TOOLTIP_POSITION;
+
+	}
 	public static void load() {
 		if (!CONFIG_FILE.toFile().exists()) {
 			save();
