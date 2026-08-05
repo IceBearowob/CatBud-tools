@@ -13,6 +13,7 @@ import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.ItemEnchantmentsComponent;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
 import net.minecraft.text.MutableText;
 
 /**
@@ -44,10 +45,23 @@ public final class SpecialItemInfoOverlay {
 
 	public static void render(DrawContext context, int mouseX, int mouseY) {
 		MinecraftClient client = MinecraftClient.getInstance();
-		if (hoveredStack.isEmpty() || !SpecialItemDetector.isSpecial(hoveredStack) || client.getWindow() == null) {
+		// 檢查是否為特殊物品
+		if (hoveredStack.isEmpty() || client.getWindow() == null) {
 			return;
 		}
 
+		boolean isEnchant =
+				SpecialItemDetector.isSpecialEnchant(hoveredStack)
+				|| SpecialItemDetector.isSpecialAppliedEnchant(hoveredStack);
+
+		boolean isSpecialItem =
+				SpecialItemDetector.hasSpecialItemTooltip(hoveredStack);
+
+
+		if (!isEnchant && !isSpecialItem) {
+			return;
+		}
+		// 按鍵輸入偵測
 		InputUtil.Key key = CatBudToolsClient.getOpenItemQueryKey();
 
 		if (key.getCategory() != InputUtil.Type.KEYSYM) {
@@ -60,8 +74,14 @@ public final class SpecialItemInfoOverlay {
 		) != GLFW.GLFW_PRESS) {
 			return;
 		}
-		
-		List<Text> lines = getInfoLines(hoveredStack);
+		// 決定tooltip的內容
+		List<Text> lines;
+
+		if (isEnchant) {
+			lines = getEnchantInfoLines(hoveredStack);
+		} else {
+			lines = getSpecialItemInfoLines(hoveredStack);
+		}
 		if (lines.isEmpty()) {
 			return;
 		}
@@ -113,41 +133,91 @@ public final class SpecialItemInfoOverlay {
 			context.drawTextWithShadow(textRenderer, lines.get(index), x, y + index * 11, color);
 		}
 	}
-
-	private static List<Text> getInfoLines(ItemStack stack) {
+	// 特附info
+	private static List<Text> getEnchantInfoLines(ItemStack stack) {
 		List<Text> lines = new ArrayList<>();
-		lines.add(Text.literal("貓芽特殊附魔書"));
 		lines.add(stack.getName());
 
-		ItemEnchantmentsComponent storedEnchantments = stack.get(DataComponentTypes.STORED_ENCHANTMENTS);
-		if (storedEnchantments == null) {
+		ItemEnchantmentsComponent enchantments = getSpecialEnchantments(stack);
+
+		if (enchantments == null) {
 			return lines;
 		}
 
-		storedEnchantments.getEnchantments().stream()
+		enchantments.getEnchantments().stream()
 				.filter(enchantment -> enchantment.getKey()
 						.map(key -> key.getValue().getNamespace().equals(CATBUD_ENCHANTMENT_NAMESPACE))
 						.orElse(false))
 				.forEach(enchantment -> enchantment.getKey().ifPresent(key -> {
 					String path = key.getValue().getPath();
 					String translationKey = "enchantment.addons." + path;
-					int level = storedEnchantments.getLevel(enchantment);
-					lines.add(catbudTranslate(translationKey)
-						.append(Text.literal(" " + level)));
+					int level = enchantments.getLevel(enchantment);
+					lines.add(
+						catbudTranslate(translationKey).append(Text.literal(" " + level))
+							.styled(style -> style.withColor(Formatting.WHITE)));
+							
 
 					for (int loreIndex = 0; ; loreIndex++) {
 						String loreKey = translationKey + ".lore." + loreIndex;
 						if (!hasCatbudTranslation(loreKey)) {
 							break;
 						}
-						lines.add(Text.literal("  ").append(catbudTranslate(loreKey)));
+						lines.add(
+							Text.literal("  ").append(catbudTranslate(loreKey))
+								.styled(style -> style.withColor(Formatting.GRAY)));
 					}
 				}));
 
-		lines.add(Text.translatable(
-				"overlay.catbud-tools.close_hint",
-				CatBudToolsClient.OPEN_ITEM_QUERY_KEY.getBoundKeyLocalizedText()
-		));
+		lines.add(
+			Text.translatable(
+						"overlay.catbud-tools.close_hint",
+						CatBudToolsClient.OPEN_ITEM_QUERY_KEY.getBoundKeyLocalizedText())
+				.styled(style -> style.withColor(Formatting.GRAY)));
+		return lines;
+	}
+	private static ItemEnchantmentsComponent getSpecialEnchantments(ItemStack stack) {
+
+		ItemEnchantmentsComponent stored =
+				stack.get(DataComponentTypes.STORED_ENCHANTMENTS);
+
+		if (stored != null) {
+			return stored;
+		}
+
+
+		return stack.get(DataComponentTypes.ENCHANTMENTS);
+	}
+	// 特殊物品info
+	private static List<Text> getSpecialItemInfoLines(ItemStack stack) {
+
+		List<Text> lines = new ArrayList<>();
+
+		String id = SpecialItemDetector.getSpecialItemId(stack);
+
+		if (id == null) {
+			return lines;
+		}
+
+		lines.add(stack.getName());
+		// Lore
+		for (int i = 0; ; i++) {
+
+			String loreKey = id + ".lore." + i;
+			if (!hasCatbudTranslation(loreKey)) {
+				break;
+			}
+			lines.add(catbudTranslate(loreKey).styled(style -> style.withColor(Formatting.WHITE)));
+		}
+		if (stack.getName().getString().contains("擬人化盔甲座靈魂")){
+			lines.add(catbudTranslate("humanoid_armor_stand_spirit.common.0").styled(style -> style.withColor(Formatting.GRAY)));
+			lines.add(catbudTranslate("humanoid_armor_stand_spirit.common.1").styled(style -> style.withColor(Formatting.GRAY)));
+		}
+		lines.add(
+			Text.translatable(
+						"overlay.catbud-tools.close_hint",
+						CatBudToolsClient.OPEN_ITEM_QUERY_KEY.getBoundKeyLocalizedText())
+				.styled(style -> style.withColor(Formatting.GRAY)));
+
 		return lines;
 	}
 }

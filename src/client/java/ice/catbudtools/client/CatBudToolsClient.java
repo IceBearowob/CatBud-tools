@@ -55,7 +55,9 @@ public class CatBudToolsClient implements ClientModInitializer {
 		ItemTooltipCallback.EVENT.register(
 				(stack, context, type, lines) -> {
 
-					if (SpecialItemDetector.isSpecial(stack)) {
+					if (SpecialItemDetector.isSpecialEnchant(stack)
+							|| SpecialItemDetector.isSpecialAppliedEnchant(stack)
+							|| SpecialItemDetector.hasSpecialItemTooltip(stack)) {
 
 						SpecialItemInfoOverlay.observe(stack);
 

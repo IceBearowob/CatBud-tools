@@ -2,12 +2,16 @@
     "menu.catbud-tools.key_settings": "按鍵設定",
     "key.catbud-tools.open_item_query":  "開啟貓芽物品查詢",
     "key.category.catbud-tools.item_query":  "貓芽工具",
-    "tooltip.catbud-tools.special_item_hint":  "§e貓芽特殊附魔書・按下 %s 顯示資訊",
+    "tooltip.catbud-tools.special_item_hint":  "§e按下 %s 顯示資訊",
     "overlay.catbud-tools.close_hint": "按住 %s 顯示，放開關閉",
     "catbud-tools.config.position.follow_mouse":"跟隨滑鼠",
 	"catbud-tools.config.position.top_left":"左上方",
 	"catbud-tools.config.position.top_right":"右上方",
 	"catbud-tools.config.position.bottom_left":"左下方",
 	"catbud-tools.config.position.bottom_right":"右下方",
-	"catbud-tools.config.position.center":"正中間"
+	"catbud-tools.config.position.center":"正中間",
+    "humanoid_armor_stand_spirit_enthusiastic.lore.0": "跟隨玩家並保持約 2 格距離",
+    "humanoid_armor_stand_spirit_enthusiastic.lore.1": "玩家看向它時會停在原地開心跳躍。",
+    "humanoid_armor_stand_spirit.common.0": "「擬人化盔甲座」死亡後會返還對應的「擬人化盔甲座靈魂」",
+    "humanoid_armor_stand_spirit.common.1": "以靈魂化當下的位置半徑 32 方塊為活躍範圍。"
 }
