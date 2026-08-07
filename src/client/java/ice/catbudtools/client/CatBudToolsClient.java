@@ -2,6 +2,7 @@ package ice.catbudtools.client;
 
 import ice.catbudtools.CatBudTools;
 import ice.catbudtools.client.mixin.KeyBindingAccessor;
+import ice.catbudtools.client.config.CatBudConfig;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
@@ -35,24 +36,28 @@ public class CatBudToolsClient implements ClientModInitializer {
 	}
 	@Override
 	public void onInitializeClient() {
-		ice.catbudtools.client.config.CatBudConfig.load();
-
+		CatBudConfig.load();
 		// Tooltip 偵測特殊物品
 		ItemTooltipCallback.EVENT.register(
 				(stack, context, type, lines) -> {
-
+					CatBudConfig config = CatBudConfig.getInstance();
+					if (!config.ShowTooltip){
+						return;
+					}
 					if (SpecialItemDetector.isSpecialEnchant(stack)
 							|| SpecialItemDetector.isSpecialAppliedEnchant(stack)
 							|| SpecialItemDetector.hasSpecialItemTooltip(stack)) {
 
 						SpecialItemInfoOverlay.observe(stack);
-
-						lines.add(
+						
+						if (!config.AlwaysShowTooltip){
+							lines.add(
 								Text.translatable(
 										"tooltip.catbud-tools.special_item_hint",
 										OPEN_ITEM_QUERY_KEY.getBoundKeyLocalizedText()
 								)
-						);
+							);
+						}
 					}
 				}
 		);

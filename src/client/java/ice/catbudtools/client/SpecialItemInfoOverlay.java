@@ -3,6 +3,8 @@ package ice.catbudtools.client;
 import java.util.ArrayList;
 import java.util.List;
 
+import ice.catbudtools.client.config.CatBudConfig;
+
 import net.minecraft.client.util.InputUtil;
 import org.lwjgl.glfw.GLFW;
 
@@ -35,6 +37,10 @@ public final class SpecialItemInfoOverlay {
 	}
 
 	public static void render(DrawContext context, int mouseX, int mouseY) {
+		CatBudConfig config = CatBudConfig.getInstance();
+		if (!config.ShowTooltip){
+			return;
+		}
 		MinecraftClient client = MinecraftClient.getInstance();
 		// 檢查是否為特殊物品
 		if (hoveredStack.isEmpty() || client.getWindow() == null) {
@@ -53,18 +59,21 @@ public final class SpecialItemInfoOverlay {
 			return;
 		}
 		// 按鍵輸入偵測
-		InputUtil.Key key = CatBudToolsClient.getOpenItemQueryKey();
+		if (!config.AlwaysShowTooltip){
+			InputUtil.Key key = CatBudToolsClient.getOpenItemQueryKey();
 
-		if (key.getCategory() != InputUtil.Type.KEYSYM) {
-			return;
+			if (key.getCategory() != InputUtil.Type.KEYSYM) {
+				return;
+			}
+
+			if (GLFW.glfwGetKey(
+					client.getWindow().getHandle(),
+					key.getCode()
+			) != GLFW.GLFW_PRESS) {
+				return;
+			}
 		}
 
-		if (GLFW.glfwGetKey(
-				client.getWindow().getHandle(),
-				key.getCode()
-		) != GLFW.GLFW_PRESS) {
-			return;
-		}
 		// 決定tooltip的內容
 		List<Text> lines = new ArrayList<>();
 		lines.add(hoveredStack.getName());
@@ -79,17 +88,18 @@ public final class SpecialItemInfoOverlay {
 					getSpecialItemInfoLines(hoveredStack)
 			);
 		}
-		lines.add(
-			Text.translatable(
-						"overlay.catbud-tools.close_hint",
-						CatBudToolsClient.OPEN_ITEM_QUERY_KEY.getBoundKeyLocalizedText())
-				.styled(style -> style.withColor(Formatting.GRAY)));
+		if (!config.AlwaysShowTooltip){
+			lines.add(
+				Text.translatable(
+							"overlay.catbud-tools.close_hint",
+							CatBudToolsClient.OPEN_ITEM_QUERY_KEY.getBoundKeyLocalizedText())
+					.styled(style -> style.withColor(Formatting.GRAY)));
+		}
 
 		var textRenderer = client.textRenderer;
 		int width = lines.stream().mapToInt(textRenderer::getWidth).max().orElse(0) + 12;
 		int height = lines.size() * 11 + 8;
 
-		ice.catbudtools.client.config.CatBudConfig config = ice.catbudtools.client.config.CatBudConfig.getInstance();
 		int scaledWidth = client.getWindow().getScaledWidth();
 		int scaledHeight = client.getWindow().getScaledHeight();
 		int x, y;

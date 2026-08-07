@@ -17,10 +17,14 @@ public class CatBudConfig {
 	public static final int DEFAULT_OFFSET_X = 14;
 	public static final int DEFAULT_OFFSET_Y = 14;
 	public static final TooltipPosition DEFAULT_TOOLTIP_POSITION = TooltipPosition.FOLLOW_MOUSE;
+	public static final boolean DEFAULT_ALWAYSTOOLTIP = false;
+	public static final boolean DEFAULT_SHOWTOOLTIP = true;
 
 	public TooltipPosition tooltipPosition = TooltipPosition.FOLLOW_MOUSE;
 	public int offsetX = 14;
 	public int offsetY = 14;
+	public boolean AlwaysShowTooltip = false;
+	public boolean ShowTooltip = true;
 
 	private static CatBudConfig INSTANCE = new CatBudConfig();
 
