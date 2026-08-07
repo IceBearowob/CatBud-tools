@@ -3,39 +3,58 @@ package ice.catbudtools.client;
 import java.util.ArrayList;
 import java.util.List;
 
-import ice.catbudtools.client.config.CatBudConfig;
-
-import net.minecraft.client.util.InputUtil;
 import org.lwjgl.glfw.GLFW;
 
+import ice.catbudtools.client.config.CatBudConfig;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.resource.language.I18n;
+import net.minecraft.client.util.InputUtil;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.ItemEnchantmentsComponent;
 import net.minecraft.item.ItemStack;
+import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
-import net.minecraft.text.MutableText;
 
 /**
  * Keeps track of the special item currently under the cursor and renders its information card.
  */
 public final class SpecialItemInfoOverlay {
 	private static final String CATBUD_ENCHANTMENT_NAMESPACE = "addons";
-	private static MutableText catbudTranslate(String key) {
-		return Text.translatable(key);
-	}
-	private static boolean hasCatbudInfomation(String key) {
-		return I18n.hasTranslation(key);
-	}
+
+	private static MutableText catbudTranslate(String key) {return Text.translatable(key);}
+	private static boolean hasCatbudInfomation(String key) {return I18n.hasTranslation(key);}
 	private static ItemStack hoveredStack = ItemStack.EMPTY;
-	private SpecialItemInfoOverlay() {
-	}
+	private static int enchantPage = 0;
+	private static int enchantSectionCount = 0;
+
+	private SpecialItemInfoOverlay() {}
 	public static void observe(ItemStack stack) {
+		if (stack.isEmpty()) {
+			return;
+		}
+		if (!ItemStack.areEqual(hoveredStack, stack)) {
+			enchantPage = 0;
+		}
 		hoveredStack = stack.copy();
 	}
+	public static void changeEnchantPage(int amount) {
+		if (hoveredStack.isEmpty()) {
+			return;
+		}
+		CatBudConfig config = CatBudConfig.getInstance();
+		if (config.max_display_enchant == 0){
+			return;
+		}
 
+		enchantPage += amount;
+
+		if (enchantPage < 0) {
+			enchantPage = 0;
+		}
+
+	}
 	public static void render(DrawContext context, int mouseX, int mouseY) {
 		CatBudConfig config = CatBudConfig.getInstance();
 		if (!config.ShowTooltip){
@@ -75,18 +94,49 @@ public final class SpecialItemInfoOverlay {
 		}
 
 		// 決定tooltip的內容
-		List<Text> lines = new ArrayList<>();
-		lines.add(hoveredStack.getName());
-		if (isEnchant) {
-			lines.addAll(
-					getEnchantInfoLines(hoveredStack)
+		// Section
+		List<TooltipSection> specialSections = new ArrayList<>();
+		List<TooltipSection> enchantSections = new ArrayList<>();
+		enchantSectionCount = 0;
+		
+		if (isSpecialItem) {
+			specialSections.addAll(
+					getSpecialItemInfoSections(hoveredStack)
 			);
 		}
-
-		if (isSpecialItem) {
-			lines.addAll(
-					getSpecialItemInfoLines(hoveredStack)
+		if (isEnchant) {
+			enchantSections.addAll(
+					getEnchantInfoSections(hoveredStack)
 			);
+			enchantSectionCount = enchantSections.size();
+		}
+		//處裡section顯示方法
+		List<TooltipSection> displaySections = new ArrayList<>();
+		displaySections.addAll(specialSections);
+		if (config.max_display_enchant == 0){
+			displaySections.addAll(enchantSections);
+		}else{
+			int start = enchantPage * config.max_display_enchant;
+
+			int end = Math.min(
+					start + config.max_display_enchant,
+					enchantSections.size()
+			);
+
+			if (start < end) {
+				displaySections.addAll(
+					enchantSections.subList(start, end)
+				);
+			}
+		}
+
+		// line
+		List<Text> lines = new ArrayList<>();
+
+		lines.add(hoveredStack.getName());
+
+		for (TooltipSection section : displaySections) {
+			lines.addAll(section.getLines());
 		}
 		if (!config.AlwaysShowTooltip){
 			lines.add(
@@ -95,7 +145,16 @@ public final class SpecialItemInfoOverlay {
 							CatBudToolsClient.OPEN_ITEM_QUERY_KEY.getBoundKeyLocalizedText())
 					.styled(style -> style.withColor(Formatting.GRAY)));
 		}
-
+		if (enchantSectionCount > config.max_display_enchant && config.max_display_enchant != 0) {
+			int totalPage = (enchantSectionCount + config.max_display_enchant - 1) / config.max_display_enchant;
+			if (enchantPage >= totalPage) {
+    			enchantPage = totalPage - 1;
+			}
+			lines.add(
+				Text.literal(
+					"透過滾輪切換特附頁面顯示(" + (enchantPage + 1) + "/" + totalPage + ")"));
+		}
+		// 依據玩家的 Config 設定動態計算 Tooltip 在螢幕上的 X, Y 繪製座標
 		var textRenderer = client.textRenderer;
 		int width = lines.stream().mapToInt(textRenderer::getWidth).max().orElse(0) + 12;
 		int height = lines.size() * 11 + 8;
@@ -104,7 +163,6 @@ public final class SpecialItemInfoOverlay {
 		int scaledHeight = client.getWindow().getScaledHeight();
 		int x, y;
 
-		// 依據玩家的 Config 設定動態計算 Tooltip 在螢幕上的 X, Y 繪製座標
 		switch (config.tooltipPosition) {
 			case TOP_LEFT -> {
 				x = config.offsetX;
@@ -143,41 +201,6 @@ public final class SpecialItemInfoOverlay {
 		}
 	}
 	// 特附info
-	private static List<Text> getEnchantInfoLines(ItemStack stack) {
-		List<Text> lines = new ArrayList<>();
-
-		ItemEnchantmentsComponent enchantments = getSpecialEnchantments(stack);
-
-		if (enchantments == null) {
-			return lines;
-		}
-
-		enchantments.getEnchantments().stream()
-				.filter(enchantment -> enchantment.getKey()
-						.map(key -> key.getValue().getNamespace().equals(CATBUD_ENCHANTMENT_NAMESPACE))
-						.orElse(false))
-				.forEach(enchantment -> enchantment.getKey().ifPresent(key -> {
-					String path = key.getValue().getPath();
-					String translationKey = "enchantment.addons." + path;
-					int level = enchantments.getLevel(enchantment);
-					lines.add(
-						catbudTranslate(translationKey).append(Text.literal(" " + level))
-							.styled(style -> style.withColor(Formatting.WHITE)));
-							
-
-					for (int loreIndex = 0; ; loreIndex++) {
-						String loreKey = translationKey + ".lore." + loreIndex;
-						if (!hasCatbudInfomation(loreKey)) {
-							break;
-						}
-						lines.add(
-							Text.literal("  ").append(catbudTranslate(loreKey))
-								.styled(style -> style.withColor(Formatting.GRAY)));
-					}
-				}));
-
-		return lines;
-	}
 	private static ItemEnchantmentsComponent getSpecialEnchantments(ItemStack stack) {
 
 		ItemEnchantmentsComponent stored =
@@ -190,15 +213,59 @@ public final class SpecialItemInfoOverlay {
 
 		return stack.get(DataComponentTypes.ENCHANTMENTS);
 	}
+	private static List<TooltipSection> getEnchantInfoSections(ItemStack stack) {
+		List<TooltipSection> sections = new ArrayList<>();
+
+		ItemEnchantmentsComponent enchantments = getSpecialEnchantments(stack);
+
+		if (enchantments == null) {
+			return sections;
+		}
+
+		enchantments.getEnchantments().stream()
+				.filter(enchantment -> enchantment.getKey()
+						.map(key -> key.getValue().getNamespace().equals(CATBUD_ENCHANTMENT_NAMESPACE))
+						.orElse(false))
+				.forEach(enchantment -> enchantment.getKey().ifPresent(key -> {
+					String path = key.getValue().getPath();
+					String translationKey = "enchantment.addons." + path;
+					int level = enchantments.getLevel(enchantment);
+					List<Text> enchantLines = new ArrayList<>();
+					enchantLines.add(
+						catbudTranslate(translationKey).append(Text.literal(" " + level))
+							.styled(style -> style.withColor(Formatting.WHITE)));
+							
+
+					for (int loreIndex = 0; ; loreIndex++) {
+						String loreKey = translationKey + ".lore." + loreIndex;
+						if (!hasCatbudInfomation(loreKey)) {
+							break;
+						}
+						enchantLines.add(
+							Text.literal("  ").append(catbudTranslate(loreKey))
+								.styled(style -> style.withColor(Formatting.GRAY)));
+					}
+					sections.add(
+						new TooltipSection(
+							TooltipSection.Type.ENCHANT,
+							enchantLines
+						)
+					);
+				}));
+
+		return sections;
+	}
 	// 特殊物品info
-	private static List<Text> getSpecialItemInfoLines(ItemStack stack) {
+	private static List<TooltipSection> getSpecialItemInfoSections(ItemStack stack) {
+
+		List<TooltipSection> sections = new ArrayList<>();
 
 		List<Text> lines = new ArrayList<>();
 
 		String id = SpecialItemDetector.getSpecialItemId(stack);
 
 		if (id == null) {
-			return lines;
+			return sections;
 		}
 		// Lore
 		for (int i = 0; ; i++) {
@@ -223,6 +290,13 @@ public final class SpecialItemInfoOverlay {
 			lines.add(catbudTranslate(tip).styled(style -> style.withColor(Formatting.GRAY)));
 		}
 
-		return lines;
+		sections.add(
+			new TooltipSection(
+				TooltipSection.Type.SPECIAL_ITEM,
+				lines
+			)
+		);
+
+		return sections;
 	}
 }

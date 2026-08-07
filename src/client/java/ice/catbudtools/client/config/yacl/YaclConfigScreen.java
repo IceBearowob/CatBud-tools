@@ -19,26 +19,28 @@ public class YaclConfigScreen {
     public static Screen create(Screen parent) {
 
         CatBudConfig config = CatBudConfig.getInstance();
-        Option<Boolean> ShowTooltip = Option.<Boolean>createBuilder()
-                                                .name(Text.literal("顯示Tooltip"))
-                                                .description(OptionDescription.of(Text.literal("開啟:顯示Tooltip\n關閉:不顯示Tooltip")))
-                                                .binding(
-                                                        CatBudConfig.DEFAULT_SHOWTOOLTIP,
-                                                        () -> config.ShowTooltip,
-                                                        value -> config.ShowTooltip = value
-                                                )
-                                                .controller(BooleanControllerBuilder::create)
-                                                .build();
-        Option<Boolean> AlwaysShowTooltip = Option.<Boolean>createBuilder()
-                                                .name(Text.literal("始終顯示Tooltip"))
-                                                .description(OptionDescription.of(Text.literal("開啟:不需要按按鍵就會顯示Tooltip\n關閉:需要按按鍵才會顯示Tooltip")))
-                                                .binding(
-                                                        CatBudConfig.DEFAULT_ALWAYSTOOLTIP,
-                                                        () -> config.AlwaysShowTooltip,
-                                                        value -> config.AlwaysShowTooltip = value
-                                                )
-                                                .controller(BooleanControllerBuilder::create)
-                                                .build();
+        Option<Boolean> ShowTooltip = 
+                Option.<Boolean>createBuilder()
+                .name(Text.literal("顯示Tooltip"))
+                .description(OptionDescription.of(Text.literal("開啟:顯示Tooltip\n關閉:不顯示Tooltip")))
+                .binding(
+                        CatBudConfig.DEFAULT_SHOWTOOLTIP,
+                        () -> config.ShowTooltip,
+                        value -> config.ShowTooltip = value
+                )
+                .controller(BooleanControllerBuilder::create)
+                .build();
+        Option<Boolean> AlwaysShowTooltip = 
+                Option.<Boolean>createBuilder()
+                .name(Text.literal("始終顯示Tooltip"))
+                .description(OptionDescription.of(Text.literal("開啟:不需要按按鍵就會顯示Tooltip\n關閉:需要按按鍵才會顯示Tooltip")))
+                .binding(
+                        CatBudConfig.DEFAULT_ALWAYSTOOLTIP,
+                        () -> config.AlwaysShowTooltip,
+                        value -> config.AlwaysShowTooltip = value
+                )
+                .controller(BooleanControllerBuilder::create)
+                .build();
         Option<Integer> xOffset =
                 Option.<Integer>createBuilder()
                 .name(Text.literal("X偏移"))
@@ -91,7 +93,23 @@ public class YaclConfigScreen {
 
                 )
                 .build();
-
+        Option<Integer> max_display_enchant =
+                Option.<Integer>createBuilder()
+                .name(Text.literal("最大特附顯示數量"))
+                .description(OptionDescription.of(Text.literal("如果說特附多到你沒辦法完整看到所有內容，就自行調整數值\n調成0代表完全顯示")))
+                .binding(
+                        CatBudConfig.DEFAULT_MAX_DISPLAY_ENCHANT,
+                        () -> config.max_display_enchant,
+                        value -> config.max_display_enchant = value
+                )
+                .controller(
+                        opt ->
+                                IntegerSliderControllerBuilder
+                                .create(opt)
+                                .range(0, 30)
+                                .step(1)
+                )
+                .build();
         ButtonOption resetButton =
                 ButtonOption.createBuilder()
                 .name(Text.literal("全部重置"))
@@ -105,6 +123,7 @@ public class YaclConfigScreen {
                         xOffset.requestSet(CatBudConfig.DEFAULT_OFFSET_X);
                         yOffset.requestSet(CatBudConfig.DEFAULT_OFFSET_Y);
                         tooltipPosition.requestSet(CatBudConfig.DEFAULT_TOOLTIP_POSITION);
+                        max_display_enchant.requestSet(CatBudConfig.DEFAULT_MAX_DISPLAY_ENCHANT);
                         CatBudConfig.save();
                 })
                 .build();
@@ -116,6 +135,7 @@ public class YaclConfigScreen {
                         .option(xOffset)
                         .option(yOffset)
                         .option(tooltipPosition)
+                        .option(max_display_enchant)
                         .option(resetButton)
                         .build()
                 )
