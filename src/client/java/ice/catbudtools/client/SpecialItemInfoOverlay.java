@@ -22,19 +22,10 @@ import net.minecraft.text.MutableText;
 public final class SpecialItemInfoOverlay {
 	private static final String CATBUD_ENCHANTMENT_NAMESPACE = "addons";
 	private static MutableText catbudTranslate(String key) {
-
-		String override = TranslationOverride.get(key);
-
-		if (override != null) {
-			return Text.literal(override);
-		}
-
 		return Text.translatable(key);
 	}
-	private static boolean hasCatbudTranslation(String key) {
-
-		return TranslationOverride.get(key) != null
-				|| I18n.hasTranslation(key);
+	private static boolean hasCatbudInfomation(String key) {
+		return I18n.hasTranslation(key);
 	}
 	private static ItemStack hoveredStack = ItemStack.EMPTY;
 	private SpecialItemInfoOverlay() {
@@ -166,7 +157,7 @@ public final class SpecialItemInfoOverlay {
 
 					for (int loreIndex = 0; ; loreIndex++) {
 						String loreKey = translationKey + ".lore." + loreIndex;
-						if (!hasCatbudTranslation(loreKey)) {
+						if (!hasCatbudInfomation(loreKey)) {
 							break;
 						}
 						lines.add(
@@ -203,7 +194,7 @@ public final class SpecialItemInfoOverlay {
 		for (int i = 0; ; i++) {
 
 			String loreKey = id + ".lore." + i;
-			if (!hasCatbudTranslation(loreKey)) {
+			if (!hasCatbudInfomation(loreKey)) {
 				break;
 			}
 			lines.add(catbudTranslate(loreKey).styled(style -> style.withColor(Formatting.WHITE)));
@@ -216,7 +207,7 @@ public final class SpecialItemInfoOverlay {
 			}else{
 				tip = id + ".tip." + i;
 			}
-			if (!hasCatbudTranslation(tip)) {
+			if (!hasCatbudInfomation(tip)) {
 				break;
 			}
 			lines.add(catbudTranslate(tip).styled(style -> style.withColor(Formatting.GRAY)));

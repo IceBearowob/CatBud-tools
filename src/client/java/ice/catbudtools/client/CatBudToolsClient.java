@@ -9,10 +9,7 @@ import net.fabricmc.fabric.api.client.screen.v1.ScreenEvents;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
 import net.minecraft.text.Text;
-import net.minecraft.resource.ResourceType;
-import net.minecraft.util.Identifier;
 import net.minecraft.item.ItemStack;
-import net.fabricmc.fabric.api.resource.v1.ResourceLoader;
 import org.lwjgl.glfw.GLFW;
 
 
@@ -39,17 +36,6 @@ public class CatBudToolsClient implements ClientModInitializer {
 	@Override
 	public void onInitializeClient() {
 		ice.catbudtools.client.config.CatBudConfig.load();
-
-		// 語言覆蓋
-		ResourceLoader
-				.get(ResourceType.CLIENT_RESOURCES)
-				.registerReloader(
-						Identifier.of(
-								"catbud-tools",
-								"language_override"
-						),
-						new CatBudLanguageReloadListener()
-				);
 
 		// Tooltip 偵測特殊物品
 		ItemTooltipCallback.EVENT.register(
