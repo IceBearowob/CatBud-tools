@@ -26,21 +26,31 @@ public final class SpecialItemInfoOverlay {
 	private static MutableText catbudTranslate(String key) {return Text.translatable(key);}
 	private static boolean hasCatbudInfomation(String key) {return I18n.hasTranslation(key);}
 	private static ItemStack hoveredStack = ItemStack.EMPTY;
+	private static ItemStack lastHoveredStack = ItemStack.EMPTY;
+	private static boolean tooltipActive = false;
 	private static int enchantPage = 0;
 	private static int enchantSectionCount = 0;
 
 	private SpecialItemInfoOverlay() {}
 	public static void observe(ItemStack stack) {
+
 		if (stack.isEmpty()) {
+			hoveredStack = ItemStack.EMPTY;
+			tooltipActive = false;
 			return;
 		}
-		if (!ItemStack.areEqual(hoveredStack, stack)) {
+
+		tooltipActive = true;
+
+		if (!ItemStack.areEqual(lastHoveredStack, stack)) {
 			enchantPage = 0;
 		}
+
 		hoveredStack = stack.copy();
+		lastHoveredStack = stack.copy();
 	}
 	public static void changeEnchantPage(int amount) {
-		if (hoveredStack.isEmpty()) {
+		if (!tooltipActive) {
 			return;
 		}
 		CatBudConfig config = CatBudConfig.getInstance();
@@ -62,7 +72,7 @@ public final class SpecialItemInfoOverlay {
 		}
 		MinecraftClient client = MinecraftClient.getInstance();
 		// 檢查是否為特殊物品
-		if (hoveredStack.isEmpty() || client.getWindow() == null) {
+		if (!tooltipActive || hoveredStack.isEmpty() || client.getWindow() == null) {
 			return;
 		}
 
