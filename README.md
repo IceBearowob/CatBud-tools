@@ -18,6 +18,7 @@
 ```
 他會將build出來的東西放在./build/lib內
 記得用JDK 21以上編譯
-
+## 依賴項
+必須安裝yetanotherconfiglib!
 ## 授權
 這個專案目前是CC0授權，雖然我不知道是啥意思
