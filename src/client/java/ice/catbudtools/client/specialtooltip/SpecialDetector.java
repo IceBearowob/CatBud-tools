@@ -7,11 +7,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 
 
-public final class SpecialItemDetector {
+public final class SpecialDetector {
 
     private static final String CATBUD_ENCHANTMENT_NAMESPACE = "addons";
 
-    private SpecialItemDetector() {
+    private SpecialDetector() {
     }
 
 
