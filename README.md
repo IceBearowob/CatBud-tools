@@ -20,7 +20,7 @@
 記得用JDK 21以上編譯
 
 ## 版本
-CatBud Tools - 0.7.0
+CatBud Tools - 0.7.1
 Support 1.21.11
 資料更新到r9-b08
 

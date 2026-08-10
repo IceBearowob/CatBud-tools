@@ -17,7 +17,9 @@ public final class SpecialItemRegistry {
             "armor_stand_",
             "item_frame_transparent_masking",
             "command_proxy",
-            "slient_mod_needle"
+            "slient_mod_needle",
+            "landmark",
+            "arrow"
 
     );
 
