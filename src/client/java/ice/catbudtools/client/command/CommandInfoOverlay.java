@@ -17,8 +17,6 @@ import net.minecraft.util.Formatting;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-
 public final class CommandInfoOverlay {
 
     private CommandInfoOverlay() {
@@ -69,18 +67,6 @@ public final class CommandInfoOverlay {
         // 2. 指令說明 Description
         if (info.getDescription() != null && !info.getDescription().isEmpty()) {
             lines.add(Text.literal(info.getDescription()).styled(style -> style.withColor(Formatting.WHITE)));
-        }
-
-        // 3. 若有子指令且玩家尚未輸入完子指令，顯示可用子指令提示
-        Map<String, CommandInfo> subcommands = info.getSubcommands();
-        if (!subcommands.isEmpty()) {
-            lines.add(Text.literal("可用子指令:").styled(style -> style.withColor(Formatting.GOLD)));
-            for (Map.Entry<String, CommandInfo> entry : subcommands.entrySet()) {
-                CommandInfo sub = entry.getValue();
-                String subUsage = sub.getUsage() != null ? sub.getUsage() : sub.getName();
-                String subDesc = sub.getDescription() != null ? " - " + sub.getDescription() : "";
-                lines.add(Text.literal("  " + subUsage + subDesc).styled(style -> style.withColor(Formatting.GRAY)));
-            }
         }
 
         if (lines.isEmpty()) {
