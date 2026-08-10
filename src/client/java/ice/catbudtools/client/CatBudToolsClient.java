@@ -37,6 +37,7 @@ public class CatBudToolsClient implements ClientModInitializer {
 	@Override
 	public void onInitializeClient() {
 		CatBudConfig.load();
+		ice.catbudtools.client.command.CatBudCommandRegistry.load();
 		// Tooltip 偵測特殊物品
 		ItemTooltipCallback.EVENT.register(
 				(stack, context, type, lines) -> {
@@ -61,7 +62,7 @@ public class CatBudToolsClient implements ClientModInitializer {
 					}
 				}
 		);
-		// tooltip
+		// tooltip & command info overlay
 		ScreenEvents.AFTER_INIT.register((client, screen, scaledWidth, scaledHeight) -> {
 			ScreenEvents.beforeRender(screen).register((currentScreen, drawContext, mouseX, mouseY, tickDelta) -> {
 				SpecialItemInfoOverlay.observe(ItemStack.EMPTY);
@@ -74,6 +75,11 @@ public class CatBudToolsClient implements ClientModInitializer {
 								drawContext,
 								mouseX,
 								mouseY
+						);
+
+						ice.catbudtools.client.command.CommandInfoOverlay.render(
+								drawContext,
+								currentScreen
 						);
 
 					}

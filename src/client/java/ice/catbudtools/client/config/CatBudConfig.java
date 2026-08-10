@@ -19,6 +19,7 @@ public class CatBudConfig {
 	public static final TooltipPosition DEFAULT_TOOLTIP_POSITION = TooltipPosition.FOLLOW_MOUSE;
 	public static final boolean DEFAULT_ALWAYSTOOLTIP = false;
 	public static final boolean DEFAULT_SHOWTOOLTIP = true;
+	public static final boolean DEFAULT_SHOW_COMMAND_HELP = true;
 	public static final int DEFAULT_MAX_DISPLAY_ENCHANT = 0;
 
 	public TooltipPosition tooltipPosition = TooltipPosition.FOLLOW_MOUSE;
@@ -26,6 +27,7 @@ public class CatBudConfig {
 	public int offsetY = 14;
 	public boolean AlwaysShowTooltip = false;
 	public boolean ShowTooltip = true;
+	public boolean showCommandHelp = true;
 	public int max_display_enchant = 0;
 
 	private static CatBudConfig INSTANCE = new CatBudConfig();
@@ -38,6 +40,10 @@ public class CatBudConfig {
 		this.offsetX = DEFAULT_OFFSET_X;
 		this.offsetY = DEFAULT_OFFSET_Y;
 		this.tooltipPosition = DEFAULT_TOOLTIP_POSITION;
+		this.AlwaysShowTooltip = DEFAULT_ALWAYSTOOLTIP;
+		this.ShowTooltip = DEFAULT_SHOWTOOLTIP;
+		this.showCommandHelp = DEFAULT_SHOW_COMMAND_HELP;
+		this.max_display_enchant = DEFAULT_MAX_DISPLAY_ENCHANT;
 
 	}
 	public static void load() {

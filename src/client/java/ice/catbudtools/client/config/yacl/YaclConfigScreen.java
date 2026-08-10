@@ -110,6 +110,17 @@ public class YaclConfigScreen {
                                 .step(1)
                 )
                 .build();
+        Option<Boolean> showCommandHelp = 
+                Option.<Boolean>createBuilder()
+                .name(Text.literal("顯示貓芽指令說明"))
+                .description(OptionDescription.of(Text.literal("開啟:輸入貓芽指令時於聊天框上方顯示語法與說明\n關閉:不顯示指令說明")))
+                .binding(
+                        CatBudConfig.DEFAULT_SHOW_COMMAND_HELP,
+                        () -> config.showCommandHelp,
+                        value -> config.showCommandHelp = value
+                )
+                .controller(BooleanControllerBuilder::create)
+                .build();
         ButtonOption resetButton =
                 ButtonOption.createBuilder()
                 .name(Text.literal("全部重置"))
@@ -120,6 +131,7 @@ public class YaclConfigScreen {
 
                         ShowTooltip.requestSet(CatBudConfig.DEFAULT_SHOWTOOLTIP);
                         AlwaysShowTooltip.requestSet(CatBudConfig.DEFAULT_ALWAYSTOOLTIP);
+                        showCommandHelp.requestSet(CatBudConfig.DEFAULT_SHOW_COMMAND_HELP);
                         xOffset.requestSet(CatBudConfig.DEFAULT_OFFSET_X);
                         yOffset.requestSet(CatBudConfig.DEFAULT_OFFSET_Y);
                         tooltipPosition.requestSet(CatBudConfig.DEFAULT_TOOLTIP_POSITION);
@@ -132,6 +144,7 @@ public class YaclConfigScreen {
                 .category(ConfigCategory.createBuilder().name(Text.literal("Tooltip"))
                         .option(ShowTooltip)
                         .option(AlwaysShowTooltip)
+                        .option(showCommandHelp)
                         .option(xOffset)
                         .option(yOffset)
                         .option(tooltipPosition)

@@ -21,7 +21,7 @@ public class CatBudTools implements ModInitializer {
 		// However, some things (like resources) may still be uninitialized.
 		// Proceed with mild caution.
 
-		LOGGER.info("[CatBud Tools]:模組加載完成");
+		LOGGER.info("[CatBud Tools]:喵喵喵");
 	}
 
 	public static Identifier id(String path) {

@@ -1,0 +1,28 @@
+{
+  "to": {
+    "usage": "/to <玩家名稱>",
+    "description": "傳送到指定的線上玩家身邊"
+  },
+  "beacon": {
+    "usage": "/beacon",
+    "description": "開啟個人信標選單介面"
+  },
+  "adless": {
+    "usage": "/adless <clear|extend|left>",
+    "description": "屏蔽廣告",
+    "subcommands": {
+      "": {
+        "usage": "/adless",
+        "description": "屏蔽廣告"
+      },
+      "extend": {
+        "usage": "/adless extend",
+        "description": "延長指令"
+      },
+      "left": {
+        "usage": "/adless left",
+        "description": "查看屏蔽廣告剩餘時間"
+      }
+    }
+  }
+}

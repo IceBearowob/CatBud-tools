@@ -4,7 +4,10 @@
 	"compatibilityLevel": "JAVA_21",
 	"client": [
 		"KeyBindingAccessor",
-		"MouseMixin"
+		"MouseMixin",
+		"ChatScreenAccessor",
+		"ChatInputSuggestorAccessor",
+		"SuggestionWindowAccessor"
 	],
 	"injectors": {
 		"defaultRequire": 1
