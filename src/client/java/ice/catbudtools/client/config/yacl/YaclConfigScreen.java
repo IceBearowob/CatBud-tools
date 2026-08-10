@@ -121,9 +121,36 @@ public class YaclConfigScreen {
                 )
                 .controller(BooleanControllerBuilder::create)
                 .build();
-        ButtonOption resetButton =
+        Option<Boolean> showDetailedEnchantInfo = 
+                Option.<Boolean>createBuilder()
+                .name(Text.literal("顯示詳細特附說明"))
+                .description(OptionDescription.of(Text.literal("開啟:在查看特附附魔書時，會顯示衝突與最高等級資訊\n關閉:不顯示詳細資訊")))
+                .binding(
+                        CatBudConfig.DEFAULT_SHOW_DETAILED_ENCHANTINFO,
+                        () -> config.showDetailedEnchantInfo,
+                        value -> config.showDetailedEnchantInfo = value
+                )
+                .controller(BooleanControllerBuilder::create)
+                .build();
+        ButtonOption tooltipresetButton =
                 ButtonOption.createBuilder()
-                .name(Text.literal("全部重置"))
+                .name(Text.literal("重置所有Tooltip類設定"))
+                .text(Text.literal("點我重置"))
+                .description(OptionDescription.of(Text.literal("就是重置，你還想知道啥?")))
+                .action((screen, button) -> {
+                        config.reset();
+
+                        xOffset.requestSet(CatBudConfig.DEFAULT_OFFSET_X);
+                        yOffset.requestSet(CatBudConfig.DEFAULT_OFFSET_Y);
+                        tooltipPosition.requestSet(CatBudConfig.DEFAULT_TOOLTIP_POSITION);
+                        showDetailedEnchantInfo.requestSet(CatBudConfig.DEFAULT_SHOW_DETAILED_ENCHANTINFO);
+                        max_display_enchant.requestSet(CatBudConfig.DEFAULT_MAX_DISPLAY_ENCHANT);
+                        CatBudConfig.save();
+                })
+                .build();
+        ButtonOption functionresetButton =
+                ButtonOption.createBuilder()
+                .name(Text.literal("重置所有功能類設定"))
                 .text(Text.literal("點我重置"))
                 .description(OptionDescription.of(Text.literal("就是重置，你還想知道啥?")))
                 .action((screen, button) -> {
@@ -132,28 +159,34 @@ public class YaclConfigScreen {
                         ShowTooltip.requestSet(CatBudConfig.DEFAULT_SHOWTOOLTIP);
                         AlwaysShowTooltip.requestSet(CatBudConfig.DEFAULT_ALWAYSTOOLTIP);
                         showCommandHelp.requestSet(CatBudConfig.DEFAULT_SHOW_COMMAND_HELP);
-                        xOffset.requestSet(CatBudConfig.DEFAULT_OFFSET_X);
-                        yOffset.requestSet(CatBudConfig.DEFAULT_OFFSET_Y);
-                        tooltipPosition.requestSet(CatBudConfig.DEFAULT_TOOLTIP_POSITION);
-                        max_display_enchant.requestSet(CatBudConfig.DEFAULT_MAX_DISPLAY_ENCHANT);
                         CatBudConfig.save();
                 })
                 .build();
 
-        return YetAnotherConfigLib.createBuilder().title(Text.literal("CatBud Tools"))
-                .category(ConfigCategory.createBuilder().name(Text.literal("Tooltip"))
+                ConfigCategory functionCategory = ConfigCategory.createBuilder()
+                        .name(Text.literal("功能類"))
                         .option(ShowTooltip)
                         .option(AlwaysShowTooltip)
                         .option(showCommandHelp)
+                        .option(functionresetButton)
+                        .build();
+
+                ConfigCategory tooltipCategory = ConfigCategory.createBuilder()
+                        .name(Text.literal("Tooltip微調"))
                         .option(xOffset)
                         .option(yOffset)
                         .option(tooltipPosition)
+                        .option(showDetailedEnchantInfo)
                         .option(max_display_enchant)
-                        .option(resetButton)
+                        .option(tooltipresetButton)
+                        .build();
+
+                return YetAnotherConfigLib.createBuilder()
+                        .title(Text.literal("CatBud Tools"))
+                        .category(functionCategory)
+                        .category(tooltipCategory)
+                        .save(() -> CatBudConfig.save())
                         .build()
-                )
-                .save(() -> CatBudConfig.save())
-                .build()
-                .generateScreen(parent);
+                        .generateScreen(parent);
     }
 }

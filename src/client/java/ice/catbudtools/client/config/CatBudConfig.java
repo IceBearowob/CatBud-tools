@@ -20,6 +20,7 @@ public class CatBudConfig {
 	public static final boolean DEFAULT_ALWAYSTOOLTIP = false;
 	public static final boolean DEFAULT_SHOWTOOLTIP = true;
 	public static final boolean DEFAULT_SHOW_COMMAND_HELP = true;
+	public static final boolean DEFAULT_SHOW_DETAILED_ENCHANTINFO = true;
 	public static final int DEFAULT_MAX_DISPLAY_ENCHANT = 0;
 
 	public TooltipPosition tooltipPosition = TooltipPosition.FOLLOW_MOUSE;
@@ -28,6 +29,7 @@ public class CatBudConfig {
 	public boolean AlwaysShowTooltip = false;
 	public boolean ShowTooltip = true;
 	public boolean showCommandHelp = true;
+	public boolean showDetailedEnchantInfo = true;
 	public int max_display_enchant = 0;
 
 	private static CatBudConfig INSTANCE = new CatBudConfig();

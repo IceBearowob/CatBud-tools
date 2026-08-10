@@ -224,7 +224,7 @@ public final class SpecialItemInfoOverlay {
 	}
 	private static List<TooltipSection> getEnchantInfoSections(ItemStack stack) {
 		List<TooltipSection> sections = new ArrayList<>();
-
+		CatBudConfig config = CatBudConfig.getInstance();
 		ItemEnchantmentsComponent enchantments = getSpecialEnchantments(stack);
 
 		if (enchantments == null) {
@@ -253,7 +253,7 @@ public final class SpecialItemInfoOverlay {
 									.styled(style -> style.withColor(Formatting.GRAY)));
 						}
 						// conflict(只在附魔書上顯示）
-						if (stack.isOf(Items.ENCHANTED_BOOK)) {
+						if (stack.isOf(Items.ENCHANTED_BOOK) && config.showDetailedEnchantInfo) {
 							enchantLines.add(Text.literal("最大等級 " + enchantInfo.getMaxlevel()).styled(style -> style.withColor(Formatting.GRAY)));
 							if (!enchantInfo.getConflict().isEmpty()) {
 								enchantLines.add(Text.literal(""));
