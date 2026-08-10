@@ -5,7 +5,8 @@ import ice.catbudtools.client.mixin.KeyBindingAccessor;
 import ice.catbudtools.client.config.CatBudConfig;
 import ice.catbudtools.client.specialtooltip.SpecialEnchantRegistry;
 import ice.catbudtools.client.specialtooltip.SpecialItemInfoOverlay;
-import ice.catbudtools.client.specialtooltip.SpecialItemDetector;
+import ice.catbudtools.client.specialtooltip.SpecialItemRegistry;
+import ice.catbudtools.client.specialtooltip.SpecialDetector;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
@@ -42,6 +43,7 @@ public class CatBudToolsClient implements ClientModInitializer {
 		CatBudConfig.load();
 		ice.catbudtools.client.command.CatBudCommandRegistry.load();
 		SpecialEnchantRegistry.load();
+		SpecialItemRegistry.load();
 		// Tooltip 偵測特殊物品
 		ItemTooltipCallback.EVENT.register(
 				(stack, context, type, lines) -> {
@@ -49,9 +51,9 @@ public class CatBudToolsClient implements ClientModInitializer {
 					if (!config.ShowTooltip){
 						return;
 					}
-					if (SpecialItemDetector.isSpecialEnchant(stack)
-							|| SpecialItemDetector.isSpecialAppliedEnchant(stack)
-							|| SpecialItemDetector.hasSpecialItemTooltip(stack)) {
+					if (SpecialDetector.isSpecialEnchant(stack)
+							|| SpecialDetector.isSpecialAppliedEnchant(stack)
+							|| SpecialDetector.hasSpecialItemTooltip(stack)) {
 
 						SpecialItemInfoOverlay.observe(stack);
 						

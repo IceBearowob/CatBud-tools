@@ -252,7 +252,9 @@ public final class SpecialItemInfoOverlay {
 								Text.literal("  " + loreLine)
 									.styled(style -> style.withColor(Formatting.GRAY)));
 						}
-						// conflict and maxlevel info（只在附魔書上顯示）
+						enchantLines.add(Text.literal(""));
+						enchantLines.add(Text.literal("最大等級" + enchantInfo.getMaxlevel()).styled(style -> style.withColor(Formatting.GRAY)));
+						// conflict(只在附魔書上顯示）
 						if (stack.isOf(Items.ENCHANTED_BOOK)) {
 							if (!enchantInfo.getConflict().isEmpty()) {
 								enchantLines.add(Text.literal("與另外" + enchantInfo.getConflict().size() + "個衝突"));
@@ -262,7 +264,6 @@ public final class SpecialItemInfoOverlay {
 											.styled(style -> style.withColor(Formatting.GRAY)));
 								}
 							}
-							enchantLines.add(Text.literal("最大等級" + enchantInfo.getMaxlevel()));
 						}
 					}
 					sections.add(

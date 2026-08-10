@@ -29,7 +29,7 @@ public final class SpecialItemRegistry {
         SPECIAL_ITEM.clear();
 
         try (InputStream stream = SpecialItemRegistry.class.getResourceAsStream(
-                "/assets/catbud-tools/special_SPECIAL_ITEM.json")) {
+                "/assets/catbud-tools/special_items.json")) {
             if (stream != null) {
                 try (InputStreamReader reader = new InputStreamReader(stream, StandardCharsets.UTF_8)) {
                     Type type = new TypeToken<Map<String, SpecialItemInfo>>() {}.getType();
@@ -39,10 +39,10 @@ public final class SpecialItemRegistry {
                     }
                 }
             } else {
-                CatBudTools.LOGGER.warn("[CatBud Tools] 找不到內建 special_SPECIAL_ITEM.json 資源檔");
+                CatBudTools.LOGGER.warn("[CatBud Tools] 找不到內建 special_items.json 資源檔");
             }
         } catch (Exception e) {
-            CatBudTools.LOGGER.warn("[CatBud Tools] 無法從資源載入 special_SPECIAL_ITEM.json: " + e.getMessage());
+            CatBudTools.LOGGER.warn("[CatBud Tools] 無法從資源載入 special_items.json: " + e.getMessage());
         }
 
         loaded = true;

@@ -1,60 +1,90 @@
 {
   "action_sound.kizuna_akari": {
+    "name": "動作音效 紲星燈",
+    "maxlevel": 1,
     "lore": [
       "裝備在頭盔時許多行為發出可愛的音效！"
     ],
-    "conflict": []
+    "conflict": [
+      "動作音效 結月緣",
+      "動作音效 琴葉茜",
+      "動作音效 琴葉葵"
+    ]
   },
   "action_sound.kotonoha_akane": {
+    "name": "動作音效 琴葉茜",
+    "maxlevel": 1,
     "lore": [
       "裝備在頭盔時許多行為發出可愛的音效！"
     ],
-    "conflict": []
+    "conflict": [
+      "動作音效 紲星燈",
+      "動作音效 結月緣",
+      "動作音效 琴葉葵"
+    ]
   },
   "action_sound.kotonoha_aoi": {
+    "name": "動作音效 琴葉葵",
+    "maxlevel": 1,
     "lore": [
       "裝備在頭盔時許多行為發出可愛的音效！"
     ],
-    "conflict": []
+    "conflict": [
+      "動作音效 紲星燈",
+      "動作音效 結月緣",
+      "動作音效 琴葉茜"
+    ]
   },
   "action_sound.yuzuki_yukari": {
+    "name": "動作音效 結月緣",
+    "maxlevel": 1,
     "lore": [
       "裝備在頭盔時許多行為發出可愛的音效！"
     ],
-    "conflict": []
+    "conflict": [
+      "動作音效 紲星燈",
+      "動作音效 琴葉茜",
+      "動作音效 琴葉葵"
+    ]
   },
   "auto_repair": {
+    "name": "自動修補",
+    "maxlevel": 3,
     "lore": [
       "每 3 ~ 1 秒恢復 5% 損壞的耐久值，",
       "修復每 1 耐久值需消耗自身 5 ~ 3 經驗值，",
       "只有手持中或裝備中才觸發效果。"
     ],
-    "conflict": []
+    "conflict": ["修補","無限耐久"]
   },
   "bloodsucking": {
+    "name": "吸血",
+    "maxlevel": 4,
     "lore": [
       "近戰武器造成傷害的 4 ~ 10% 恢復成生命值。"
     ],
-    "conflict": []
+    "conflict": ["鋒利","節肢剋星","不死剋星"]
   },
   "break_recovery": {
+    "name": "損毀救援",
+    "maxlevel": 1,
     "lore": [
       "物品損毀時立即恢復全部耐久度，",
       "觸發效果後此附魔將消失。"
     ],
-    "conflict": [
-      "▶ 衝突附魔：無限耐久"
-    ]
+    "conflict": ["無限耐久"]
   },
   "buoyancy": {
+    "name": "浮力",
+    "maxlevel": 3,
     "lore": [
       "裝備在鞘翅時減少 30 ~ 60% 重力。"
     ],
-    "conflict": [
-      "▶ 衝突附魔：重力"
-    ]
+    "conflict": []
   },
   "critical_chance": {
+    "name": "爆擊可能",
+    "maxlevel": 4,
     "lore": [
       "斧有 8 ~ 20% 機率造成 200% 傷害，",
       "存在虛弱狀態時無法觸發效果。"
@@ -62,6 +92,8 @@
     "conflict": []
   },
   "delicacy": {
+    "name": "美食",
+    "maxlevel": 3,
     "lore": [
       "裝備在頭盔時食用食物增加 20 ~ 30% 飢餓值，",
       "存在飢餓狀態時無法觸發效果。"
@@ -69,6 +101,8 @@
     "conflict": []
   },
   "eternal": {
+    "name": "不滅",
+    "maxlevel": 1,
     "lore": [
       "掉落物不會自然消失，",
       "也不會受到絕大多數的傷害。"
@@ -76,70 +110,78 @@
     "conflict": []
   },
   "extension": {
+    "name": "延伸",
+    "maxlevel": 3,
     "lore": [
       "工具的方塊互動距離增加 1 ~ 2 方塊。"
     ],
     "conflict": []
   },
   "fragile": {
+    "name": "脆弱",
+    "maxlevel": 3,
     "lore": [
       "裝備在胸甲時，",
       "減少 6 ~ 18 最大生命值，",
       "增加 3 ~ 9 攻擊力。"
     ],
-    "conflict": [
-      "▶ 衝突附魔：健康"
-    ]
+    "conflict": []
   },
   "frozen": {
+    "name": "冰凍",
+    "maxlevel": 3,
     "lore": [
       "近戰武器攻擊後將目標冰凍，",
       "等級越高持續時間越久。"
     ],
-    "conflict": []
+    "conflict": ["燃燒"]
   },
   "gale": {
+    "name": "疾風",
+    "maxlevel": 3,
     "lore": [
       "鞘翅飛行時煙火加速持續延長 20 ~ 40% 時間。"
     ],
     "conflict": []
   },
   "giganticize": {
+    "name": "巨大化",
+    "maxlevel": 2,
     "lore": [
       "穿著在身上時增加 15 ~ 30% 體積，",
       "全套總共增加 60 ~ 120% 體積。"
     ],
-    "conflict": [
-      "▶ 衝突附魔：迷你化"
-    ]
+    "conflict": ["迷你化"]
   },
   "gravity": {
+    "name": "重力",
+    "maxlevel": 3,
     "lore": [
       "裝備在胸甲時增加 40 ~ 100% 重力。"
     ],
-    "conflict": [
-      "▶ 衝突附魔：浮力"
-    ]
+    "conflict": []
   },
   "healthy": {
+    "name": "健康",
+    "maxlevel": 3,
     "lore": [
       "裝備在胸甲時，",
       "獲得的正面狀態延長 20 ~ 40% 時效，",
       "獲得的負面狀態減少 10 ~ 30% 時效。"
     ],
-    "conflict": [
-      "▶ 衝突附魔：脆弱"
-    ]
+    "conflict": []
   },
   "infinite_durability": {
+    "name": "無限耐久",
+    "maxlevel": 1,
     "lore": [
       "無論如何都不會消耗耐久度。"
     ],
-    "conflict": [
-      "▶ 衝突附魔：損毀救援"
-    ]
+    "conflict": ["損毀救援","修補","自動修補","耐久"]
   },
   "knockback_resistance": {
+    "name": "擊退保護",
+    "maxlevel": 2,
     "lore": [
       "穿著在身上時減少 4 ~ 8% 所受擊退，",
       "全套總共減少 16 ~ 32% 所受擊退。"
@@ -147,49 +189,61 @@
     "conflict": []
   },
   "light_speed": {
+    "name": "逐光疾走",
+    "maxlevel": 3,
     "lore": [
       "裝備在靴子身處光線大於或等於 10 的空間時，",
       "增加 25 ~ 40% 移動速度。"
     ],
-    "conflict": []
+    "conflict": ["靈魂疾走"]
   },
   "miniaturize": {
+    "name": "迷你化",
+    "maxlevel": 1,
     "lore": [
       "穿著在身上時減少 10% 體積，",
       "全套總共減少 40% 體積。"
     ],
-    "conflict": [
-      "▶ 衝突附魔：巨大化"
-    ]
+    "conflict": ["巨大化"]
   },
   "nimble": {
+    "name": "靈巧",
+    "maxlevel": 3,
     "lore": [
       "裝備在鞘翅時安全摔落高度增加 10 ~ 30 方塊。"
     ],
     "conflict": []
   },
   "ore_refining": {
+    "name": "礦石熔煉",
+    "maxlevel": 1,
     "lore": [
       "鎬挖掘後掉落的礦石立即熔煉成礦錠。"
     ],
     "conflict": []
   },
   "overclocking": {
+    "name": "超頻",
+    "maxlevel": 5,
     "lore": [
       "工具的方塊破壞速度增加 20 ~ 100%。"
     ],
-    "conflict": []
+    "conflict": ["耐久","絲綢之觸","幸運"]
   },
   "sacrifice_experience": {
+    "name": "獻祭經驗",
+    "maxlevel": 1,
     "lore": [
       "穿著在身上時減少 3% 所受傷害，",
       "但需要按照傷害比例扣除經驗值，",
       "經驗值不夠抵銷時無法觸發效果，",
       "全套總共減少 12% 所受傷害。"
     ],
-    "conflict": []
+    "conflict": ["尖刺"]
   },
   "spear": {
+    "name": "遠擊",
+    "maxlevel": 3,
     "lore": [
       "斧的實體互動距離增加 1 ~ 3 方塊，",
       "存在虛弱狀態時無法觸發效果。"
@@ -197,26 +251,34 @@
     "conflict": []
   },
   "steady_sneak": {
+    "name": "穩重潛行",
+    "maxlevel": 3,
     "lore": [
       "裝備在護腿潛行時減少 10 ~ 20% 所受傷害，",
       "效果生效期間內減少 60% 移動速度，",
       "存在虛弱狀態時無法觸發效果。"
     ],
-    "conflict": []
+    "conflict": ["迅捷潛行"]
   },
   "stubborn": {
+    "name": "倔強",
+    "maxlevel": 4,
     "lore": [
       "裝備在胸甲剩餘血量少於 6 時增加 2 ~ 5 攻擊傷害。"
     ],
     "conflict": []
   },
   "wind_blast": {
+    "name": "風擊",
+    "maxlevel": 5,
     "lore": [
       "使用盾牌成功阻擋攻擊時有 20 ~ 100% 產生風暴。"
     ],
     "conflict": []
   },
   "wisdom": {
+    "name": "智慧",
+    "maxlevel": 5,
     "lore": [
       "近戰武器造成生物死亡時增加 10 ~ 50% 掉落經驗值，",
       "Boss 不適用於此效果。"
