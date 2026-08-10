@@ -21,7 +21,7 @@ import net.minecraft.util.Formatting;
 /**
  * Keeps track of the special item currently under the cursor and renders its information card.
  */
-public final class SpecialItemInfoOverlay {
+public final class SpecialInfoOverlay {
 	private static final String CATBUD_ENCHANTMENT_NAMESPACE = "addons";
 
 	private static MutableText catbudTranslate(String key) {return Text.translatable(key);}
@@ -31,7 +31,7 @@ public final class SpecialItemInfoOverlay {
 	private static int enchantPage = 0;
 	private static int enchantSectionCount = 0;
 
-	private SpecialItemInfoOverlay() {}
+	private SpecialInfoOverlay() {}
 	public static void observe(ItemStack stack) {
 
 		if (stack.isEmpty()) {

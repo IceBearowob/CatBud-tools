@@ -4,7 +4,7 @@ import ice.catbudtools.CatBudTools;
 import ice.catbudtools.client.mixin.KeyBindingAccessor;
 import ice.catbudtools.client.config.CatBudConfig;
 import ice.catbudtools.client.specialtooltip.SpecialEnchantRegistry;
-import ice.catbudtools.client.specialtooltip.SpecialItemInfoOverlay;
+import ice.catbudtools.client.specialtooltip.SpecialInfoOverlay;
 import ice.catbudtools.client.specialtooltip.SpecialItemRegistry;
 import ice.catbudtools.client.specialtooltip.SpecialDetector;
 import net.fabricmc.api.ClientModInitializer;
@@ -55,7 +55,7 @@ public class CatBudToolsClient implements ClientModInitializer {
 							|| SpecialDetector.isSpecialAppliedEnchant(stack)
 							|| SpecialDetector.hasSpecialItemTooltip(stack)) {
 
-						SpecialItemInfoOverlay.observe(stack);
+						SpecialInfoOverlay.observe(stack);
 						
 						if (!config.AlwaysShowTooltip){
 							lines.add(
@@ -71,13 +71,13 @@ public class CatBudToolsClient implements ClientModInitializer {
 		// tooltip & command info overlay
 		ScreenEvents.AFTER_INIT.register((client, screen, scaledWidth, scaledHeight) -> {
 			ScreenEvents.beforeRender(screen).register((currentScreen, drawContext, mouseX, mouseY, tickDelta) -> {
-				SpecialItemInfoOverlay.observe(ItemStack.EMPTY);
+				SpecialInfoOverlay.observe(ItemStack.EMPTY);
 			});
 
 			ScreenEvents.afterRender(screen).register(
 					(currentScreen, drawContext, mouseX, mouseY, tickDelta) -> {
 
-						SpecialItemInfoOverlay.render(
+						SpecialInfoOverlay.render(
 								drawContext,
 								mouseX,
 								mouseY

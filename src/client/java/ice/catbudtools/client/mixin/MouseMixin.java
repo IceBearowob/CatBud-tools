@@ -1,6 +1,6 @@
 package ice.catbudtools.client.mixin;
 
-import ice.catbudtools.client.specialtooltip.SpecialItemInfoOverlay;
+import ice.catbudtools.client.specialtooltip.SpecialInfoOverlay;
 import net.minecraft.client.Mouse;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -25,7 +25,7 @@ public class MouseMixin {
             return;
         }
 
-        SpecialItemInfoOverlay.changeEnchantPage(
+        SpecialInfoOverlay.changeEnchantPage(
                 vertical > 0 ? -1 : 1
         );
     }
