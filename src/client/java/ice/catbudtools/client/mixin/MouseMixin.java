@@ -1,6 +1,6 @@
 package ice.catbudtools.client.mixin;
 
-import ice.catbudtools.client.SpecialItemInfoOverlay;
+import ice.catbudtools.client.specialtooltip.SpecialItemInfoOverlay;
 import net.minecraft.client.Mouse;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;

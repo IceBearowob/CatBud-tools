@@ -1,4 +1,4 @@
-package ice.catbudtools.client;
+package ice.catbudtools.client.specialtooltip;
 
 import net.minecraft.text.Text;
 

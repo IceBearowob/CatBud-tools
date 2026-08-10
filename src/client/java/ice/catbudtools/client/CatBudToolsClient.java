@@ -3,6 +3,9 @@ package ice.catbudtools.client;
 import ice.catbudtools.CatBudTools;
 import ice.catbudtools.client.mixin.KeyBindingAccessor;
 import ice.catbudtools.client.config.CatBudConfig;
+import ice.catbudtools.client.specialtooltip.SpecialEnchantRegistry;
+import ice.catbudtools.client.specialtooltip.SpecialItemInfoOverlay;
+import ice.catbudtools.client.specialtooltip.SpecialItemDetector;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
@@ -38,6 +41,7 @@ public class CatBudToolsClient implements ClientModInitializer {
 	public void onInitializeClient() {
 		CatBudConfig.load();
 		ice.catbudtools.client.command.CatBudCommandRegistry.load();
+		SpecialEnchantRegistry.load();
 		// Tooltip 偵測特殊物品
 		ItemTooltipCallback.EVENT.register(
 				(stack, context, type, lines) -> {

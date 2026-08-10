@@ -1,4 +1,4 @@
-package ice.catbudtools.client;
+package ice.catbudtools.client.specialtooltip;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,13 +6,14 @@ import java.util.List;
 import org.lwjgl.glfw.GLFW;
 
 import ice.catbudtools.client.config.CatBudConfig;
+import ice.catbudtools.client.CatBudToolsClient;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.resource.language.I18n;
 import net.minecraft.client.util.InputUtil;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.ItemEnchantmentsComponent;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
@@ -24,7 +25,6 @@ public final class SpecialItemInfoOverlay {
 	private static final String CATBUD_ENCHANTMENT_NAMESPACE = "addons";
 
 	private static MutableText catbudTranslate(String key) {return Text.translatable(key);}
-	private static boolean hasCatbudInfomation(String key) {return I18n.hasTranslation(key);}
 	private static ItemStack hoveredStack = ItemStack.EMPTY;
 	private static ItemStack lastHoveredStack = ItemStack.EMPTY;
 	private static boolean tooltipActive = false;
@@ -77,11 +77,11 @@ public final class SpecialItemInfoOverlay {
 		}
 
 		boolean isEnchant =
-				SpecialItemDetector.isSpecialEnchant(hoveredStack)
-				|| SpecialItemDetector.isSpecialAppliedEnchant(hoveredStack);
+				SpecialDetector.isSpecialEnchant(hoveredStack)
+				|| SpecialDetector.isSpecialAppliedEnchant(hoveredStack);
 
 		boolean isSpecialItem =
-				SpecialItemDetector.hasSpecialItemTooltip(hoveredStack);
+				SpecialDetector.hasSpecialItemTooltip(hoveredStack);
 
 
 		if (!isEnchant && !isSpecialItem) {
@@ -220,7 +220,6 @@ public final class SpecialItemInfoOverlay {
 			return stored;
 		}
 
-
 		return stack.get(DataComponentTypes.ENCHANTMENTS);
 	}
 	private static List<TooltipSection> getEnchantInfoSections(ItemStack stack) {
@@ -238,22 +237,33 @@ public final class SpecialItemInfoOverlay {
 						.orElse(false))
 				.forEach(enchantment -> enchantment.getKey().ifPresent(key -> {
 					String path = key.getValue().getPath();
-					String translationKey = "enchantment.addons." + path;
+					SpecialEnchantInfo enchantInfo = SpecialEnchantRegistry.get(path);
+					String enchantName = enchantInfo.getName();
 					int level = enchantments.getLevel(enchantment);
 					List<Text> enchantLines = new ArrayList<>();
 					enchantLines.add(
-						catbudTranslate(translationKey).append(Text.literal(" " + level))
+						catbudTranslate(enchantName).append(Text.literal(" " + level))
 							.styled(style -> style.withColor(Formatting.WHITE)));
-							
 
-					for (int loreIndex = 0; ; loreIndex++) {
-						String loreKey = translationKey + ".lore." + loreIndex;
-						if (!hasCatbudInfomation(loreKey)) {
-							break;
+					// 從 special_enchants.json 讀取 lore 與 conflict
+					if (enchantInfo != null) {
+						for (String loreLine : enchantInfo.getLore()) {
+							enchantLines.add(
+								Text.literal("  " + loreLine)
+									.styled(style -> style.withColor(Formatting.GRAY)));
 						}
-						enchantLines.add(
-							Text.literal("  ").append(catbudTranslate(loreKey))
-								.styled(style -> style.withColor(Formatting.GRAY)));
+						// conflict and maxlevel info（只在附魔書上顯示）
+						if (stack.isOf(Items.ENCHANTED_BOOK)) {
+							if (!enchantInfo.getConflict().isEmpty()) {
+								enchantLines.add(Text.literal("與另外" + enchantInfo.getConflict().size() + "個衝突"));
+								for (String conflictLine : enchantInfo.getConflict()) {
+									enchantLines.add(
+										Text.literal(conflictLine)
+											.styled(style -> style.withColor(Formatting.GRAY)));
+								}
+							}
+							enchantLines.add(Text.literal("最大等級" + enchantInfo.getMaxlevel()));
+						}
 					}
 					sections.add(
 						new TooltipSection(
@@ -272,34 +282,21 @@ public final class SpecialItemInfoOverlay {
 
 		List<Text> lines = new ArrayList<>();
 
-		String id = SpecialItemDetector.getSpecialItemId(stack);
-
+		String id = SpecialDetector.getSpecialItemId(stack);
 		if (id == null) {
 			return sections;
 		}
+		SpecialItemInfo itemInfo = SpecialItemRegistry.get(id);
 		// Lore
-		for (int i = 0; ; i++) {
-
-			String loreKey = id + ".lore." + i;
-			if (!hasCatbudInfomation(loreKey)) {
-				break;
-			}
-			lines.add(catbudTranslate(loreKey).styled(style -> style.withColor(Formatting.WHITE)));
+		for (String loreLine : itemInfo.getLore()) {
+			lines.add(Text.literal(loreLine).styled(style -> style.withColor(Formatting.WHITE)));
 		}
 		// TIP
-		String tip;
-		for (int i = 0 ; ; i++){
-			if (stack.getName().getString().contains("擬人化盔甲座靈魂")){
-				tip = "humanoid_armor_stand_spirit.tip." + i;
-			}else{
-				tip = id + ".tip." + i;
+		if (!itemInfo.getTip().isEmpty()){
+			for (String tipLine : itemInfo.getTip()) {
+				lines.add(Text.literal(tipLine).styled(style -> style.withColor(Formatting.GRAY)));
 			}
-			if (!hasCatbudInfomation(tip)) {
-				break;
-			}
-			lines.add(catbudTranslate(tip).styled(style -> style.withColor(Formatting.GRAY)));
 		}
-
 		sections.add(
 			new TooltipSection(
 				TooltipSection.Type.SPECIAL_ITEM,
