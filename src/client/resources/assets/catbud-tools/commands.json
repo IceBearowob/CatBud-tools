@@ -1,55 +1,61 @@
 {
   "to": {
     "usage": "/to <傳送操作類型>",
-    "description": "公傳點的系列指令",
+    "description": ["公傳點的系列指令"],
     "subcommands": {
       "set": {
         "usage": "/to set",
-        "description": "在當前座標設置公傳點"
+        "description": ["在當前座標設置公傳點"]
       },
       "clear": {
         "usage": "/to clear",
-        "description": "移除公傳點"
+        "description": ["移除公傳點"]
       },
       "by": {
         "usage": "/to by <玩家ID>",
-        "description": "傳送到玩家的公傳點"
+        "description": ["傳送到玩家的公傳點"]
       }
     }
   },
   "adless": {
     "usage": "/adless [操作類型]",
-    "description": "屏蔽廣告相關指令，直接輸入可以延長屏蔽廣告時間(與/adless extend功能相同)",
+    "description": [
+      "屏蔽廣告相關指令，",
+      "直接輸入可以延長屏蔽廣告時間(與/adless extend功能相同)"
+    ],
     "subcommands": {
       "clear": {
         "usage": "/adless clear",
-        "description": "清除屏蔽廣告時間"
+        "description": ["清除屏蔽廣告時間"]
       },
       "extend": {
         "usage": "/adless extend",
-        "description": "延長屏蔽廣告時間"
+        "description": ["延長屏蔽廣告時間"]
       },
       "left": {
         "usage": "/adless left",
-        "description": "查看屏蔽廣告剩餘時間"
+        "description": ["查看屏蔽廣告剩餘時間"]
       }
     }
   },
   "room": {
     "usage": "/room <房間參數>",
-    "description": "房間的系列指令",
+    "description": ["房間的系列指令"],
     "subcommands": {
       "config": {
         "usage": "/room config [配置類型]",
-        "description": "調整當前選擇模式相關的配置類型，直接輸入可以開啟GUI"
+        "description": [
+          "調整當前選擇模式相關的配置類型，",
+          "直接輸入可以開啟GUI"
+        ]
       },
       "capacity": {
         "usage": "/room capacity",
-        "description": "查詢當前房間最大可容納人數"
+        "description": ["查詢當前房間最大可容納人數"]
       },
       "exit": {
         "usage": "/room exit",
-        "description": "離開房間"
+        "description": ["離開房間"]
       }
     }
   }

@@ -4,7 +4,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import ice.catbudtools.CatBudTools;
-import net.minecraft.client.resource.language.I18n;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -55,11 +54,11 @@ public final class CatBudCommandRegistry {
     }
 
     private static void processCommandInfo(CommandInfo info, String name) {
-        if (info.getUsage() != null && I18n.hasTranslation(info.getUsage())) {
-            info.setUsage(I18n.translate(info.getUsage()));
+        if (info.getUsage() != null) {
+            info.setUsage(info.getUsage());
         }
-        if (info.getDescription() != null && I18n.hasTranslation(info.getDescription())) {
-            info.setDescription(I18n.translate(info.getDescription()));
+        if (info.getDescription() != null) {
+            info.setDescription(info.getDescription());
         }
 
         if (info.getSubcommands() != null) {

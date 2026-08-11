@@ -66,7 +66,9 @@ public final class CommandInfoOverlay {
 
         // 2. 指令說明 Description
         if (info.getDescription() != null && !info.getDescription().isEmpty()) {
-            lines.add(Text.literal(info.getDescription()).styled(style -> style.withColor(Formatting.WHITE)));
+            for (String desc : info.getDescription()){
+                lines.add(Text.literal(desc).styled(style -> style.withColor(Formatting.WHITE)));
+            }
         }
 
         if (lines.isEmpty()) {

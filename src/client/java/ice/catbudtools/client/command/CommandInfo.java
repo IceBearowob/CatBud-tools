@@ -3,17 +3,18 @@ package ice.catbudtools.client.command;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.List;
 
 public class CommandInfo {
     private String name;
     private String usage;
-    private String description;
+    private List<String> description;
     private Map<String, CommandInfo> subcommands = new HashMap<>();
 
     public CommandInfo() {
     }
 
-    public CommandInfo(String name, String usage, String description) {
+    public CommandInfo(String name, String usage, List<String> description) {
         this.name = name;
         this.usage = usage;
         this.description = description;
@@ -35,11 +36,11 @@ public class CommandInfo {
         this.usage = usage;
     }
 
-    public String getDescription() {
-        return description;
+    public List<String> getDescription() {
+        return description != null ? description : Collections.emptyList();
     }
 
-    public void setDescription(String description) {
+    public void setDescription(List<String> description) {
         this.description = description;
     }
 
