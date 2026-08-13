@@ -53,6 +53,7 @@ public final class CommandInfoOverlay {
         lines.add(Text.literal(text).styled(style -> style.withColor(Formatting.YELLOW).withBold(true)));
         // desc
         if (special[1].equals("item")){
+            // 處裡賽季武器的玩意
             if (special[2].contains("season")){
                 String[] season = special[2].split("\\.");
                 String item = season[2];
@@ -71,7 +72,7 @@ public final class CommandInfoOverlay {
                 lines.add(
                     Text.literal("給予物品\"")
                     .append(Text.translatable(key))
-                    .append(Text.literal("\""))
+                    .append("\"")
                     .styled(style -> style.withColor(Formatting.WHITE))
                 );
             }
