@@ -281,5 +281,23 @@
             "周圍有紅石信號時會顯示動畫"
         ],
         "tip": []
+    },
+    "blessing_shrine.coin_event": {
+        "lore": [
+            "噴出錢幣／紅石信號越強，半徑 32 方塊內事件效果越頻繁。"
+        ],
+        "tip": []
+    },
+    "blessing_shrine.meteor_event": {
+        "lore": [
+            "掉落流星／紅石信號越強，半徑 32 方塊內事件效果越頻繁。件"
+        ],
+        "tip": []
+    },
+    "blessing_shrine.meteorite_event": {
+        "lore": [
+            "掉落隕石／紅石信號越強，半徑 32 方塊內事件效果越頻繁。"
+        ],
+        "tip": []
     }
 }

@@ -1,22 +1,4 @@
 {
-  "to": {
-    "usage": "/to <傳送操作類型>",
-    "description": ["公傳點的系列指令"],
-    "subcommands": {
-      "set": {
-        "usage": "/to set",
-        "description": ["在當前座標設置公傳點"]
-      },
-      "clear": {
-        "usage": "/to clear",
-        "description": ["移除公傳點"]
-      },
-      "by": {
-        "usage": "/to by <玩家ID>",
-        "description": ["傳送到玩家的公傳點"]
-      }
-    }
-  },
   "adless": {
     "usage": "/adless [操作類型]",
     "description": [
@@ -35,6 +17,130 @@
       "left": {
         "usage": "/adless left",
         "description": ["查看屏蔽廣告剩餘時間"]
+      }
+    }
+  },
+  "ark": {
+    "usage": "/ark <方舟參數>",
+    "description": ["跟方舟生存有關的指令"],
+    "subcommands": {
+      "quit": {
+        "usage": "/ark quit",
+        "description": [
+          "離開方舟生存",
+          "只能在方舟生存模式內才有效"
+        ]
+      },
+      "ranks": {
+        "usage": "/ark ranks",
+        "description": ["查詢方舟單人最快通過排名"]
+      },
+      "review": {
+        "usage": "/ark review <UUID>",
+        "description": ["方舟回顧功能，UUID可以在方舟通關後看到"]
+      }
+    }
+  },
+  "award": {
+    "usage": "/award [賽季]",
+    "description": [
+      "查詢某賽季王者牌位結算的獎勵",
+      "直接輸入可以開啟GUI"
+    ]
+  },
+  "ban-day": {
+    "usage": "/ban-day <Minecraft ID> <天數> <原因>",
+    "description": [
+      "OP限定指令",
+      "將玩家以特定天數ban掉(只有R/SR/SSR的天數選項)"
+    ]
+  },
+  "beacon": {
+    "usage": "/beacon [操作類型]",
+    "description": [
+      "與信標有關的指令",
+      "直接輸入可以開啟GUI"
+    ],
+    "subcommands": {
+      "add": {
+        "usage": "/beacon add <信標名稱>",
+        "description": ["新增信標"]
+      },
+      "buy": {
+        "usage": "/beacon buy",
+        "description": ["購買信標容量"]
+      },
+      "capacity": {
+        "usage": "/beacon capacity",
+        "description": ["查詢當前信標容量"]
+      },
+      "go": {
+        "usage": "/beacon go <目標信標名稱>",
+        "description": ["傳送到信標的位置"]
+      },
+      "icon": {
+        "usage": "/beacon icon <目標信標名稱> <圖標>",
+        "description": ["修改信標在GUI的顯示圖標"]
+      },
+      "note": {
+        "usage": "/beacon note <目標信標名稱> [備註]",
+        "description": ["為信標新增或修改備註"]
+      },
+      "page": {
+        "usage": "/beacon page <信標頁數>",
+        "description": ["開啟特定頁數的信標GUI"]
+      },
+      "remove": {
+        "usage": "/beacon remove <目標信標名稱>",
+        "description": ["刪除信標"]
+      },
+      "rename": {
+        "usage": "/beacon rename <目標信標名稱> <目標信標改名名稱>",
+        "description": ["信標改名"]
+      },
+      "total": {
+        "usage": "/beacon total",
+        "description": ["查詢當前信標總數"]
+      },
+      "track": {
+        "usage": "/beacon track <目標信標位置>",
+        "description": ["追蹤信標的位置(顯示在畫面上)"]
+      },
+      "untrack": {
+        "usage": "/beacon untrack <目標信標位置>",
+        "description": ["取消追蹤信標的位置"]
+      }
+    }
+  },
+  "special": {
+    "usage": "/special <參數>",
+    "description": ["獲得特殊物品或召喚特殊實體的指令"],
+    "subcommands": {
+      "item": {
+        "usage": "/special item <物品>",
+        "description": ["獲得特殊物品"]
+      },
+      "entity": {
+        "usage": "/special entity <實體>",
+        "description": ["召喚特殊實體"]
+      }
+    }
+  },
+  "to": {
+    "usage": "/to <傳送操作類型>",
+    "description": ["公傳點的系列指令"],
+    "subcommands": {
+      "set": {
+        "usage": "/to set",
+        "description": ["在當前座標設置公傳點"]
+      },
+      "clear": {
+        "usage": "/to clear",
+        "description": ["移除公傳點"]
+      },
+      "by": {
+        "usage": "/to by <玩家ID>",
+        "description": ["傳送到玩家的公傳點"]
       }
     }
   },

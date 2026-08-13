@@ -1,27 +1,113 @@
 package ice.catbudtools.client.command;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import ice.catbudtools.client.config.CatBudConfig;
-import ice.catbudtools.client.mixin.ChatScreenAccessor;
 import ice.catbudtools.client.mixin.ChatInputSuggestorAccessor;
+import ice.catbudtools.client.mixin.ChatScreenAccessor;
 import ice.catbudtools.client.mixin.SuggestionWindowAccessor;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.gui.screen.ChatInputSuggestor;
 import net.minecraft.client.gui.screen.ChatScreen;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.screen.ChatInputSuggestor;
 import net.minecraft.client.gui.widget.TextFieldWidget;
+import net.minecraft.client.resource.language.I18n;
 import net.minecraft.client.util.math.Rect2i;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
-
-import java.util.ArrayList;
-import java.util.List;
 public final class CommandInfoOverlay {
 
     private CommandInfoOverlay() {
     }
+    // 一般的指令info
+    private static List<Text> regularCommandInfo(CommandInfo info) {
+        List<Text> lines = new ArrayList<>();
+        // 1. 指令語法 Usage (標題)
+        if (info.getUsage() != null && !info.getUsage().isEmpty()) {
+            lines.add(Text.literal(info.getUsage()).styled(style -> style.withColor(Formatting.YELLOW).withBold(true)));
+        } else {
+            lines.add(Text.literal("/" + info.getName()).styled(style -> style.withColor(Formatting.YELLOW).withBold(true)));
+        }
 
+        // 2. 指令說明 Description
+        if (info.getDescription() != null && !info.getDescription().isEmpty()) {
+            for (String desc : info.getDescription()){
+                lines.add(Text.literal(desc).styled(style -> style.withColor(Formatting.WHITE)));
+            }
+        }
+        return lines;
+    }
+    // 給 /special 專用的info
+    private static List<Text> specialCommandInfo(String text) {
+        List<Text> lines = new ArrayList<>();
+        String[] special = text.split(" ");
+        String key = special[2];
+        // humanoid_armor_stand同時有item跟entity的形式(
+        if (special[1].equals("entity") && special[2].equals("humanoid_armor_stand")){
+            key = "entities.humanoid_armor_stand";
+        }
+        // usage
+        lines.add(Text.literal(text).styled(style -> style.withColor(Formatting.YELLOW).withBold(true)));
+        // desc
+        if (special[1].equals("item")){
+            if (special[2].contains("season")){
+                String[] season = special[2].split("\\.");
+                String item = season[2];
+                if (item.contains("_0") || item.contains("_1")){
+                    item = item.substring(0,item.indexOf("_",-1));
+                }
+                key = "seasons.nameless." + item;
+                lines.add(
+                    Text.literal("給予物品" + "\"")
+                    .append("第" + season[1] + "賽季限定")
+                    .append(Text.translatable(key))
+                    .append("\"")
+                    .styled(style -> style.withColor(Formatting.WHITE))
+                );
+            }else{
+                lines.add(
+                    Text.literal("給予物品\"")
+                    .append(Text.translatable(key))
+                    .append(Text.literal("\""))
+                    .styled(style -> style.withColor(Formatting.WHITE))
+                );
+            }
+        }
+        if (special[1].equals("entity")){
+            lines.add(
+                Text.literal("召喚實體\"")
+                .append(Text.translatable(key))
+                .append(Text.literal("\""))
+                .styled(style -> style.withColor(Formatting.WHITE))
+            );
+        }
+        return lines;
+    }
+    // 檢查是不是Special Command(同時還得是有參數的)
+    // 檢查1.是不是/special 2.是不是3段 3.有沒有翻譯(又分有沒有season)
+    private static boolean isSpecialCommand(String text) {
+        if (text.contains("/special")){
+            String[] special = text.split(" ");
+            if (special.length != 3){
+                return false;
+            }
+            if (I18n.hasTranslation(special[2])){
+                return true;
+            }
+            if (special[2].contains("season")){
+                if (special[2].split("\\.").length == 3){
+                    return true;
+                }
+                return false;
+            }
+            
+            return false;
+        }
+        return false;
+    }
     public static void render(DrawContext context, Screen screen) {
         CatBudConfig config = CatBudConfig.getInstance();
         if (!config.showCommandHelp) {
@@ -56,19 +142,11 @@ public final class CommandInfoOverlay {
 
         // 準備要繪製的文字行數
         List<Text> lines = new ArrayList<>();
-
-        // 1. 指令語法 Usage (標題)
-        if (info.getUsage() != null && !info.getUsage().isEmpty()) {
-            lines.add(Text.literal(info.getUsage()).styled(style -> style.withColor(Formatting.YELLOW).withBold(true)));
-        } else {
-            lines.add(Text.literal("/" + info.getName()).styled(style -> style.withColor(Formatting.YELLOW).withBold(true)));
-        }
-
-        // 2. 指令說明 Description
-        if (info.getDescription() != null && !info.getDescription().isEmpty()) {
-            for (String desc : info.getDescription()){
-                lines.add(Text.literal(desc).styled(style -> style.withColor(Formatting.WHITE)));
-            }
+        if (isSpecialCommand(text)){
+            lines.addAll(specialCommandInfo(text));
+        }else{
+            //基礎值
+            lines.addAll(regularCommandInfo(info));
         }
 
         if (lines.isEmpty()) {
