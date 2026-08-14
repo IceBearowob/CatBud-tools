@@ -72,19 +72,19 @@ public final class CommandInfoOverlay {
                 }
                 key = "items.seasons.nameless." + item;
                 lines.add(
-                    Text.translatable("items.seasons.common", season[1], key)
+                    Text.translatable("items.seasons.common", season[1], Text.translatable(key))
                     .styled(style -> style.withColor(Formatting.WHITE))
                 );
             }else{
                 lines.add(
-                    Text.translatable("items.common",key)
+                    Text.translatable("items.common",Text.translatable(key))
                     .styled(style -> style.withColor(Formatting.WHITE))
                 );
             }
         }
         if (tag.equals("special_entity")){
             lines.add(
-                Text.translatable("entities.common",key)
+                Text.translatable("entities.common",Text.translatable(key))
                 .styled(style -> style.withColor(Formatting.WHITE))
             );
         }
@@ -103,7 +103,7 @@ public final class CommandInfoOverlay {
                 .styled(style -> style.withColor(Formatting.YELLOW).withBold(true))
             );
             // desc
-            lines.add(Text.translatable("buff.common",key).styled(style -> style.withColor(Formatting.WHITE)));
+            lines.add(Text.translatable("buff.common",Text.translatable(key)).styled(style -> style.withColor(Formatting.WHITE)));
         }
         if (tag.equals("config")) {
             key = "config." + config[1];
@@ -113,7 +113,7 @@ public final class CommandInfoOverlay {
                 .styled(style -> style.withColor(Formatting.YELLOW).withBold(true))
             );
             // desc
-            lines.add(Text.translatable("config.common",key).styled(style -> style.withColor(Formatting.WHITE)));
+            lines.add(Text.translatable("config.common",Text.translatable(key)).styled(style -> style.withColor(Formatting.WHITE)));
         }
         if (tag.equals("land")) {
             key = "land." + config[3];
@@ -123,7 +123,7 @@ public final class CommandInfoOverlay {
                 .styled(style -> style.withColor(Formatting.YELLOW).withBold(true))
             );
             // desc
-            lines.add(Text.translatable("config.common",key).styled(style -> style.withColor(Formatting.WHITE)));
+            lines.add(Text.translatable("config.common",Text.translatable(key)).styled(style -> style.withColor(Formatting.WHITE)));
         }
 
         lines.add(Text.literal("true:開啟;false:關閉;def:預設值").styled(style -> style.withColor(Formatting.WHITE)));
@@ -134,16 +134,13 @@ public final class CommandInfoOverlay {
         List<Text> lines = new ArrayList<>();
         String[] mode = text.split(" ");
         String key = mode[2];
-        if (!I18n.hasTranslation(key)){
-            return lines;
-        }
         // usage
         lines.add(
             Text.literal(text).styled(style -> style.withColor(Formatting.YELLOW).withBold(true))
         );
         // desc
         lines.add(
-            Text.translatable("mode.common",key)
+            Text.translatable("mode.common",Text.translatable(key))
             .styled(style -> style.withColor(Formatting.WHITE))
         );
         return lines;
