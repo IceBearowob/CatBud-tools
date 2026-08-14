@@ -43,24 +43,18 @@
   },
   "award": {
     "usage": "/award [賽季]",
-    "description": [
-      "查看賽季抵達王者牌位結算後的獎勵",
-      "直接輸入可以開啟GUI"
-    ]
+    "description": ["查看賽季抵達王者牌位結算後的獎勵"],
+    "tag": "GUI"
   },
   "ban-day": {
     "usage": "/ban-day <Minecraft ID> <天數(1/3/9)> <原因>",
-    "description": [
-      "OP限定指令",
-      "將玩家以特定天數ban掉(只有R/SR/SSR的天數選項)"
-    ]
+    "description": ["將玩家以特定天數ban掉(只有R/SR/SSR的天數選項)"],
+    "tag": "OP"
   },
   "beacon": {
     "usage": "/beacon [操作類型]",
-    "description": [
-      "與信標有關的指令",
-      "直接輸入可以開啟GUI"
-    ],
+    "description": ["與信標有關的指令"],
+    "tag": "GUI",
     "subcommands": {
       "add": {
         "usage": "/beacon add <信標名稱>",
@@ -114,10 +108,8 @@
   },
   "broadcast": {
     "usage": "/broadcast <廣播操作參數>",
-    "description": [
-      "OP限定指令",
-      "廣播用的指令"
-    ],
+    "description": ["廣播用的指令"],
+    "tag": "OP",
     "subcommands": { 
       "clear": {
         "usage": "/broadcast clear",
@@ -134,10 +126,13 @@
   },
   "buff": {
     "usage": "/buff [輔助功能] [true/false/def]",
-    "description": [
-      "設定輔助功能",
-      "直接輸入可以開啟GUI"
-    ]
+    "description": ["設定輔助功能"],
+    "tag": "GUI",
+    "subcommands": {
+      "*": {
+        "tag": "buff"
+      }
+    }
   },
   "code": {
     "usage": "/code <禮品代碼>",
@@ -147,40 +142,70 @@
         "subcommands": {
           "add": {
             "usage": "/code <禮品代碼> add <禮品金額> <有效天數>",
-            "description": [
-              "OP限定指令",
-              "新增禮品代碼"
-            ]
+            "description": ["新增禮品代碼"],
+            "tag": "OP"
           },
           "remove": {
             "usage": "/code <禮品代碼> remove",
-            "description": [
-              "OP限定指令",
-              "刪除禮品代碼"
-            ]
+            "description": ["刪除禮品代碼"],
+            "tag": "OP"
           },
           "status": {
             "usage": "/code <禮品代碼> status",
-            "description": [
-              "OP限定指令",
-              "查看禮品代碼的使用狀態"
-            ]
+            "description": ["查看禮品代碼的使用狀態"],
+            "tag": "OP"
           }
         }
+      }
+    }
+  },
+  "coin": {
+    "usage": "/coin [操作類型]",
+    "description": ["與課金有關的指令"],
+    "tag": "GUI",
+    "subcommands": { 
+      "buy": {
+        "usage": "/coin buy <目標份量參數> <電子郵件>",
+        "description": ["購買特定分量的貓幣"]
+      },
+      "log": {
+        "usage": "/coin log",
+        "description": ["查詢購買紀錄"]
+      }
+    }
+  },
+  "config": {
+    "usage": "/config [資訊功能] [true/false/def]",
+    "description": ["設定玩家資訊顯示功能"],
+    "tag": "GUI",
+    "subcommands": {
+      "*": {
+        "tag": "config"
       }
     }
   },
   "special": {
     "usage": "/special <參數>",
     "description": ["獲得特殊物品或召喚特殊實體的指令"],
+    "tag": "OP",
     "subcommands": {
       "item": {
         "usage": "/special item <物品>",
-        "description": ["獲得特殊物品"]
+        "description": ["獲得特殊物品"],
+        "subcommands": {
+          "*": {
+            "tag": "special_item"
+          }
+        }
       },
       "entity": {
         "usage": "/special entity <實體>",
-        "description": ["召喚特殊實體"]
+        "description": ["召喚特殊實體"],
+        "subcommands": {
+          "*": {
+            "tag": "special_entity"
+          }
+        }
       }
     }
   },
@@ -208,10 +233,136 @@
     "subcommands": {
       "config": {
         "usage": "/room config [配置類型]",
-        "description": [
-          "調整當前選擇模式相關的配置類型，",
-          "直接輸入可以開啟GUI"
-        ]
+        "description": ["調整當前選擇模式相關的配置類型，"],
+        "tag": "GUI",
+        "subcommands": {
+          "enter": {
+            "usage": "/room config enter",
+            "description": ["直接無視任何條件進入模式內"]
+          },
+          "script": {
+            "usage": "/room config script <腳本參數>",
+            "description": ["設定腳本(怪物類型、場地)"],
+            "subcommands": {
+              "auditorium_0": {
+                "usage": "/room config script auditorium_0",
+                "description": ["強制進入場地\"教堂\""],
+                "tag": "OP"
+              },
+              "basement_0": {
+                "usage": "/room config script basement_0",
+                "description": ["強制進入場地\"車站\""],
+                "tag": "OP"
+              },
+              "dungeon_0": {
+                "usage": "/room config script dungeon_0",
+                "description": ["強制進入場地\"地下城\""],
+                "tag": "OP"
+              },
+              "slime_0": {
+                "usage": "/room config script slime_0",
+                "description": ["強制進入場地並指定緊急boss\"史萊姆\""],
+                "tag": "OP"
+              },
+              "breeze_0": {
+                "usage": "/room config script breeze_0",
+                "description": ["強制進入場地並指定緊急boss\"旋風使者\""],
+                "tag": "OP"
+              },
+              "random": {
+                "usage": "/room config script random",
+                "description": ["隨機選擇"]
+              },
+              "icebear": {
+                "usage": "/room config script icebear",
+                "description": ["將天界boss設定為\"冰熊\""]
+              },
+              "systemcat": {
+                "usage": "/room config script systemcat",
+                "description": ["將天界boss設定為\"系統貓\""]
+              },
+              "tangair": {
+                "usage": "/room config script tangair",
+                "description": ["將天界boss設定為\"會長\""]
+              }
+            }
+          },
+          "difficulty": {
+            "usage": "/room config difficulty",
+            "description": [
+              "選擇難度",
+              "very_low:超簡單;low:簡單;medium:普通;high:困難;very_high:超困難"
+            ]
+          },
+          "skip": {
+            "usage": "/room config skip",
+            "description": ["可以跳過階段(波次)"],
+            "tag": "OP"
+          },
+          "channel": {
+            "usage": "/room config channel <分流編號參數>",
+            "description": ["選擇要列隊的分流"]
+          },
+          "execute": {
+            "usage": "/room config execute",
+            "description": ["可以強制讓所有列隊的玩家進入場地"],
+            "tag": "OP"
+          },
+          "exit": {
+            "usage": "/room config exit",
+            "description": ["強制離開模式"],
+            "tag": "OP"
+          },
+          "terrain": {
+            "usage": "/room config terrain <目標場地參數>",
+            "description": ["選擇場地(其實就是地圖)"],
+            "subcommands": {
+              "castle_0": {
+                "usage": "/room config terrain castle_0",
+                "description": ["強制進入場地"],
+                "tag": "OP"
+              },
+              "countryside_0": {
+                "usage": "/room config terrain countryside_0",
+                "description": ["強制進入場地"],
+                "tag": "OP"
+              },
+              "random": {
+                "usage": "/room config terrain random",
+                "description": ["隨機選擇"]
+              },
+              "medium_dungeon": {
+                "usage": "/room config terrain medium_dungeon",
+                "description": ["選擇場地\"中型地下城\""]
+              },
+              "sky_ruins": {
+                "usage": "/room config terrain sky_ruins",
+                "description": ["選擇場地\"天空遺跡\""]
+              },
+              "spaceship": {
+                "usage": "/room config terrain spaceship",
+                "description": ["選擇場地\"太空船\""]
+              },
+              "stone_pillars": {
+                "usage": "/room config terrain stone_pillars",
+                "description": ["選擇場地\"石柱簇\""]
+              }
+            }
+          },
+          "layer": {
+            "usage": "/room config layer <目標層數參數>",
+            "description": ["在魔塔內使用可以直接前往指定樓層"],
+            "tag": "OP"
+          },
+          "return": {
+            "usage": "/room config return",
+            "description": [
+              "在王者戰爭或爭奪貓盃中使用，",
+              "可以強制讓已經變成觀察者的玩家回歸遊玩"
+            ],
+            "tag": "OP"
+          }
+        }
       },
       "capacity": {
         "usage": "/room capacity",
@@ -219,7 +370,52 @@
       },
       "exit": {
         "usage": "/room exit",
-        "description": ["離開房間"]
+        "description": ["離開當前房間"]
+      },
+      "invite": {
+        "usage": "/room invite <目標玩家參數>",
+        "description": ["邀請玩家加入房間"]
+      },
+      "join": {
+        "usage": "/room join <UUID>",
+        "description": ["加入房間"]
+      },
+      "kick": {
+        "usage": "/room kick <目標玩家參數>",
+        "description": ["從當前房間踢出玩家"]
+      },
+      "members": {
+        "usage": "/room members",
+        "description": ["查看當前房間成員"]
+      },
+      "mode": {
+        "usage": "/room mode <模式參數>",
+        "description": ["切換房間模式"],
+        "subcommands": {
+          "*": {
+            "tag": "mode"
+          }
+        }
+      },
+      "queue": {
+        "usage": "/room queue",
+        "description": ["開始列隊"]
+      },
+      "stop": {
+        "usage": "/room stop",
+        "description": ["結束列隊"]
+      },
+      "total": {
+        "usage": "/room total",
+        "description": ["查詢當前房間的人數"]
+      },
+      "transfer": {
+        "usage": "/room transfer <目標玩家參數>",
+        "description": ["轉交房主給玩家"]
+      },
+      "waiting": {
+        "usage": "/room waiting",
+        "description": ["查詢當前選擇模式的列隊人數"]
       }
     }
   },

@@ -28,31 +28,41 @@ public final class CommandInfoOverlay {
         // 1. 指令語法 Usage (標題)
         if (info.getUsage() != null && !info.getUsage().isEmpty()) {
             lines.add(Text.literal(info.getUsage()).styled(style -> style.withColor(Formatting.YELLOW).withBold(true)));
-        } else {
-            lines.add(Text.literal("/" + info.getName()).styled(style -> style.withColor(Formatting.YELLOW).withBold(true)));
         }
 
         // 2. 指令說明 Description
+        if (info.getTag() != null && !info.getTag().isBlank()){
+            if (info.getTag().equals("OP")) {
+                lines.add(Text.translatable("OP.command.common").styled(style -> style.withColor(Formatting.WHITE)));
+            }
+        }
         if (info.getDescription() != null && !info.getDescription().isEmpty()) {
             for (String desc : info.getDescription()){
                 lines.add(Text.literal(desc).styled(style -> style.withColor(Formatting.WHITE)));
             }
         }
+        if (info.getTag() != null && !info.getTag().isBlank()){
+            if (info.getTag().equals("GUI")) {
+                lines.add(Text.translatable("GUI.command.common").styled(style -> style.withColor(Formatting.WHITE)));
+            }
+        }
         return lines;
     }
     // 給 /special 專用的info
-    private static List<Text> specialCommandInfo(String text) {
+    private static List<Text> specialCommandInfo(String text, String tag) {
         List<Text> lines = new ArrayList<>();
         String[] special = text.split(" ");
-        String key = special[2];
-        // humanoid_armor_stand同時有item跟entity的形式(
-        if (special[1].equals("entity") && special[2].equals("humanoid_armor_stand")){
-            key = "entities.humanoid_armor_stand";
+        String key = "";
+        if (tag.equals("special_item")){
+            key = "items." + special[2];
+        }
+        else if (tag.equals("special_entity")){
+            key = "entities." + special[2];
         }
         // usage
         lines.add(Text.literal(text).styled(style -> style.withColor(Formatting.YELLOW).withBold(true)));
         // desc
-        if (special[1].equals("item")){
+        if (tag.equals("special_item")){
             // 處裡賽季武器的玩意
             if (special[2].contains("season")){
                 String[] season = special[2].split("\\.");
@@ -60,86 +70,88 @@ public final class CommandInfoOverlay {
                 if (item.contains("_0") || item.contains("_1")){
                     item = item.substring(0,item.indexOf("_",-1));
                 }
-                key = "seasons.nameless." + item;
+                key = "items.seasons.nameless." + item;
                 lines.add(
-                    Text.literal("給予物品" + "\"")
-                    .append("第" + season[1] + "賽季限定")
-                    .append(Text.translatable(key))
-                    .append("\"")
+                    Text.translatable("items.seasons.common", season[1], key)
                     .styled(style -> style.withColor(Formatting.WHITE))
                 );
             }else{
                 lines.add(
-                    Text.literal("給予物品\"")
-                    .append(Text.translatable(key))
-                    .append("\"")
+                    Text.translatable("items.common",key)
                     .styled(style -> style.withColor(Formatting.WHITE))
                 );
             }
         }
-        if (special[1].equals("entity")){
+        if (tag.equals("special_entity")){
             lines.add(
-                Text.literal("召喚實體\"")
-                .append(Text.translatable(key))
-                .append(Text.literal("\""))
+                Text.translatable("entities.common",key)
                 .styled(style -> style.withColor(Formatting.WHITE))
             );
         }
         return lines;
     }
-    // /buff 專用info
-    private static List<Text> buffCommandInfo(String text) {
+    // /buff /config /land config 專用info
+    private static List<Text> configCommandInfo(String text, String tag) {
         List<Text> lines = new ArrayList<>();
-        String[] buff = text.split(" ");
-        String key = buff[1];
-        // usage
-        lines.add(
-            Text.literal("/buff" + buff[1])
-            .append(" [true/false/def]")
-            .styled(style -> style.withColor(Formatting.YELLOW).withBold(true))
-        );
-        // desc
-        lines.add(
-            Text.literal("調整輔助功能\"")
-            .append(Text.translatable(key))
-            .append("\"")
-            .styled(style -> style.withColor(Formatting.WHITE))
-        );
+        String[] config = text.split(" ");
+        String key = "";
+        if (tag.equals("buff")) {
+            key = "buff." + config[1];
+            // usage
+            lines.add(
+                Text.literal("/buff " + config[1]).append(" [true/false/def]")
+                .styled(style -> style.withColor(Formatting.YELLOW).withBold(true))
+            );
+            // desc
+            lines.add(Text.translatable("buff.common",key).styled(style -> style.withColor(Formatting.WHITE)));
+        }
+        if (tag.equals("config")) {
+            key = "config." + config[1];
+            // usage
+            lines.add(
+                Text.literal("/config " + config[1]).append(" [true/false/def]")
+                .styled(style -> style.withColor(Formatting.YELLOW).withBold(true))
+            );
+            // desc
+            lines.add(Text.translatable("config.common",key).styled(style -> style.withColor(Formatting.WHITE)));
+        }
+        if (tag.equals("land")) {
+            key = "land." + config[3];
+            // usage
+            lines.add(
+                Text.literal("/land config <領地編號> " + config[3]).append(" [true/false/def]")
+                .styled(style -> style.withColor(Formatting.YELLOW).withBold(true))
+            );
+            // desc
+            lines.add(Text.translatable("config.common",key).styled(style -> style.withColor(Formatting.WHITE)));
+        }
+
         lines.add(Text.literal("true:開啟;false:關閉;def:預設值").styled(style -> style.withColor(Formatting.WHITE)));
         return lines;
     }
-    // 檢查是不是Special Command(同時還得是有參數的)
-    // 檢查1.是不是/special 2.是不是3段 3.有沒有翻譯(又分有沒有season)
-    private static boolean isSpecialCommand(String text) {
-        if (text.contains("/special")){
-            String[] special = text.split(" ");
-            if (special.length != 3){
-                return false;
-            }
-            if (I18n.hasTranslation(special[2])){
-                return true;
-            }
-            if (special[2].contains("season")){
-                if (special[2].split("\\.").length == 3){
-                    return true;
-                }
-                return false;
-            }
-            return false;
+    // /mode 專用info
+    private static List<Text> modeCommandInfo(String text) {
+        List<Text> lines = new ArrayList<>();
+        String[] mode = text.split(" ");
+        String key = mode[2];
+        if (!I18n.hasTranslation(key)){
+            return lines;
         }
-        return false;
+        // usage
+        lines.add(
+            Text.literal(text).styled(style -> style.withColor(Formatting.YELLOW).withBold(true))
+        );
+        // desc
+        lines.add(
+            Text.translatable("mode.common",key)
+            .styled(style -> style.withColor(Formatting.WHITE))
+        );
+        return lines;
     }
-    // 檢查是不是buff指令
-    private static boolean isBuffCommand(String text) {
-        if (text.contains("/buff")){
-            String[] buff = text.split(" ");
-            if (buff.length < 2){
-                return false;
-            }
-            if (I18n.hasTranslation(buff[1])){
-                return true;
-            }
-            return false;
+    // 檢查有沒有特殊info
+    private static boolean checkWildCardInfo(CommandInfo info){
+        if (info.getName().equals("*")){
+            return true;
         }
         return false;
     }
@@ -177,14 +189,19 @@ public final class CommandInfoOverlay {
 
         // 準備要繪製的文字行數
         List<Text> lines = new ArrayList<>();
-        if (isSpecialCommand(text)){
-            lines.addAll(specialCommandInfo(text));
+        if (checkWildCardInfo(info)){
+            String tag = info.getTag();
+            if (tag.equals("buff") || tag.equals("config") || tag.equals("land")){
+                lines.addAll(configCommandInfo(text, tag));
+            }
+            if (tag.equals("mode")){
+                lines.addAll(modeCommandInfo(text));
+            }
+            if (tag.contains("special")){
+                lines.addAll(specialCommandInfo(text, tag));
+            }
         }
-        if (isBuffCommand(text)) {
-            lines.addAll(buffCommandInfo(text));
-        }
-        
-        if (!isBuffCommand(text) && !isSpecialCommand(text)) {
+        if (!checkWildCardInfo(info)) {
             lines.addAll(regularCommandInfo(info));
         }
 

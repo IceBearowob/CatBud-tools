@@ -20,9 +20,8 @@
 記得用JDK 21以上編譯
 
 ## 版本
-CatBud Tools - 0.7.6-r9-b12-1.21.11
-
-## 依賴項
+CatBud Tools - 0.7.7-r9-b12-1.21.11
+### 依賴項
 必須安裝[YetAnotherConfigLib](https://modrinth.com/mod/yacl)!
 
 ## 授權

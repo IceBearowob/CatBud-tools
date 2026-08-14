@@ -10,6 +10,7 @@ public class CommandInfo {
     private String usage;
     private List<String> description;
     private Map<String, CommandInfo> subcommands = new HashMap<>();
+    private String tag;
 
     public CommandInfo() {
     }
@@ -50,5 +51,13 @@ public class CommandInfo {
 
     public void setSubcommands(Map<String, CommandInfo> subcommands) {
         this.subcommands = subcommands;
+    }
+    
+    public String getTag() {
+        return tag;
+    }
+
+    public void setTag(String tag) {
+        this.tag = tag;
     }
 }

@@ -70,6 +70,10 @@ public final class CatBudCommandRegistry {
                 processCommandInfo(subInfo, subName);
             }
         }
+
+        if (info.getTag() != null){
+            info.setTag(info.getTag());
+        }
     }
 
     public static MatchResult findMatch(String rawInput) {
@@ -117,7 +121,8 @@ public final class CatBudCommandRegistry {
                 // 只有萬用字元節點本身有說明時才更新 bestMatch
                 String wUsage = wildcard.getUsage();
                 List<String> wDesc = wildcard.getDescription();
-                if ((wUsage != null && !wUsage.isBlank()) || (wDesc != null && !wDesc.isEmpty())) {
+                String wTag = wildcard.getTag();
+                if ((wUsage != null && !wUsage.isBlank()) || (wDesc != null && !wDesc.isEmpty() || (wTag != null && !wTag.isBlank()))) {
                     bestMatch = wildcard;
                 }
                 matchedTokens++;
