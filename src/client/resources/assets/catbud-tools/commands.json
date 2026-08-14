@@ -44,12 +44,12 @@
   "award": {
     "usage": "/award [賽季]",
     "description": [
-      "查詢某賽季王者牌位結算的獎勵",
+      "查看賽季抵達王者牌位結算後的獎勵",
       "直接輸入可以開啟GUI"
     ]
   },
   "ban-day": {
-    "usage": "/ban-day <Minecraft ID> <天數> <原因>",
+    "usage": "/ban-day <Minecraft ID> <天數(1/3/9)> <原因>",
     "description": [
       "OP限定指令",
       "將玩家以特定天數ban掉(只有R/SR/SSR的天數選項)"
@@ -112,6 +112,64 @@
       }
     }
   },
+  "broadcast": {
+    "usage": "/broadcast <廣播操作參數>",
+    "description": [
+      "OP限定指令",
+      "廣播用的指令"
+    ],
+    "subcommands": { 
+      "clear": {
+        "usage": "/broadcast clear",
+        "description": ["結束廣播循環"]
+      },
+      "set": {
+        "usage": "/broadcast set <廣播速度參數> <廣播訊息參數>",
+        "description": [
+          "根據設定的內容與速度開始廣播循環",
+          "fastest:2分鐘;fast:5分鐘;normal:10分鐘;slow:20分鐘;slowest:30分鐘"
+        ]
+      }
+    }
+  },
+  "buff": {
+    "usage": "/buff [輔助功能] [true/false/def]",
+    "description": [
+      "設定輔助功能",
+      "直接輸入可以開啟GUI"
+    ]
+  },
+  "code": {
+    "usage": "/code <禮品代碼>",
+    "description": ["可以兌換code獲得貓幣"],
+    "subcommands": { 
+      "*": {
+        "subcommands": {
+          "add": {
+            "usage": "/code <禮品代碼> add <禮品金額> <有效天數>",
+            "description": [
+              "OP限定指令",
+              "新增禮品代碼"
+            ]
+          },
+          "remove": {
+            "usage": "/code <禮品代碼> remove",
+            "description": [
+              "OP限定指令",
+              "刪除禮品代碼"
+            ]
+          },
+          "status": {
+            "usage": "/code <禮品代碼> status",
+            "description": [
+              "OP限定指令",
+              "查看禮品代碼的使用狀態"
+            ]
+          }
+        }
+      }
+    }
+  },
   "special": {
     "usage": "/special <參數>",
     "description": ["獲得特殊物品或召喚特殊實體的指令"],
@@ -162,6 +220,16 @@
       "exit": {
         "usage": "/room exit",
         "description": ["離開房間"]
+      }
+    }
+  },
+  "example": {
+    "usage": "",
+    "description": [],
+    "subcommands": { 
+      "example": {
+        "usage": "",
+        "description": []
       }
     }
   }

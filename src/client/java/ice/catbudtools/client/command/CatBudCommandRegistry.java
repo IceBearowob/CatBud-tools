@@ -11,6 +11,7 @@ import java.lang.reflect.Type;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.List;
 
 public final class CatBudCommandRegistry {
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
@@ -103,9 +104,22 @@ public final class CatBudCommandRegistry {
 
         for (int i = 1; i < parts.length; i++) {
             String subToken = parts[i].toLowerCase();
-            if (current.getSubcommands() != null && current.getSubcommands().containsKey(subToken)) {
-                current = current.getSubcommands().get(subToken);
+            Map<String, CommandInfo> subs = current.getSubcommands();
+            if (subs != null && subs.containsKey(subToken)) {
+                // 精確匹配子指令
+                current = subs.get(subToken);
                 bestMatch = current;
+                matchedTokens++;
+            } else if (subs != null && subs.containsKey("*")) {
+                // 萬用字元：當前 token 為動態參數，跳過並繼續比對
+                CommandInfo wildcard = subs.get("*");
+                current = wildcard;
+                // 只有萬用字元節點本身有說明時才更新 bestMatch
+                String wUsage = wildcard.getUsage();
+                List<String> wDesc = wildcard.getDescription();
+                if ((wUsage != null && !wUsage.isBlank()) || (wDesc != null && !wDesc.isEmpty())) {
+                    bestMatch = wildcard;
+                }
                 matchedTokens++;
             } else {
                 break;

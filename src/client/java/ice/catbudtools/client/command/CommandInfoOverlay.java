@@ -87,6 +87,27 @@ public final class CommandInfoOverlay {
         }
         return lines;
     }
+    // /buff 專用info
+    private static List<Text> buffCommandInfo(String text) {
+        List<Text> lines = new ArrayList<>();
+        String[] buff = text.split(" ");
+        String key = buff[1];
+        // usage
+        lines.add(
+            Text.literal("/buff" + buff[1])
+            .append(" [true/false/def]")
+            .styled(style -> style.withColor(Formatting.YELLOW).withBold(true))
+        );
+        // desc
+        lines.add(
+            Text.literal("調整輔助功能\"")
+            .append(Text.translatable(key))
+            .append("\"")
+            .styled(style -> style.withColor(Formatting.WHITE))
+        );
+        lines.add(Text.literal("true:開啟;false:關閉;def:預設值").styled(style -> style.withColor(Formatting.WHITE)));
+        return lines;
+    }
     // 檢查是不是Special Command(同時還得是有參數的)
     // 檢查1.是不是/special 2.是不是3段 3.有沒有翻譯(又分有沒有season)
     private static boolean isSpecialCommand(String text) {
@@ -104,7 +125,20 @@ public final class CommandInfoOverlay {
                 }
                 return false;
             }
-            
+            return false;
+        }
+        return false;
+    }
+    // 檢查是不是buff指令
+    private static boolean isBuffCommand(String text) {
+        if (text.contains("/buff")){
+            String[] buff = text.split(" ");
+            if (buff.length < 2){
+                return false;
+            }
+            if (I18n.hasTranslation(buff[1])){
+                return true;
+            }
             return false;
         }
         return false;
@@ -145,8 +179,12 @@ public final class CommandInfoOverlay {
         List<Text> lines = new ArrayList<>();
         if (isSpecialCommand(text)){
             lines.addAll(specialCommandInfo(text));
-        }else{
-            //基礎值
+        }
+        if (isBuffCommand(text)) {
+            lines.addAll(buffCommandInfo(text));
+        }
+        
+        if (!isBuffCommand(text) && !isSpecialCommand(text)) {
             lines.addAll(regularCommandInfo(info));
         }
 
