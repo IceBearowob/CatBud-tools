@@ -125,7 +125,7 @@
     }
   },
   "buff": {
-    "usage": "/buff [輔助功能] [true/false/def]",
+    "usage": "/buff [輔助功能] [true/def/false]",
     "description": ["設定輔助功能"],
     "tag": "GUI",
     "subcommands": {
@@ -175,12 +175,266 @@
     }
   },
   "config": {
-    "usage": "/config [資訊功能] [true/false/def]",
+    "usage": "/config [資訊功能] [true/def/false]",
     "description": ["設定玩家資訊顯示功能"],
     "tag": "GUI",
     "subcommands": {
       "*": {
         "tag": "config"
+      }
+    }
+  },
+  "countries": {
+    "usage": "/countries",
+    "description": ["查看所有玩家使用的語言(遊戲設置)"]
+  },
+  "detached": {
+    "usage": "/detached",
+    "description": ["查看當前區塊有多少隻生物被分離"]
+  },
+  "enchant": {
+    "usage": "/enchant",
+    "description": ["查看貓芽特殊附魔列表"],
+    "tag": "GUI"
+  },
+  "erase": {
+    "usage": "/erase <選中半徑>",
+    "description": [
+      "以半徑x格將範圍內的實體移除",
+      "玩家不受影響",
+      "半徑只能在0.0~99.9之間"
+    ],
+    "tag": "OP"
+  },
+  "event": {
+    "usage": "/event [活動操作類型]",
+    "description": [
+      "與活動有關的指令",
+      "直接輸入可以前往活動，與/event go效果相同"
+    ],
+    "subcommands": { 
+      "clear": {
+        "usage": "/event clear",
+        "description": ["清除當前活動"],
+        "tag": "OP"
+      },
+      "go": {
+        "usage": "/event go",
+        "description": ["前往活動"]
+      },
+      "set": {
+        "usage": "/event set <設定類型>",
+        "description": ["設定活動傳送點"],
+        "tag": "OP",
+        "subcommands": {
+          "current": {
+            "usage": "/event set current",
+            "description": ["將當前地點設為活動傳送點"]
+          },
+          "server": {
+            "usage": "/event set server <伺服器名稱>",
+            "description": [
+              "將伺服器設為活動傳送點",
+              "設置後玩家會傳送到指定的伺服器",
+              "伺服器名稱只能是貓芽內的(tester/main)，其他沒效果"
+            ]
+          },
+          "transfer": {
+            "usage": "/event set transfer <伺服器地址>",
+            "description": [
+              "將伺服器位址設為活動傳送點",
+              "Port固定25565",
+              "效果等於原版的/transfer指令"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "friend": {
+    "usage": "/friend [操作類型]",
+    "description": ["與好友有關的指令"],
+    "tag": "GUI",
+    "subcommands": {
+      "agree": {
+        "usage": "/friend agree <目標玩家參數>",
+        "description": ["同意好友邀請"]
+      },
+      "ask": {
+        "usage": "/friend ask <目標玩家參數>",
+        "description": ["向玩家發出好友邀請"]
+      },
+      "buy": {
+        "usage": "/friend buy",
+        "description": ["購買好友容量"]
+      },
+      "capacity": {
+        "usage": "/friend capacity",
+        "description": ["查詢當前好友容量"]
+      },
+      "note": {
+        "usage": "/friend note <目標玩家參數> [備註]",
+        "description": ["為好友新增或修改備註"]
+      },
+      "page": {
+        "usage": "/friend page <頁數>",
+        "description": ["開啟特定頁數的好友GUI"]
+      },
+      "remove": {
+        "usage": "/friend remove <目標好友名稱>",
+        "description": ["刪除好友"]
+      },
+      "total": {
+        "usage": "/friend total",
+        "description": ["查詢當前好友總數"]
+      },
+      "track": {
+        "usage": "/friend track <目標好友位置>",
+        "description": ["追蹤好友的位置(顯示在畫面上)"]
+      },
+      "untrack": {
+        "usage": "/friend untrack <目標好友位置>",
+        "description": ["取消追蹤好友的位置"]
+      }
+    }
+  },
+  "go": {
+    "usage": "/go <目標玩家參數>",
+    "description": [
+      "傳送到好友的位置",
+      "好友上線時才能傳送"
+    ]
+  },
+  "hide": {
+    "usage": "/hide [true/false]",
+    "description": [
+      "開關隱形狀態",
+      "直接輸入會直接切換狀態",
+      "true:隱形;false:解除隱形",
+      "- 隱形時玩家無法看到你，但依然有方法可以知道"
+    ]
+  },
+  "hosts": {
+    "usage": "/hosts",
+    "description": ["查看玩家連線到哪個貓芽伺服器地址"]
+  },
+  "inspect": {
+    "usage": "/inspect",
+    "description": ["未知指令"]
+  },
+  "ips": {
+    "usage": "/ips",
+    "description": ["查看所有玩家的IP"]
+  },
+  "land": {
+    "usage": "/land [操作類型]",
+    "description": ["與領地有關的指令"],
+    "tag": "GUI",
+    "subcommands": {
+      "buy": {
+        "usage": "/land buy <目標座標參數>",
+        "description": ["購買領地"]
+      },
+      "config": {
+        "usage": "/land config <目標座標參數> <領地配置類型> [true/def/false]",
+        "description": ["調整領地全域設置"],
+        "subcommands": {
+          "*": {
+            "usage": "/land config <目標座標參數> <領地配置類型> [true/def/false]",
+            "description": ["調整領地全域設置"],
+            "tag": "GUI",
+            "subcommands": {
+              "tag": "land_config"
+            }
+          }
+        }
+      },
+      "go": {
+        "usage": "/land go <目標座標參數>",
+        "description": ["傳送到領地的位置"]
+      },
+      "group": {
+        "usage": "/land group <目標座標參數> <群組索引編號>",
+        "description": [
+          "調整領地的領地群組",
+          "領地群組一共有9個(1~9)，預設是1"
+        ]
+      },
+      "icon": {
+        "usage": "/land icon <目標座標參數> <圖標>",
+        "description": ["修改領地在GUI的顯示圖標"]
+      },
+      "license": {
+        "usage": "/land license <目標座標參數> <目標玩家參數/@> <領地權限類型> [true/def/false]",
+        "description": ["調整領地玩家權限"],
+        "subcommands": {
+            "*": {
+            "usage": "/land license <目標座標參數> <目標玩家參數/@> <領地權限類型> [true/def/false]",
+            "description": ["調整領地玩家權限"],
+            "tag": "GUI",
+            "subcommands": {
+              "*": {
+                "usage": "/land license <目標座標參數> <目標玩家參數/@> <領地權限類型> [true/def/false]",
+                "description": [
+                  "調整領地玩家權限",
+                  "\"@\"代表設置所有玩家的權限",
+                  "如果有單獨設置玩家的權限，則@不適用"
+                ],
+                "tag": "GUI",
+                "subcommands": {
+                  "*": {
+                    "tag": "land_license"
+                  }
+                }
+              }
+            }
+          }
+
+        }
+      },
+      "note": {
+        "usage": "/land note <目標座標參數> [備註]",
+        "description": ["為領地新增或修改備註"]
+      },
+      "page": {
+        "usage": "/land page <頁數>",
+        "description": ["開啟特定頁數的領地GUI"]
+      },
+      "remove": {
+        "usage": "/land remove <目標座標參數>",
+        "description": ["刪除領地"]
+      },
+      "total": {
+        "usage": "/land total",
+        "description": ["查詢當前領地總數"]
+      },
+      "track": {
+        "usage": "/land track <目標座標參數>",
+        "description": ["追蹤領地的位置(顯示在畫面上)"]
+      },
+      "untrack": {
+        "usage": "/land untrack <目標座標參數>",
+        "description": ["取消追蹤領地的位置"]
+      }
+    }
+  },
+  "keep": {
+    "usage": "/keep [重生操作類型]",
+    "description": [
+      "跟撤銷重生計畫有關的指令",
+      "直接輸入會直接切換狀態",
+      "on:開始進行解除刷新;off:停止進行解除刷新"
+    ],
+    "subcommands": {
+      "allow": {
+        "usage": "/keep allow",
+        "description": ["允許玩家自行解除刷新"],
+        "tag": "OP"
+      },
+      "deny": {
+        "usage": "/keep reject",
+        "description": ["拒絕玩家自行解除刷新"],
+        "tag": "OP"
       }
     }
   },
@@ -224,6 +478,24 @@
       "by": {
         "usage": "/to by <玩家ID>",
         "description": ["傳送到玩家的公傳點"]
+      }
+    }
+  },
+  "reboot": {
+    "usage": "/reboot <重啟操作參數>",
+    "description": ["重啟用的指令"],
+    "tag": "OP",
+    "subcommands": { 
+      "cancel": {
+        "usage": "/reboot cancel",
+        "description": ["結束重啟倒數"]
+      },
+      "enter": {
+        "usage": "/reboot enter <重啟速度參數>",
+        "description": [
+          "根據設定的速度開始重啟倒數",
+          "fastest:2分鐘;fast:5分鐘;normal:10分鐘;slow:20分鐘;slowest:30分鐘"
+        ]
       }
     }
   },
@@ -419,14 +691,12 @@
       }
     }
   },
-  "example": {
-    "usage": "",
-    "description": [],
-    "subcommands": { 
-      "example": {
-        "usage": "",
-        "description": []
-      }
-    }
+  "vitality": {
+    "usage": "/vitality",
+    "description": ["查詢在線玩家的活力值"]
+  },
+  "world": {
+    "usage": "/world",
+    "description": ["開啟世界地圖"]
   }
 }

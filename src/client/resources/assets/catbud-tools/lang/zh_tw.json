@@ -409,5 +409,18 @@
     "land.mob_destroy": "生物破壞",
     "land.mob_spawning": "生物生成",
     "land.safe_bound": "安全的邊界",
-    "land.trample_farmland": "踩踏耕地"
+    "land.trample_farmland": "踩踏耕地",
+    "land_config.common": "調整領地全域設置\"%s\"",
+    "land.admin": "管理員",
+    "land.attack": "攻擊非敵對實體",
+    "land.build": "建造方塊",
+    "land.container": "改變容器",
+    "land.destroy": "破壞方塊",
+    "land.drop": "丟出物品",
+    "land.fly": "自由飛行",
+    "land.interact": "使用實體",
+    "land.pvp": "玩家攻擊玩家",
+    "land.spawn": "生成實體",
+    "land.use": "使用方塊",
+    "land_license.common": "調整領地玩家權限\"%s\""
 }

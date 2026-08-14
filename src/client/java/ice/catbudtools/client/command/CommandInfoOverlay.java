@@ -14,7 +14,6 @@ import net.minecraft.client.gui.screen.ChatInputSuggestor;
 import net.minecraft.client.gui.screen.ChatScreen;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.TextFieldWidget;
-import net.minecraft.client.resource.language.I18n;
 import net.minecraft.client.util.math.Rect2i;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
@@ -99,7 +98,7 @@ public final class CommandInfoOverlay {
             key = "buff." + config[1];
             // usage
             lines.add(
-                Text.literal("/buff " + config[1]).append(" [true/false/def]")
+                Text.literal("/buff " + config[1]).append(" [true/def/false]")
                 .styled(style -> style.withColor(Formatting.YELLOW).withBold(true))
             );
             // desc
@@ -109,24 +108,34 @@ public final class CommandInfoOverlay {
             key = "config." + config[1];
             // usage
             lines.add(
-                Text.literal("/config " + config[1]).append(" [true/false/def]")
+                Text.literal("/config " + config[1]).append(" [true/def/false]")
                 .styled(style -> style.withColor(Formatting.YELLOW).withBold(true))
             );
             // desc
             lines.add(Text.translatable("config.common",Text.translatable(key)).styled(style -> style.withColor(Formatting.WHITE)));
         }
-        if (tag.equals("land")) {
+        if (tag.equals("land_config")) {
             key = "land." + config[3];
             // usage
             lines.add(
-                Text.literal("/land config <領地編號> " + config[3]).append(" [true/false/def]")
+                Text.literal("/land config " + config[2] + " " + config[3]).append(" [true/def/false]")
                 .styled(style -> style.withColor(Formatting.YELLOW).withBold(true))
             );
             // desc
-            lines.add(Text.translatable("config.common",Text.translatable(key)).styled(style -> style.withColor(Formatting.WHITE)));
+            lines.add(Text.translatable("land_config.common",Text.translatable(key)).styled(style -> style.withColor(Formatting.WHITE)));
+        }
+        if (tag.equals("land_license")) {
+            key = "land." + config[4];
+            // usage
+            lines.add(
+                Text.literal("/land license " + config[2] + " " + config[3] + " " + config[4]).append(" [true/def/false]")
+                .styled(style -> style.withColor(Formatting.YELLOW).withBold(true))
+            );
+            // desc
+            lines.add(Text.translatable("land_license.common",Text.translatable(key)).styled(style -> style.withColor(Formatting.WHITE)));
         }
 
-        lines.add(Text.literal("true:開啟;false:關閉;def:預設值").styled(style -> style.withColor(Formatting.WHITE)));
+        lines.add(Text.literal("true:開啟;def:預設值;false:關閉").styled(style -> style.withColor(Formatting.WHITE)));
         return lines;
     }
     // /mode 專用info
@@ -188,7 +197,7 @@ public final class CommandInfoOverlay {
         List<Text> lines = new ArrayList<>();
         if (checkWildCardInfo(info)){
             String tag = info.getTag();
-            if (tag.equals("buff") || tag.equals("config") || tag.equals("land")){
+            if (tag.equals("buff") || tag.equals("config") || tag.equals("land_config") || tag.equals("land_license")){
                 lines.addAll(configCommandInfo(text, tag));
             }
             if (tag.equals("mode")){
