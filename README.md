@@ -25,17 +25,17 @@ CatBud Tools - 0.7.9-r9-b12-1.21.11
 記得用JDK 21以上編譯
 
 ## 貓芽伺服器
-### 伺服器版本:
+
+### 連線地址:
 Java 版 1.21.6 ~ 26.2 登入．推薦 26.2 
-### 伺服器IP:
 - catbud.net (使用預設線路)
 - cloudflare.catbud.net (當前預設線路)  
 - tcpshield.catbud.net
 ### 萌新手冊: 
-[由BlueRiver1214製作](https://drive.google.com/file/d/1fobEcg0DI7lwbmtKBDyWiLmoyVcFZb3s/view)  
+[BlueRiver1214製作](https://drive.google.com/file/d/1fobEcg0DI7lwbmtKBDyWiLmoyVcFZb3s/view)  
 ### 群組連結:
 <https://discord.gg/catbud>
-### 官方網站
+### 官方網站:
 <https://catbud.net/>
 
 ## 參考來源
