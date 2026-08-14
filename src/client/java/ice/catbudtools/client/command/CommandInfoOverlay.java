@@ -115,7 +115,7 @@ public final class CommandInfoOverlay {
             lines.add(Text.translatable("config.common",Text.translatable(key)).styled(style -> style.withColor(Formatting.WHITE)));
         }
         if (tag.equals("land_config")) {
-            key = "land." + config[3];
+            key = "land_config." + config[3];
             // usage
             lines.add(
                 Text.literal("/land config " + config[2] + " " + config[3]).append(" [true/def/false]")
@@ -125,7 +125,7 @@ public final class CommandInfoOverlay {
             lines.add(Text.translatable("land_config.common",Text.translatable(key)).styled(style -> style.withColor(Formatting.WHITE)));
         }
         if (tag.equals("land_license")) {
-            key = "land." + config[4];
+            key = "land_license." + config[4];
             // usage
             lines.add(
                 Text.literal("/land license " + config[2] + " " + config[3] + " " + config[4]).append(" [true/def/false]")
