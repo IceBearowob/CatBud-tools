@@ -22,13 +22,15 @@ public final class CommandInfoOverlay {
     private CommandInfoOverlay() {
     }
     // 一般的指令info
-    private static List<Text> regularCommandInfo(CommandInfo info) {
+    private static List<Text> regularCommandInfo(String text, CommandInfo info) {
         List<Text> lines = new ArrayList<>();
         // 1. 指令語法 Usage (標題)
-        if (info.getUsage() != null && !info.getUsage().isEmpty()) {
+        if (info.getUsage() != null && !info.getUsage().isEmpty() && !info.getName().equals("*")) {
             lines.add(Text.literal(info.getUsage()).styled(style -> style.withColor(Formatting.YELLOW).withBold(true)));
         }
-
+        if (info.getName().equals("*")){
+            lines.add(Text.literal(text).styled(style -> style.withColor(Formatting.YELLOW).withBold(true)));
+        }
         // 2. 指令說明 Description
         if (info.getTag() != null && !info.getTag().isBlank()){
             if (info.getTag().equals("OP")) {
@@ -95,7 +97,7 @@ public final class CommandInfoOverlay {
         }
         return lines;
     }
-    // /buff /config /land config 專用info
+    // /buff /config /land config /land license 專用info
     private static List<Text> configCommandInfo(String text, String tag) {
         List<Text> lines = new ArrayList<>();
         String[] config = text.split(" ");
@@ -167,10 +169,10 @@ public final class CommandInfoOverlay {
         String key = "items." + shop[1];
         String tag = info.getTag();
         // usage
-        if (tag.equals("shop_common")){
+        if (tag.equals("shop_buy")){
             lines.add(Text.literal("/shop " + shop[1] + " buy <商品數量>").styled(style -> style.withColor(Formatting.YELLOW).withBold(true)));
         }
-        if (tag.equals("shop_buy")){
+        if (tag.equals("shop_common")){
             lines.add(Text.literal(text).styled(style -> style.withColor(Formatting.YELLOW).withBold(true)));
         }
         // desc
@@ -186,6 +188,9 @@ public final class CommandInfoOverlay {
     }
     // 檢查有沒有特殊info
     private static boolean checkWildCardInfo(CommandInfo info){
+        if (info.getUsage() != null && info.getDescription() != null){
+            return false;
+        }
         if (info.getName().equals("*")){
             return true;
         }
@@ -193,6 +198,9 @@ public final class CommandInfoOverlay {
     }
     // 特殊tag的info
     private static boolean checkSpecialInfo(CommandInfo info){
+        if (info.getTag() == null){
+            return false;
+        }
         if (info.getTag().contains("shop")){
             return true;
         }
@@ -240,7 +248,7 @@ public final class CommandInfoOverlay {
             if (tag.equals("mode")){
                 lines.addAll(modeCommandInfo(text));
             }
-            if (tag.contains("special")){
+            if (tag.contains("special") || tag.equals("raffle")){
                 lines.addAll(specialCommandInfo(text, tag));
             }
         }
@@ -250,7 +258,7 @@ public final class CommandInfoOverlay {
             }
         }
         if (!checkWildCardInfo(info) && !checkSpecialInfo(info)) {
-            lines.addAll(regularCommandInfo(info));
+            lines.addAll(regularCommandInfo(text, info));
         }
 
         if (lines.isEmpty()) {

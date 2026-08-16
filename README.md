@@ -11,7 +11,7 @@
 - 優化跟更新內容...還有避免ㄧ些奇怪的問題
 
 ## 版本
-CatBud Tools - 0.7.11-r9-b12-1.21.11
+CatBud Tools - 0.7.12-r9-b12-1.21.11
 ### 依賴項
 必須安裝[YetAnotherConfigLib](https://modrinth.com/mod/yacl)!
 

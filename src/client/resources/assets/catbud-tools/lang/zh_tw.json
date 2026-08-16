@@ -429,6 +429,7 @@
     "land_license.pvp": "玩家攻擊玩家",
     "land_license.spawn": "生成實體",
     "land_license.use": "使用方塊",
+    "land_license.@": "所有權限",
     "land_license.common": "調整領地玩家權限\"%s\"",
     "shop.common": "購買物品\"%s\"",
     "raffle.common": "兌換獎品\"%s\""
