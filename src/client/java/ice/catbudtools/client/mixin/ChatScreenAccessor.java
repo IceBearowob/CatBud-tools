@@ -1,16 +1,17 @@
 package ice.catbudtools.client.mixin;
 
-import net.minecraft.client.gui.screen.ChatScreen;
-import net.minecraft.client.gui.widget.TextFieldWidget;
-import net.minecraft.client.gui.screen.ChatInputSuggestor;
+import net.minecraft.client.gui.components.CommandSuggestions;
+import net.minecraft.client.gui.components.EditBox;
+import net.minecraft.client.gui.screens.ChatScreen;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Accessor;
 
 @Mixin(ChatScreen.class)
 public interface ChatScreenAccessor {
-    @Accessor("chatInputSuggestor")
-    ChatInputSuggestor catbud$getChatInputSuggestor();
+    @Accessor("commandSuggestions")
+    CommandSuggestions catbud$getChatInputSuggestor();
 
-    @Accessor("chatField")
-    TextFieldWidget catbud$getChatField();
+    @Accessor("input")
+    EditBox catbud$getChatField();
 }
+

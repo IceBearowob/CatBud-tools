@@ -1,28 +1,19 @@
 # CatBud tools
 
-## 已實現的功能
+## 功能列表
 
 - 在貓芽的特附附魔書及特殊物品可以顯示說明
 - 遊戲內貓芽指令指引
 - 自定義Tooltip位置和顯示方法
 
-## 還沒實現的功能
-- 開Fork支援26.2
-- 優化跟更新內容...還有避免ㄧ些奇怪的問題
-
 ## 版本
-CatBud Tools - 0.8.2-r9-b14-1.21.11
+CatBud Tools - 1.0.0-r9-b14-1.21.11  
+目前支援Minecraft版本:1.21.11、26.2
 ### 依賴項
 必須安裝[YetAnotherConfigLib](https://modrinth.com/mod/yacl)!
 
 ## 如何下載
-你可以在右邊的release下載正式版，或者自己去action抓artifact   
-你也可以選擇下載整個source下來，然後   
-```
-./gradlew.bat build
-```
-他會將build出來的東西放在./build/lib內
-記得用Java 21編譯
+在右邊的release下載，模組會永遠保持在最新版本
 
 ## 貓芽伺服器
 

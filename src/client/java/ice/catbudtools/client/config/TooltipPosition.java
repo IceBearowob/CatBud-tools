@@ -1,6 +1,6 @@
 package ice.catbudtools.client.config;
 
-import net.minecraft.text.Text;
+import net.minecraft.network.chat.Component;
 
 /**
  * 定義 Tooltip 資訊框在螢幕上的顯示位置模式。
@@ -19,7 +19,7 @@ public enum TooltipPosition {
 		this.translationKey = translationKey;
 	}
 
-	public Text getText() {
-		return Text.translatable(translationKey);
+	public Component getText() {
+		return Component.translatable(translationKey);
 	}
 }

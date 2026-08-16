@@ -1,65 +1,67 @@
 package ice.catbudtools.client;
 
-import ice.catbudtools.CatBudTools;
 import ice.catbudtools.client.mixin.KeyBindingAccessor;
 import ice.catbudtools.client.config.CatBudConfig;
 import ice.catbudtools.client.specialtooltip.SpecialEnchantRegistry;
 import ice.catbudtools.client.specialtooltip.SpecialInfoOverlay;
 import ice.catbudtools.client.specialtooltip.SpecialItemRegistry;
 import ice.catbudtools.client.specialtooltip.SpecialDetector;
+import ice.catbudtools.client.command.CatBudCommandRegistry;
 import ice.catbudtools.client.command.CommandInfoOverlay;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
-import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
+import net.fabricmc.fabric.api.client.keymapping.v1.KeyMappingHelper;
 import net.fabricmc.fabric.api.client.screen.v1.ScreenEvents;
-import net.minecraft.client.network.ServerInfo;
-import net.minecraft.client.option.KeyBinding;
-import net.minecraft.client.util.InputUtil;
-import net.minecraft.text.Text;
-import net.minecraft.item.ItemStack;
-import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.multiplayer.ServerData;
+import net.minecraft.client.KeyMapping;
+import com.mojang.blaze3d.platform.InputConstants;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.Identifier;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.client.Minecraft;
 import org.lwjgl.glfw.GLFW;
-
 
 public class CatBudToolsClient implements ClientModInitializer {
 
     // 取得當前伺服器 IP / 網址
     private static String getCurrentServerAddress() {
-        MinecraftClient client = MinecraftClient.getInstance();
-        if (client.isInSingleplayer()) {
+        Minecraft client = Minecraft.getInstance();
+        if (client.hasSingleplayerServer()) {
             return "singleplayer";
         }
-        ServerInfo serverInfo = client.getCurrentServerEntry();
-        return (serverInfo != null && serverInfo.address != null) ? serverInfo.address : "";
+        ServerData serverInfo = client.getCurrentServer();
+        return (serverInfo != null && serverInfo.ip != null) ? serverInfo.ip : "";
     }
+
     // 判斷是否為目標伺服器（建議轉成小寫比對，避免大小寫問題）
     public static boolean isCatBudServer() {
         String address = getCurrentServerAddress().toLowerCase();
         return address.contains("catbud.net");
     }
-    
-	private static final KeyBinding.Category ITEM_QUERY_CATEGORY =
-			KeyBinding.Category.create(
-					CatBudTools.id("item_query")
-			);
 
+    private static final KeyMapping.Category ITEM_QUERY_CATEGORY =
+            KeyMapping.Category.register(
+                    Identifier.fromNamespaceAndPath("catbud-tools", "item_query")
+            );
 
-	public static final KeyBinding OPEN_ITEM_QUERY_KEY =
-			KeyBindingHelper.registerKeyBinding(
-					new KeyBinding(
+	public static final KeyMapping OPEN_ITEM_QUERY_KEY =
+			KeyMappingHelper.registerKeyMapping(
+					new KeyMapping(
 							"key.catbud-tools.open_item_query",
-							InputUtil.Type.KEYSYM,
+							InputConstants.Type.KEYSYM,
 							GLFW.GLFW_KEY_G,
 							ITEM_QUERY_CATEGORY
 					)
 			);
-	public static InputUtil.Key getOpenItemQueryKey() {
+
+	public static InputConstants.Key getOpenItemQueryKey() {
 		return ((KeyBindingAccessor) OPEN_ITEM_QUERY_KEY).catbud$getBoundKey();
 	}
+
 	@Override
 	public void onInitializeClient() {
 		CatBudConfig.load();
-		ice.catbudtools.client.command.CatBudCommandRegistry.load();
+		CatBudCommandRegistry.load();
 		SpecialEnchantRegistry.load();
 		SpecialItemRegistry.load();
 		// Tooltip 偵測特殊物品
@@ -79,35 +81,34 @@ public class CatBudToolsClient implements ClientModInitializer {
 					
 					if (!config.AlwaysShowTooltip){
 						lines.add(
-							Text.translatable(
+							Component.translatable(
 									"tooltip.catbud-tools.special_item_hint",
-									OPEN_ITEM_QUERY_KEY.getBoundKeyLocalizedText()
+									OPEN_ITEM_QUERY_KEY.getTranslatedKeyMessage()
 							)
 						);
 					}
 				}
 			}
 		);
+
 		// tooltip & command info overlay
 		ScreenEvents.AFTER_INIT.register((client, screen, scaledWidth, scaledHeight) -> {
-			ScreenEvents.beforeRender(screen).register((currentScreen, drawContext, mouseX, mouseY, tickDelta) -> {
-				SpecialInfoOverlay.observe(ItemStack.EMPTY);
-			});
-
-			ScreenEvents.afterRender(screen).register((currentScreen, drawContext, mouseX, mouseY, tickDelta) -> {
+			ScreenEvents.afterForeground(screen).register((currentScreen, guiGraphics, mouseX, mouseY, tickDelta) -> {
 					if (!isCatBudServer()) {
 						return;
 					}
 					SpecialInfoOverlay.render(
-							drawContext,
+							guiGraphics,
 							mouseX,
 							mouseY
 					);
 
 					CommandInfoOverlay.render(
-							drawContext,
+							guiGraphics,
 							currentScreen
-					);
+						);
+
+					SpecialInfoOverlay.observe(ItemStack.EMPTY);
 
 				}
 			);

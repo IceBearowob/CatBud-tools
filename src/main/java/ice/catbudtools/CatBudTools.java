@@ -1,9 +1,9 @@
 package ice.catbudtools;
 
 import net.fabricmc.api.ModInitializer;
+import net.minecraft.resources.Identifier;
 
-import net.minecraft.util.Identifier;
-
+import org.jspecify.annotations.NonNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,7 +24,7 @@ public class CatBudTools implements ModInitializer {
 		LOGGER.info("[CatBud Tools]:喵喵喵");
 	}
 
-	public static Identifier id(String path) {
-		return Identifier.of(MOD_ID, path);
+	public static Identifier id(@NonNull String path) {
+		return Identifier.fromNamespaceAndPath(MOD_ID, path);
 	}
 }
