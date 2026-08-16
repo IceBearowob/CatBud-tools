@@ -54,7 +54,7 @@ public final class CommandInfoOverlay {
         List<Text> lines = new ArrayList<>();
         String[] special = text.split(" ");
         String key = "";
-        if (tag.equals("special_item") && tag.equals("raffle")){
+        if (tag.equals("special_item") || tag.equals("raffle")){
             key = "items." + special[2];
         }
         else if (tag.equals("special_entity")){
@@ -146,7 +146,7 @@ public final class CommandInfoOverlay {
         lines.add(Text.literal("true:開啟;def:預設值;false:關閉").styled(style -> style.withColor(Formatting.WHITE)));
         return lines;
     }
-    // /mode 專用info
+    // /room mode 專用info
     private static List<Text> modeCommandInfo(String text) {
         List<Text> lines = new ArrayList<>();
         String[] mode = text.split(" ");
