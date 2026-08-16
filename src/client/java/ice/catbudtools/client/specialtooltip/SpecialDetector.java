@@ -1,10 +1,10 @@
 package ice.catbudtools.client.specialtooltip;
 
-import net.minecraft.component.DataComponentTypes;
-import net.minecraft.component.type.ItemEnchantmentsComponent;
-import net.minecraft.component.type.NbtComponent;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NbtCompound;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.CustomData;
+import net.minecraft.world.item.enchantment.ItemEnchantments;
 
 
 public final class SpecialDetector {
@@ -21,25 +21,23 @@ public final class SpecialDetector {
 
     public static boolean isSpecialEnchant(ItemStack stack) {
 
-        ItemEnchantmentsComponent storedEnchantments = stack.get(DataComponentTypes.STORED_ENCHANTMENTS);
+        ItemEnchantments storedEnchantments = stack.get(DataComponents.STORED_ENCHANTMENTS);
 
         return storedEnchantments != null
-                && storedEnchantments.getEnchantments().stream()
-                .anyMatch(enchantment -> enchantment.getKey()
-                        .map(key -> key.getValue().getNamespace().equals(CATBUD_ENCHANTMENT_NAMESPACE))
+                && storedEnchantments.keySet().stream()
+                .anyMatch(enchantment -> enchantment.unwrapKey()
+                        .map(key -> key.identifier().getNamespace().equals(CATBUD_ENCHANTMENT_NAMESPACE))
                         .orElse(false));
     }
 	public static boolean isSpecialAppliedEnchant(ItemStack stack) {
 
-		ItemEnchantmentsComponent enchantments =
-				stack.get(DataComponentTypes.ENCHANTMENTS);
+		ItemEnchantments enchantments =
+				stack.get(DataComponents.ENCHANTMENTS);
 
 		return enchantments != null
-				&& enchantments.getEnchantments().stream()
-				.anyMatch(enchantment -> enchantment.getKey()
-						.map(key -> key.getValue()
-								.getNamespace()
-								.equals(CATBUD_ENCHANTMENT_NAMESPACE))
+				&& enchantments.keySet().stream()
+				.anyMatch(enchantment -> enchantment.unwrapKey()
+						.map(key -> key.identifier().getNamespace().equals(CATBUD_ENCHANTMENT_NAMESPACE))
 						.orElse(false));
 	}
 
@@ -49,21 +47,20 @@ public final class SpecialDetector {
 
 	public static String getSpecialItemId(ItemStack stack) {
 
-		NbtComponent customData =
-				stack.get(DataComponentTypes.CUSTOM_DATA);
+		CustomData customData = stack.get(DataComponents.CUSTOM_DATA);
 
 		if (customData == null) {
 			return null;
 		}
 
-		NbtCompound root =
-				customData.copyNbt();
+		CompoundTag root =
+				customData.copyTag();
 
 		if (!root.contains("PublicBukkitValues")) {
 			return null;
 		}
 
-		NbtCompound publicValues =
+		CompoundTag publicValues =
 				root.getCompound("PublicBukkitValues").orElse(null);
 
 		if (!publicValues.contains("UniqueKey")) {

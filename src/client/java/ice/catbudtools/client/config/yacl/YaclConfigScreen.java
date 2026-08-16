@@ -10,8 +10,8 @@ import dev.isxander.yacl3.api.controller.IntegerSliderControllerBuilder;
 import dev.isxander.yacl3.api.controller.BooleanControllerBuilder;
 import ice.catbudtools.client.config.CatBudConfig;
 import ice.catbudtools.client.config.TooltipPosition;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.text.Text;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.network.chat.Component;
 
 public class YaclConfigScreen {
 
@@ -21,8 +21,8 @@ public class YaclConfigScreen {
         CatBudConfig config = CatBudConfig.getInstance();
         Option<Boolean> ShowTooltip = 
                 Option.<Boolean>createBuilder()
-                .name(Text.literal("顯示Tooltip"))
-                .description(OptionDescription.of(Text.literal("開啟:顯示Tooltip\n關閉:不顯示Tooltip")))
+                .name(Component.literal("顯示Tooltip"))
+                .description(OptionDescription.of(Component.literal("開啟:顯示Tooltip\n關閉:不顯示Tooltip")))
                 .binding(
                         CatBudConfig.DEFAULT_SHOWTOOLTIP,
                         () -> config.ShowTooltip,
@@ -32,8 +32,8 @@ public class YaclConfigScreen {
                 .build();
         Option<Boolean> AlwaysShowTooltip = 
                 Option.<Boolean>createBuilder()
-                .name(Text.literal("始終顯示Tooltip"))
-                .description(OptionDescription.of(Text.literal("開啟:不需要按按鍵就會顯示Tooltip\n關閉:需要按按鍵才會顯示Tooltip")))
+                .name(Component.literal("始終顯示Tooltip"))
+                .description(OptionDescription.of(Component.literal("開啟:不需要按按鍵就會顯示Tooltip\n關閉:需要按按鍵才會顯示Tooltip")))
                 .binding(
                         CatBudConfig.DEFAULT_ALWAYSTOOLTIP,
                         () -> config.AlwaysShowTooltip,
@@ -43,8 +43,8 @@ public class YaclConfigScreen {
                 .build();
         Option<Integer> xOffset =
                 Option.<Integer>createBuilder()
-                .name(Text.literal("X偏移"))
-                .description(OptionDescription.of(Text.literal("調整Tooltip的X方向偏移量")))
+                .name(Component.literal("X偏移"))
+                .description(OptionDescription.of(Component.literal("調整Tooltip的X方向偏移量")))
                 .binding(
                         CatBudConfig.DEFAULT_OFFSET_X,
                         () -> config.offsetX,
@@ -60,8 +60,8 @@ public class YaclConfigScreen {
                 .build();
         Option<Integer> yOffset =
                 Option.<Integer>createBuilder()
-                .name(Text.literal("Y偏移"))
-                .description(OptionDescription.of(Text.literal("調整Tooltip的Y方向偏移量")))
+                .name(Component.literal("Y偏移"))
+                .description(OptionDescription.of(Component.literal("調整Tooltip的Y方向偏移量")))
                 .binding(
                         CatBudConfig.DEFAULT_OFFSET_Y,
                         () -> config.offsetY,
@@ -77,8 +77,8 @@ public class YaclConfigScreen {
                 .build();
         Option<TooltipPosition> tooltipPosition =
                 Option.<TooltipPosition>createBuilder()
-                .name(Text.literal("Tooltip位置"))
-                .description(OptionDescription.of(Text.literal("調整Tooltip的顯示位置")))
+                .name(Component.literal("Tooltip位置"))
+                .description(OptionDescription.of(Component.literal("調整Tooltip的顯示位置")))
                 .binding(
                     CatBudConfig.DEFAULT_TOOLTIP_POSITION,
                     () -> config.tooltipPosition,
@@ -95,8 +95,8 @@ public class YaclConfigScreen {
                 .build();
         Option<Integer> max_display_enchant =
                 Option.<Integer>createBuilder()
-                .name(Text.literal("最大特附顯示數量"))
-                .description(OptionDescription.of(Text.literal("如果說特附多到你沒辦法完整看到所有內容，就自行調整數值\n調成0代表完全顯示")))
+                .name(Component.literal("最大特附顯示數量"))
+                .description(OptionDescription.of(Component.literal("如果說特附多到你沒辦法完整看到所有內容，就自行調整數值\n調成0代表完全顯示")))
                 .binding(
                         CatBudConfig.DEFAULT_MAX_DISPLAY_ENCHANT,
                         () -> config.max_display_enchant,
@@ -112,8 +112,8 @@ public class YaclConfigScreen {
                 .build();
         Option<Boolean> showCommandHelp = 
                 Option.<Boolean>createBuilder()
-                .name(Text.literal("顯示貓芽指令說明"))
-                .description(OptionDescription.of(Text.literal("開啟:輸入貓芽指令時於聊天框上方顯示語法與說明\n關閉:不顯示指令說明")))
+                .name(Component.literal("顯示貓芽指令說明"))
+                .description(OptionDescription.of(Component.literal("開啟:輸入貓芽指令時於聊天框上方顯示語法與說明\n關閉:不顯示指令說明")))
                 .binding(
                         CatBudConfig.DEFAULT_SHOW_COMMAND_HELP,
                         () -> config.showCommandHelp,
@@ -123,8 +123,8 @@ public class YaclConfigScreen {
                 .build();
         Option<Boolean> showDetailedEnchantInfo = 
                 Option.<Boolean>createBuilder()
-                .name(Text.literal("顯示詳細特附說明"))
-                .description(OptionDescription.of(Text.literal("開啟:在查看特附附魔書時，會顯示衝突與最高等級資訊\n關閉:不顯示詳細資訊")))
+                .name(Component.literal("顯示詳細特附說明"))
+                .description(OptionDescription.of(Component.literal("開啟:在查看特附附魔書時，會顯示衝突與最高等級資訊\n關閉:不顯示詳細資訊")))
                 .binding(
                         CatBudConfig.DEFAULT_SHOW_DETAILED_ENCHANTINFO,
                         () -> config.showDetailedEnchantInfo,
@@ -134,9 +134,9 @@ public class YaclConfigScreen {
                 .build();
         ButtonOption tooltipresetButton =
                 ButtonOption.createBuilder()
-                .name(Text.literal("重置所有Tooltip類設定"))
-                .text(Text.literal("點我重置"))
-                .description(OptionDescription.of(Text.literal("就是重置，你還想知道啥?")))
+                .name(Component.literal("重置所有Tooltip類設定"))
+                .text(Component.literal("點我重置"))
+                .description(OptionDescription.of(Component.literal("就是重置，你還想知道啥?")))
                 .action((screen, button) -> {
                         config.reset();
 
@@ -150,9 +150,9 @@ public class YaclConfigScreen {
                 .build();
         ButtonOption functionresetButton =
                 ButtonOption.createBuilder()
-                .name(Text.literal("重置所有功能類設定"))
-                .text(Text.literal("點我重置"))
-                .description(OptionDescription.of(Text.literal("就是重置，你還想知道啥?")))
+                .name(Component.literal("重置所有功能類設定"))
+                .text(Component.literal("點我重置"))
+                .description(OptionDescription.of(Component.literal("就是重置，你還想知道啥?")))
                 .action((screen, button) -> {
                         config.reset();
 
@@ -164,7 +164,7 @@ public class YaclConfigScreen {
                 .build();
 
                 ConfigCategory functionCategory = ConfigCategory.createBuilder()
-                        .name(Text.literal("功能類"))
+                        .name(Component.literal("功能類"))
                         .option(ShowTooltip)
                         .option(AlwaysShowTooltip)
                         .option(showCommandHelp)
@@ -172,7 +172,7 @@ public class YaclConfigScreen {
                         .build();
 
                 ConfigCategory tooltipCategory = ConfigCategory.createBuilder()
-                        .name(Text.literal("Tooltip微調"))
+                        .name(Component.literal("Tooltip微調"))
                         .option(xOffset)
                         .option(yOffset)
                         .option(tooltipPosition)
@@ -182,7 +182,7 @@ public class YaclConfigScreen {
                         .build();
 
                 return YetAnotherConfigLib.createBuilder()
-                        .title(Text.literal("CatBud Tools"))
+                        .title(Component.literal("CatBud Tools"))
                         .category(functionCategory)
                         .category(tooltipCategory)
                         .save(() -> CatBudConfig.save())

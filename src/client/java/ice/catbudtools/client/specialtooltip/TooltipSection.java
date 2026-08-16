@@ -1,6 +1,6 @@
 package ice.catbudtools.client.specialtooltip;
 
-import net.minecraft.text.Text;
+import net.minecraft.network.chat.Component;
 
 import java.util.List;
 
@@ -18,9 +18,9 @@ public class TooltipSection {
     }
 
     private final Type type;
-    private final List<Text> lines;
+    private final List<Component> lines;
 
-    public TooltipSection(Type type, List<Text> lines) {
+    public TooltipSection(Type type, List<Component> lines) {
         this.type = type;
         this.lines = lines;
     }
@@ -29,7 +29,7 @@ public class TooltipSection {
         return type;
     }
 
-    public List<Text> getLines() {
+    public List<Component> getLines() {
         return lines;
     }
 }

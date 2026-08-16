@@ -7,16 +7,17 @@ import org.lwjgl.glfw.GLFW;
 
 import ice.catbudtools.client.config.CatBudConfig;
 import ice.catbudtools.client.CatBudToolsClient;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.util.InputUtil;
-import net.minecraft.component.DataComponentTypes;
-import net.minecraft.component.type.ItemEnchantmentsComponent;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.text.MutableText;
-import net.minecraft.text.Text;
-import net.minecraft.util.Formatting;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.GuiGraphics;
+import com.mojang.blaze3d.platform.InputConstants;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.world.item.enchantment.ItemEnchantments;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.Component;
+import net.minecraft.ChatFormatting;
 
 /**
  * Keeps track of the special item currently under the cursor and renders its information card.
@@ -24,7 +25,7 @@ import net.minecraft.util.Formatting;
 public final class SpecialInfoOverlay {
 	private static final String CATBUD_ENCHANTMENT_NAMESPACE = "addons";
 
-	private static MutableText catbudTranslate(String key) {return Text.translatable(key);}
+	private static MutableComponent catbudTranslate(String key) {return Component.translatable(key);}
 	private static ItemStack hoveredStack = ItemStack.EMPTY;
 	private static ItemStack lastHoveredStack = ItemStack.EMPTY;
 	private static boolean tooltipActive = false;
@@ -42,7 +43,7 @@ public final class SpecialInfoOverlay {
 
 		tooltipActive = true;
 
-		if (!ItemStack.areEqual(lastHoveredStack, stack)) {
+		if (!ItemStack.matches(lastHoveredStack, stack)) {
 			enchantPage = 0;
 		}
 
@@ -65,12 +66,12 @@ public final class SpecialInfoOverlay {
 		}
 
 	}
-	public static void render(DrawContext context, int mouseX, int mouseY) {
+	public static void render(GuiGraphics context, int mouseX, int mouseY) {
 		CatBudConfig config = CatBudConfig.getInstance();
 		if (!config.ShowTooltip){
 			return;
 		}
-		MinecraftClient client = MinecraftClient.getInstance();
+		Minecraft client = Minecraft.getInstance();
 		// 檢查是否為特殊物品
 		if (!tooltipActive || hoveredStack.isEmpty() || client.getWindow() == null) {
 			return;
@@ -89,16 +90,13 @@ public final class SpecialInfoOverlay {
 		}
 		// 按鍵輸入偵測
 		if (!config.AlwaysShowTooltip){
-			InputUtil.Key key = CatBudToolsClient.getOpenItemQueryKey();
+			InputConstants.Key key = CatBudToolsClient.getOpenItemQueryKey();
 
-			if (key.getCategory() != InputUtil.Type.KEYSYM) {
+			if (key.getType() != InputConstants.Type.KEYSYM) {
 				return;
 			}
 
-			if (GLFW.glfwGetKey(
-					client.getWindow().getHandle(),
-					key.getCode()
-			) != GLFW.GLFW_PRESS) {
+			if (GLFW.glfwGetKey(client.getWindow().handle(),key.getValue()) != GLFW.GLFW_PRESS) {
 				return;
 			}
 		}
@@ -141,19 +139,19 @@ public final class SpecialInfoOverlay {
 		}
 
 		// line
-		List<Text> lines = new ArrayList<>();
+		List<Component> lines = new ArrayList<>();
 
-		lines.add(hoveredStack.getName());
+		lines.add(hoveredStack.getHoverName());
 
 		for (TooltipSection section : displaySections) {
 			lines.addAll(section.getLines());
 		}
 		if (!config.AlwaysShowTooltip){
 			lines.add(
-				Text.translatable(
+				Component.translatable(
 							"overlay.catbud-tools.close_hint",
-							CatBudToolsClient.OPEN_ITEM_QUERY_KEY.getBoundKeyLocalizedText())
-					.styled(style -> style.withColor(Formatting.GRAY)));
+							CatBudToolsClient.OPEN_ITEM_QUERY_KEY.getTranslatedKeyMessage())
+					.withStyle(style -> style.withColor(ChatFormatting.GRAY)));
 		}
 		if (enchantSectionCount > config.max_display_enchant && config.max_display_enchant != 0) {
 			int totalPage = (enchantSectionCount + config.max_display_enchant - 1) / config.max_display_enchant;
@@ -161,16 +159,16 @@ public final class SpecialInfoOverlay {
     			enchantPage = totalPage - 1;
 			}
 			lines.add(
-				Text.literal(
+				Component.literal(
 					"透過滾輪切換特附頁面顯示(" + (enchantPage + 1) + "/" + totalPage + ")"));
 		}
 		// 依據玩家的 Config 設定動態計算 Tooltip 在螢幕上的 X, Y 繪製座標
-		var textRenderer = client.textRenderer;
-		int width = lines.stream().mapToInt(textRenderer::getWidth).max().orElse(0) + 12;
+		Font font = client.font;
+		int width = lines.stream().mapToInt(font::width).max().orElse(0) + 12;
 		int height = lines.size() * 11 + 8;
 
-		int scaledWidth = client.getWindow().getScaledWidth();
-		int scaledHeight = client.getWindow().getScaledHeight();
+		int scaledWidth = client.getWindow().getGuiScaledWidth();
+		int scaledHeight = client.getWindow().getGuiScaledHeight();
 		int x, y;
 
 		switch (config.tooltipPosition) {
@@ -207,61 +205,61 @@ public final class SpecialInfoOverlay {
 		context.fill(x - 4, y - 4, x + width, y + height, 0xE0101010);
 		for (int index = 0; index < lines.size(); index++) {
 			int color = index == 0 ? 0xFFFFD85A : (index == 1 ? 0xFFFFFFFF : 0xFFB8B8B8);
-			context.drawTextWithShadow(textRenderer, lines.get(index), x, y + index * 11, color);
+			context.drawString(font, lines.get(index), x, y + index * 11, color);
 		}
 	}
 	// 特附info
-	private static ItemEnchantmentsComponent getSpecialEnchantments(ItemStack stack) {
+	private static ItemEnchantments getSpecialEnchantments(ItemStack stack) {
 
-		ItemEnchantmentsComponent stored =
-				stack.get(DataComponentTypes.STORED_ENCHANTMENTS);
+		ItemEnchantments stored =
+				stack.get(DataComponents.STORED_ENCHANTMENTS);
 
 		if (stored != null) {
 			return stored;
 		}
 
-		return stack.get(DataComponentTypes.ENCHANTMENTS);
+		return stack.get(DataComponents.ENCHANTMENTS);
 	}
 	private static List<TooltipSection> getEnchantInfoSections(ItemStack stack) {
 		List<TooltipSection> sections = new ArrayList<>();
 		CatBudConfig config = CatBudConfig.getInstance();
-		ItemEnchantmentsComponent enchantments = getSpecialEnchantments(stack);
+		ItemEnchantments enchantments = getSpecialEnchantments(stack);
 
 		if (enchantments == null) {
 			return sections;
 		}
 
-		enchantments.getEnchantments().stream()
-				.filter(enchantment -> enchantment.getKey()
-						.map(key -> key.getValue().getNamespace().equals(CATBUD_ENCHANTMENT_NAMESPACE))
+		enchantments.keySet().stream()
+				.filter(enchantment -> enchantment.unwrapKey()
+						.map(key -> key.identifier().getNamespace().equals(CATBUD_ENCHANTMENT_NAMESPACE))
 						.orElse(false))
-				.forEach(enchantment -> enchantment.getKey().ifPresent(key -> {
-					String path = key.getValue().getPath();
+				.forEach(enchantment -> enchantment.unwrapKey().ifPresent(key -> {
+					String path = key.identifier().getPath();
 					SpecialEnchantInfo enchantInfo = SpecialEnchantRegistry.get(path);
 					String enchantName = enchantInfo.getName();
 					int level = enchantments.getLevel(enchantment);
-					List<Text> enchantLines = new ArrayList<>();
+					List<Component> enchantLines = new ArrayList<>();
 					enchantLines.add(
-						catbudTranslate(enchantName).append(Text.literal(" " + level))
-							.styled(style -> style.withColor(Formatting.WHITE)));
+						catbudTranslate(enchantName).append(Component.literal(" " + level))
+							.withStyle(style -> style.withColor(ChatFormatting.WHITE)));
 
 					// 從 special_enchants.json 讀取 lore 與 conflict
 					if (enchantInfo != null) {
 						for (String loreLine : enchantInfo.getLore()) {
 							enchantLines.add(
-								Text.literal("  " + loreLine)
-									.styled(style -> style.withColor(Formatting.GRAY)));
+								Component.literal("  " + loreLine)
+									.withStyle(style -> style.withColor(ChatFormatting.GRAY)));
 						}
 						// conflict(只在附魔書上顯示）
-						if (stack.isOf(Items.ENCHANTED_BOOK) && config.showDetailedEnchantInfo) {
-							enchantLines.add(Text.literal("最大等級 " + enchantInfo.getMaxlevel()).styled(style -> style.withColor(Formatting.GRAY)));
+						if (stack.is(Items.ENCHANTED_BOOK) && config.showDetailedEnchantInfo) {
+							enchantLines.add(Component.literal("最大等級 " + enchantInfo.getMaxlevel()).withStyle(style -> style.withColor(ChatFormatting.GRAY)));
 							if (!enchantInfo.getConflict().isEmpty()) {
-								enchantLines.add(Text.literal(""));
-								enchantLines.add(Text.literal("與另外" + enchantInfo.getConflict().size() + "個衝突"));
+								enchantLines.add(Component.literal(""));
+								enchantLines.add(Component.literal("與另外" + enchantInfo.getConflict().size() + "個衝突"));
 								for (String conflictLine : enchantInfo.getConflict()) {
 									enchantLines.add(
-										Text.literal("  " + conflictLine)
-											.styled(style -> style.withColor(Formatting.WHITE)));
+										Component.literal("  " + conflictLine)
+											.withStyle(style -> style.withColor(ChatFormatting.WHITE)));
 								}
 							}
 						}
@@ -281,7 +279,7 @@ public final class SpecialInfoOverlay {
 
 		List<TooltipSection> sections = new ArrayList<>();
 
-		List<Text> lines = new ArrayList<>();
+		List<Component> lines = new ArrayList<>();
 
 		String id = SpecialDetector.getSpecialItemId(stack);
 		if (id == null) {
@@ -290,12 +288,12 @@ public final class SpecialInfoOverlay {
 		SpecialItemInfo itemInfo = SpecialItemRegistry.get(id);
 		// Lore
 		for (String loreLine : itemInfo.getLore()) {
-			lines.add(Text.literal(loreLine).styled(style -> style.withColor(Formatting.WHITE)));
+			lines.add(Component.literal(loreLine).withStyle(style -> style.withColor(ChatFormatting.WHITE)));
 		}
 		// TIP
 		if (!itemInfo.getTip().isEmpty()){
 			for (String tipLine : itemInfo.getTip()) {
-				lines.add(Text.literal(tipLine).styled(style -> style.withColor(Formatting.GRAY)));
+				lines.add(Component.literal(tipLine).withStyle(style -> style.withColor(ChatFormatting.GRAY)));
 			}
 		}
 		sections.add(
