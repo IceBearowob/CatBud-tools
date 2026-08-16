@@ -6,6 +6,6 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 
 @Mixin(CommandSuggestions.class)
 public interface CommandSuggestionsAccessor {
-    @Accessor("window")
-    CommandSuggestions.SuggestionsList  catbud$getWindow();
+    @Accessor("suggestions")
+    CommandSuggestions.SuggestionsList catbud$getWindow();
 }
