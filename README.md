@@ -8,21 +8,21 @@
 
 ## 還沒實現的功能
 - 開Fork支援26.2
-- 優化跟更新內容...還有避免ㄧ些奇怪的問題(就是說你為啥要帶著這模組去玩其他伺服器)
+- 優化跟更新內容...還有避免ㄧ些奇怪的問題
 
 ## 版本
-CatBud Tools - 0.7.9-r9-b12-1.21.11
+CatBud Tools - 0.7.10-r9-b12-1.21.11
 ### 依賴項
 必須安裝[YetAnotherConfigLib](https://modrinth.com/mod/yacl)!
 
 ## 如何下載
-等我覺得可以release的時候你可以從右邊載，或者自己去action抓artifact   
+你可以在右邊的release下載正式版，或者自己去action抓artifact   
 你也可以選擇下載整個source下來，然後   
 ```
 ./gradlew.bat build
 ```
 他會將build出來的東西放在./build/lib內
-記得用JDK 21以上編譯
+記得用Java 21編譯
 
 ## 貓芽伺服器
 

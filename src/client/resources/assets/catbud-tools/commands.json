@@ -1,4 +1,14 @@
 {
+  "_b": {
+  "usage": "/_b",
+  "description": ["未知指令"],
+  "tag": "OP"
+  },
+  "_c": {
+  "usage": "/_c",
+  "description": ["未知指令"],
+  "tag": "OP"
+  },
   "adless": {
     "usage": "/adless [操作類型]",
     "description": [
@@ -322,6 +332,26 @@
     "usage": "/inspect",
     "description": ["未知指令"]
   },
+  "keep": {
+    "usage": "/keep [重生操作類型]",
+    "description": [
+      "跟撤銷重生計畫有關的指令",
+      "直接輸入會直接切換狀態",
+      "on:開始進行解除刷新;off:停止進行解除刷新"
+    ],
+    "subcommands": {
+      "allow": {
+        "usage": "/keep allow",
+        "description": ["允許玩家自行解除刷新"],
+        "tag": "OP"
+      },
+      "deny": {
+        "usage": "/keep reject",
+        "description": ["拒絕玩家自行解除刷新"],
+        "tag": "OP"
+      }
+    }
+  },
   "ips": {
     "usage": "/ips",
     "description": ["查看所有玩家的IP"]
@@ -560,77 +590,56 @@
       "在測試服輸入電子郵件沒用，可以寫到份量就好"
     ]
   },
-  "keep": {
-    "usage": "/keep [重生操作類型]",
+  "raffle": {
+    "usage": "/raffle <抽獎操作類型>",
+    "description": ["與抽獎有關的指令"],
+    "tag": "GUI",
+    "subcommands": {
+      "buy": {
+        "usage": "/raffle buy",
+        "description": ["抽一次獎"]
+      },
+      "exchange": {
+        "usage": "/raffle exchange <獎品類型>",
+        "description": ["兌換獎品"],
+        "subcommands": {
+          "*": {
+            "tag": "raffle"
+          }
+        }
+      },
+      "guaranteed": {
+        "usage": "/raffle guaranteed",
+        "description": ["查詢目前的保底卷數量"]
+      },
+      "loop": {
+        "usage": "/raffle loop",
+        "description": ["開關自動循環抽獎"]
+      },
+      "prize": {
+        "usage": "/raffle prize",
+        "description": ["查看抽獎獎項"]
+      },
+      "total": {
+        "usage": "/raffle total",
+        "description": ["查詢從以前到現在抽了多少次"]
+      }
+    }
+  },
+  "rank": {
+    "usage": "/rank <牌位操作類型>",
     "description": [
-      "跟撤銷重生計畫有關的指令",
-      "直接輸入會直接切換狀態",
-      "on:開始進行解除刷新;off:停止進行解除刷新"
+      "與牌位點數有關的指令",
+      "直接輸入會開啟購買牌位點數的GUI"
     ],
     "subcommands": {
-      "allow": {
-        "usage": "/keep allow",
-        "description": ["允許玩家自行解除刷新"],
-        "tag": "OP"
+      "buy": {
+        "usage": "/rank buy <牌位點數參數>",
+        "description": ["購買牌位點數"]
       },
-      "deny": {
-        "usage": "/keep reject",
-        "description": ["拒絕玩家自行解除刷新"],
-        "tag": "OP"
-      }
-    }
-  },
-  "special": {
-    "usage": "/special <參數>",
-    "description": ["獲得特殊物品或召喚特殊實體的指令"],
-    "tag": "OP",
-    "subcommands": {
-      "item": {
-        "usage": "/special item <物品>",
-        "description": ["獲得特殊物品"],
-        "subcommands": {
-          "*": {
-            "tag": "special_item"
-          }
-        }
-      },
-      "entity": {
-        "usage": "/special entity <實體>",
-        "description": ["召喚特殊實體"],
-        "subcommands": {
-          "*": {
-            "tag": "special_entity"
-          }
-        }
-      }
-    }
-  },
-  "tester": {
-    "usage": "/tester",
-    "description": [
-      "在正式服輸入可以前往測試服",
-      "在測試服輸入可以返回正式服",
-      "需要月卡在有效期間才能使用"
-    ]
-  },
-  "to": {
-    "usage": "/to <傳送操作類型>",
-    "description": ["公傳點的系列指令"],
-    "subcommands": {
-      "set": {
-        "usage": "/to set",
-        "description": ["在當前座標設置公傳點"]
-      },
-      "clear": {
-        "usage": "/to clear",
-        "description": ["移除公傳點"]
-      },
-      "by": {
-        "usage": "/to by <目標玩家參數>",
-        "description": [
-          "傳送到玩家的公傳點",
-          "目標玩家月卡需要在有效期間才能傳送"
-        ]
+      "point": {
+        "usage": "/rank point",
+        "description": ["查詢目前牌位點數"]
       }
     }
   },
@@ -651,6 +660,104 @@
         ]
       }
     }
+  },
+  "recycle": {
+    "usage": "/recycle <回收操作參數>",
+    "description": ["回收特定SN的物品"],
+    "tag": "OP",
+    "subcommands": {
+      "add": {
+        "usage": "/recycle add <SN參數>",
+        "description": ["加入要回收的SN清單"]
+      },
+      "clear": {
+        "usage": "/recycle clear",
+        "description": ["清除清單內所有要回收的SN"]
+      },
+      "list": {
+        "usage": "/recycle list",
+        "description": ["查詢要回收的SN清單"]
+      },
+      "remove": {
+        "usage": "/recycle remove <SN參數>",
+        "description": ["從要回收的清單移除輸入的SN"]
+      }
+    }
+  },
+  "regen": {
+    "usage": "/regen <重生操作類型>",
+    "description": ["與重生計畫有關的指令"],
+    "tag": "OP",
+    "subcommands": {
+      "execute": {
+        "usage": "/regen execute <解除安全鎖鑰匙>",
+        "description": [
+          "開始進行重生計畫",
+          "安全鎖鑰匙可以在輸入/regen execute後拿到"
+        ]
+      },
+      "plan": {
+        "usage": "/regen plan <重生計畫參數> <重生操作類型>",
+        "description": ["新增/更改/移除重生計畫區域"],
+        "subcommands": {
+          "area": {
+            "usage": "/regen plan area <add/remove> <世界環境> <X1> <Z1> <X2> <Z2>",
+            "description": [
+              "新增/刪除在指定世界(X1,Z1)~(X2,Z2)範圍內的重生計畫",
+              "注意:X和Z都是指區塊座標"
+            ]
+          },
+          "chunk": {
+            "usage": "/regen plan chunk <add/remove> <世界環境> <X> <Z>",
+            "description": [
+              "新增/刪除在指定世界(X,Z)的重生計畫",
+              "注意:X和Z都是指區塊座標"
+            ]
+          },
+          "clear": {
+            "usage": "/regen plan clear",
+            "description": ["清除所有重生計畫區塊"]
+          },
+          "file": {
+            "usage": "/regen plan file <add/remove> <檔案路徑>",
+            "description": ["從檔案取得重生計畫區塊資料"]
+          },
+          "size": {
+            "usage": "/regen plan size",
+            "description": ["查詢重生計畫區塊總數"]
+          }
+        }
+      },
+      "stop": {
+        "usage": "/regen stop",
+        "description": ["終止重生計畫"]
+      }
+    }
+  },
+  "renewbie": {
+    "usage": "/renewbie <目標玩家參數>",
+    "description": ["使目標玩家進行新手初始化"],
+    "tag": "OP"
+  },
+  "resave": {
+    "usage": "/resave <目標玩家參數> <存檔時間>",
+    "description": ["讀取目標玩家的特定時間存檔到自身"],
+    "tag": "OP"
+  },
+  "resky": {
+    "usage": "/resky <空島編號>",
+    "description": ["強制進入特定編號的空島"],
+    "tag": "OP"
+  },
+  "resn": {
+    "usage": "/resn",
+    "description": ["更改物品的SN"],
+    "tag": "OP"
+  },
+  "revault": {
+    "usage": "/revault <目標玩家參數>",
+    "description": ["將目標玩家的藏館讀取到自身"],
+    "tag": "OP"
   },
   "room": {
     "usage": "/room <房間參數>",
@@ -843,6 +950,216 @@
         "description": ["查詢當前選擇模式的列隊人數"]
       }
     }
+  },
+  "rule": {
+    "usage": "/rule",
+    "description": ["查看貓芽規則"]
+  },
+  "satellite": {
+    "usage": "/satellite [衛星操作類型]",
+    "description": ["與衛星有關的指令"],
+    "tag": "GUI",
+    "subcommands": {
+      "clear": {
+        "usage": "/satellite clear",
+        "description": ["清除當前正在使用的衛星"]
+      },
+      "set": {
+        "usage": "/satellite set <衛星編號>",
+        "description": ["設定衛星"]
+      }
+    }
+  },
+  "shield": {
+    "usage": "/shield [屏蔽操作類型]",
+    "description": ["與屏蔽有關的指令"],
+    "tag": "GUI",
+    "subcommands": {
+      "add": {
+        "usage": "/shield add <目標玩家參數>",
+        "description": ["屏蔽目標玩家"]
+      },
+      "buy": {
+        "usage": "/shield buy",
+        "description": ["購買屏蔽容量"]
+      },
+      "capacity": {
+        "usage": "/shield capacity",
+        "description": ["查詢當前屏蔽容量"]
+      },
+      "note": {
+        "usage": "/shield note <目標玩家參數> [備註]",
+        "description": ["為玩家新增或修改屏蔽備註"]
+      },
+      "page": {
+        "usage": "/shield page <頁數>",
+        "description": ["開啟特定頁數的屏蔽GUI"]
+      },
+      "remove": {
+        "usage": "/shield remove <目標玩家參數>",
+        "description": ["解除對目標玩家的屏蔽"]
+      },
+      "total": {
+        "usage": "/shield total",
+        "description": ["查詢當前屏蔽玩家總數"]
+      }
+    }
+  },
+  "shop": {
+    "usage": "/shop <商品編號> [商店操作類型] <商品數量>",
+    "description": [""],
+    "tag": "GUI",
+    "subcommands": {
+      "*": {
+        "subcommands": {
+          "buy": {
+            "tag": "shop_buy"
+          },
+          "price": {
+            "description": ["查詢商品價格"],
+            "tag": "shop_common"
+          },
+          "total": {
+            "description": ["查詢商品被購買了幾次"],
+            "tag": "shop_common"
+          }
+        }
+      }
+    }
+  },
+  "shrine": {
+    "usage": "/shrine",
+    "description": [
+      "與神社有關的指令",
+      "直接輸入可以退出神社，效果等於/shrine quit"
+    ],
+    "subcommands": {
+      "amulet": {
+        "usage": "/shrine amulet",
+        "description": ["查詢還能抽選幾次"]
+      },
+      "quit": {
+        "usage": "/shrine quit",
+        "description": ["離開神社"]
+      },
+      "total": {
+        "usage": "/shrine total",
+        "description": ["查詢已經抽選幾次"]
+      }
+    }
+  },
+  "sign": {
+    "usage": "/sign [簽到操作類型]",
+    "description": ["與簽到有關的指令"],
+    "tag": "GUI",
+    "subcommands": {
+      "count": {
+        "usage": "/sign count <簽到簿類型參數>",
+        "description": ["查詢簽到簿的簽到進度"]
+      },
+      "do": {
+        "usage": "/sign do <簽到簿類型參數>",
+        "description": ["對簽到簿簽到"]
+      },
+      "sheet": {
+        "usage": "/sign sheet <簽到簿類型參數>",
+        "description": ["開啟對應簽到簿GUI"]
+      },
+      "total": {
+        "usage": "/sign total <簽到簿類型參數>",
+        "description": ["查詢簽到簿總共簽到幾次"]
+      }
+    }
+  },
+  "sky": {
+    "usage": "/sky",
+    "description": ["離開空島"]
+  },
+  "sn": {
+    "usage": "/sn",
+    "description": ["查詢慣用手上的物品的SN"],
+    "tag": "OP"
+  },
+  "space": {
+    "usage": "/space <空間操作類型>",
+    "description": ["與區域回朔有關的指令"],
+    "tag": "OP",
+    "subcommands": {
+      "load": {
+        "usage": "/space load <檔案名稱>",
+        "description": ["從檔案還原空間"]
+      },
+      "save": {
+        "usage": "/space save <半徑參數>",
+        "description": ["將自身半徑x區塊的空間保存成[日期]-[時間].space檔案"]
+      }
+    }
+  },
+  "special": {
+    "usage": "/special <參數>",
+    "description": ["獲得特殊物品或召喚特殊實體的指令"],
+    "tag": "OP",
+    "subcommands": {
+      "item": {
+        "usage": "/special item <物品>",
+        "description": ["獲得特殊物品"],
+        "subcommands": {
+          "*": {
+            "tag": "special_item"
+          }
+        }
+      },
+      "entity": {
+        "usage": "/special entity <實體>",
+        "description": ["召喚特殊實體"],
+        "subcommands": {
+          "*": {
+            "tag": "special_entity"
+          }
+        }
+      }
+    }
+  },
+  "task": {
+    "usage": "/task",
+    "description": ["查看任務介面"]
+  },
+  "tester": {
+    "usage": "/tester",
+    "description": [
+      "在正式服輸入可以前往測試服",
+      "在測試服輸入可以返回正式服",
+      "需要月卡在有效期間才能使用"
+    ]
+  },
+  "to": {
+    "usage": "/to <傳送操作類型>",
+    "description": ["公傳點的系列指令"],
+    "subcommands": {
+      "set": {
+        "usage": "/to set",
+        "description": ["在當前座標設置公傳點"]
+      },
+      "clear": {
+        "usage": "/to clear",
+        "description": ["移除公傳點"]
+      },
+      "by": {
+        "usage": "/to by <目標玩家參數>",
+        "description": [
+          "傳送到玩家的公傳點",
+          "目標玩家月卡需要在有效期間才能傳送"
+        ]
+      }
+    }
+  },
+  "translator": {
+    "usage": "/translator <翻譯員編號>",
+    "description": [
+      "查看翻譯訊息",
+      "翻譯員編號是個UUID",
+      "反正通常你不會用到這指令"
+    ]
   },
   "unmap": {
     "usage": "/unmap <地圖編號>",

@@ -47,12 +47,12 @@ public final class CommandInfoOverlay {
         }
         return lines;
     }
-    // 給 /special 專用的info
+    // 給 /special /raffle exchange 專用的info
     private static List<Text> specialCommandInfo(String text, String tag) {
         List<Text> lines = new ArrayList<>();
         String[] special = text.split(" ");
         String key = "";
-        if (tag.equals("special_item")){
+        if (tag.equals("special_item") && tag.equals("raffle")){
             key = "items." + special[2];
         }
         else if (tag.equals("special_entity")){
@@ -84,6 +84,12 @@ public final class CommandInfoOverlay {
         if (tag.equals("special_entity")){
             lines.add(
                 Text.translatable("entities.common",Text.translatable(key))
+                .styled(style -> style.withColor(Formatting.WHITE))
+            );
+        }
+        if (tag.equals("raffle")){
+            lines.add(
+                Text.translatable("raffle.common",Text.translatable(key))
                 .styled(style -> style.withColor(Formatting.WHITE))
             );
         }
@@ -142,7 +148,7 @@ public final class CommandInfoOverlay {
     private static List<Text> modeCommandInfo(String text) {
         List<Text> lines = new ArrayList<>();
         String[] mode = text.split(" ");
-        String key = mode[2];
+        String key = "mode." + mode[2];
         // usage
         lines.add(
             Text.literal(text).styled(style -> style.withColor(Formatting.YELLOW).withBold(true))
@@ -154,9 +160,40 @@ public final class CommandInfoOverlay {
         );
         return lines;
     }
+    // /shop 專用info
+    private static List<Text> shopCommandInfo(String text, CommandInfo info) {
+        List<Text> lines = new ArrayList<>();
+        String[] shop = text.split(" ");
+        String key = "items." + shop[1];
+        String tag = info.getTag();
+        // usage
+        if (tag.equals("shop_common")){
+            lines.add(Text.literal("/shop " + shop[1] + " buy <商品數量>").styled(style -> style.withColor(Formatting.YELLOW).withBold(true)));
+        }
+        if (tag.equals("shop_buy")){
+            lines.add(Text.literal(text).styled(style -> style.withColor(Formatting.YELLOW).withBold(true)));
+        }
+        // desc
+        if (info.getDescription() != null && !info.getDescription().isEmpty()) {
+            for (String desc : info.getDescription()){
+                lines.add(Text.literal(desc).styled(style -> style.withColor(Formatting.WHITE)));
+            }
+        }
+        if (tag.equals("shop_buy")){
+            lines.add(Text.translatable("shop.common",Text.translatable(key)).styled(style -> style.withColor(Formatting.WHITE)));
+        }
+        return lines;
+    }
     // 檢查有沒有特殊info
     private static boolean checkWildCardInfo(CommandInfo info){
         if (info.getName().equals("*")){
+            return true;
+        }
+        return false;
+    }
+    // 特殊tag的info
+    private static boolean checkSpecialInfo(CommandInfo info){
+        if (info.getName().contains("shop")){
             return true;
         }
         return false;
@@ -195,9 +232,9 @@ public final class CommandInfoOverlay {
 
         // 準備要繪製的文字行數
         List<Text> lines = new ArrayList<>();
+        String tag = info.getTag();
         if (checkWildCardInfo(info)){
-            String tag = info.getTag();
-            if (tag.equals("buff") || tag.equals("config") || tag.equals("land_config") || tag.equals("land_license")){
+            if (tag.equals("buff") || tag.equals("config") || tag.contains("land")){
                 lines.addAll(configCommandInfo(text, tag));
             }
             if (tag.equals("mode")){
@@ -207,7 +244,12 @@ public final class CommandInfoOverlay {
                 lines.addAll(specialCommandInfo(text, tag));
             }
         }
-        if (!checkWildCardInfo(info)) {
+        if (checkSpecialInfo(info)){
+            if (tag.contains("shop")){
+                lines.addAll(shopCommandInfo(text, info));
+            }
+        }
+        if (!checkWildCardInfo(info) && !checkSpecialInfo(info)) {
             lines.addAll(regularCommandInfo(info));
         }
 

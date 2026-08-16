@@ -3,14 +3,14 @@
 	"id": "catbud-tools",
 	"version": "${version}",
 	"name": "CatBud tools",
-	"description": "貓芽伺服器限定的輔助模組，目前功能正在逐漸開發中!",
+	"description": "貓芽伺服器限定的輔助模組",
 	"authors": [
 		"Ice//2026"
 	],
 	"contact": {
 		"sources": "https://github.com/IceBearowob/CatBud-tools"
 	},
-	"license": "CC0-1.0",
+	"license": "unlicense",
 	"icon": "assets/catbud-tools/icon.png",
 	"environment": "*",
 	"entrypoints": {
