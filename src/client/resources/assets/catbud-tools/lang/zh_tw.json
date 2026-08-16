@@ -387,7 +387,7 @@
     "mode.magic_tower": "魔幻之塔",
     "mode.monster_wave": "怪物浪潮",
     "mode.common": "切換模式到\"%s\"",
-    "OP.command.common": "OP限定指令",
+    "OP.command.common": "需要OP權限才能使用",
     "GUI.command.common": "直接輸入可以開啟GUI",
     "config.display_structure_reset_countdown": "顯示結構重置倒數",
     "config.automatic_translation_sign_text": "自動翻譯告示牌文字",

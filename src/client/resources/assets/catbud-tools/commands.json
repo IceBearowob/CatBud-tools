@@ -10,7 +10,7 @@
   "tag": "OP"
   },
   "adless": {
-    "usage": "/adless [操作類型]",
+    "usage": "/adless [廣告操作類型]",
     "description": [
       "屏蔽廣告相關指令，",
       "直接輸入可以延長屏蔽廣告時間(與/adless extend功能相同)"
@@ -62,7 +62,7 @@
     "tag": "OP"
   },
   "beacon": {
-    "usage": "/beacon [操作類型]",
+    "usage": "/beacon [信標操作類型]",
     "description": ["與信標有關的指令"],
     "tag": "GUI",
     "subcommands": {
@@ -170,7 +170,7 @@
     }
   },
   "coin": {
-    "usage": "/coin [操作類型]",
+    "usage": "/coin [貨幣操作類型]",
     "description": ["與課金有關的指令"],
     "tag": "GUI",
     "subcommands": { 
@@ -262,7 +262,7 @@
     }
   },
   "friend": {
-    "usage": "/friend [操作類型]",
+    "usage": "/friend [好友操作類型]",
     "description": ["與好友有關的指令"],
     "tag": "GUI",
     "subcommands": {
@@ -357,7 +357,7 @@
     "description": ["查看所有玩家的IP"]
   },
   "land": {
-    "usage": "/land [操作類型]",
+    "usage": "/land [領地操作類型]",
     "description": ["與領地有關的指令"],
     "tag": "GUI",
     "subcommands": {
@@ -469,7 +469,7 @@
         "usage": "/mail clear <解除安全鎖鑰匙>",
         "description": [
           "清除所有郵件",
-          "安全鎖鑰匙可以在輸入/mail clear後得到(就是雙重保障)"
+          "安全鎖鑰匙可以在輸入/mail clear後得到"
         ]
       },
       "log": {
@@ -968,7 +968,24 @@
       },
       "set": {
         "usage": "/satellite set <衛星編號>",
-        "description": ["設定衛星"]
+        "description": ["設定衛星"],
+        "subcommands": {
+          "star": {
+            "usage": "/satellite set star",
+            "description": [
+              "設定衛星為\"星星\"",
+              "需要累積購買月卡3次以上才能使用"
+            ]
+          },
+          "heart": {
+            "usage": "/satellite set heart",
+            "description": [
+              "設定衛星為\"愛心\"",
+              "周遭有朋友的話，愛心會大量發生！",
+              "需要累積購買月卡6次以上才能使用"
+            ]
+          }
+        }
       }
     }
   },

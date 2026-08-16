@@ -26,17 +26,12 @@ public final class CommandInfoOverlay {
         List<Text> lines = new ArrayList<>();
         // 1. 指令語法 Usage (標題)
         if (info.getUsage() != null && !info.getUsage().isEmpty() && !info.getName().equals("*")) {
-            lines.add(Text.literal(info.getUsage()).styled(style -> style.withColor(Formatting.YELLOW).withBold(true)));
+            lines.add(Text.literal(info.getUsage()).styled(style -> style.withColor(Formatting.YELLOW)));
         }
         if (info.getName().equals("*")){
-            lines.add(Text.literal(text).styled(style -> style.withColor(Formatting.YELLOW).withBold(true)));
+            lines.add(Text.literal(text).styled(style -> style.withColor(Formatting.YELLOW)));
         }
         // 2. 指令說明 Description
-        if (info.getTag() != null && !info.getTag().isBlank()){
-            if (info.getTag().equals("OP")) {
-                lines.add(Text.translatable("OP.command.common").styled(style -> style.withColor(Formatting.WHITE)));
-            }
-        }
         if (info.getDescription() != null && !info.getDescription().isEmpty()) {
             for (String desc : info.getDescription()){
                 lines.add(Text.literal(desc).styled(style -> style.withColor(Formatting.WHITE)));
@@ -45,6 +40,9 @@ public final class CommandInfoOverlay {
         if (info.getTag() != null && !info.getTag().isBlank()){
             if (info.getTag().equals("GUI")) {
                 lines.add(Text.translatable("GUI.command.common").styled(style -> style.withColor(Formatting.WHITE)));
+            }
+            if (info.getTag().equals("OP")) {
+                lines.add(Text.translatable("OP.command.common").styled(style -> style.withColor(Formatting.WHITE)));
             }
         }
         return lines;
@@ -61,7 +59,7 @@ public final class CommandInfoOverlay {
             key = "entities." + special[2];
         }
         // usage
-        lines.add(Text.literal(text).styled(style -> style.withColor(Formatting.YELLOW).withBold(true)));
+        lines.add(Text.literal(text).styled(style -> style.withColor(Formatting.YELLOW)));
         // desc
         if (tag.equals("special_item")){
             // 處裡賽季武器的玩意
@@ -107,7 +105,7 @@ public final class CommandInfoOverlay {
             // usage
             lines.add(
                 Text.literal("/buff " + config[1]).append(" [true/def/false]")
-                .styled(style -> style.withColor(Formatting.YELLOW).withBold(true))
+                .styled(style -> style.withColor(Formatting.YELLOW))
             );
             // desc
             lines.add(Text.translatable("buff.common",Text.translatable(key)).styled(style -> style.withColor(Formatting.WHITE)));
@@ -117,7 +115,7 @@ public final class CommandInfoOverlay {
             // usage
             lines.add(
                 Text.literal("/config " + config[1]).append(" [true/def/false]")
-                .styled(style -> style.withColor(Formatting.YELLOW).withBold(true))
+                .styled(style -> style.withColor(Formatting.YELLOW))
             );
             // desc
             lines.add(Text.translatable("config.common",Text.translatable(key)).styled(style -> style.withColor(Formatting.WHITE)));
@@ -127,7 +125,7 @@ public final class CommandInfoOverlay {
             // usage
             lines.add(
                 Text.literal("/land config " + config[2] + " " + config[3]).append(" [true/def/false]")
-                .styled(style -> style.withColor(Formatting.YELLOW).withBold(true))
+                .styled(style -> style.withColor(Formatting.YELLOW))
             );
             // desc
             lines.add(Text.translatable("land_config.common",Text.translatable(key)).styled(style -> style.withColor(Formatting.WHITE)));
@@ -137,7 +135,7 @@ public final class CommandInfoOverlay {
             // usage
             lines.add(
                 Text.literal("/land license " + config[2] + " " + config[3] + " " + config[4]).append(" [true/def/false]")
-                .styled(style -> style.withColor(Formatting.YELLOW).withBold(true))
+                .styled(style -> style.withColor(Formatting.YELLOW))
             );
             // desc
             lines.add(Text.translatable("land_license.common",Text.translatable(key)).styled(style -> style.withColor(Formatting.WHITE)));
@@ -153,7 +151,7 @@ public final class CommandInfoOverlay {
         String key = "mode." + mode[2];
         // usage
         lines.add(
-            Text.literal(text).styled(style -> style.withColor(Formatting.YELLOW).withBold(true))
+            Text.literal(text).styled(style -> style.withColor(Formatting.YELLOW))
         );
         // desc
         lines.add(
@@ -170,10 +168,10 @@ public final class CommandInfoOverlay {
         String tag = info.getTag();
         // usage
         if (tag.equals("shop_buy")){
-            lines.add(Text.literal("/shop " + shop[1] + " buy <商品數量>").styled(style -> style.withColor(Formatting.YELLOW).withBold(true)));
+            lines.add(Text.literal("/shop " + shop[1] + " buy <商品數量>").styled(style -> style.withColor(Formatting.YELLOW)));
         }
         if (tag.equals("shop_common")){
-            lines.add(Text.literal(text).styled(style -> style.withColor(Formatting.YELLOW).withBold(true)));
+            lines.add(Text.literal(text).styled(style -> style.withColor(Formatting.YELLOW)));
         }
         // desc
         if (info.getDescription() != null && !info.getDescription().isEmpty()) {
@@ -189,6 +187,9 @@ public final class CommandInfoOverlay {
     // 檢查有沒有特殊info
     private static boolean checkWildCardInfo(CommandInfo info){
         if (info.getUsage() != null && info.getDescription() != null){
+            return false;
+        }
+        if (info.getTag() == null){
             return false;
         }
         if (info.getName().equals("*")){
