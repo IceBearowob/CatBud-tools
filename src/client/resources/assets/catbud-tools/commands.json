@@ -345,7 +345,7 @@
         "description": ["允許玩家自行解除刷新"],
         "tag": "OP"
       },
-      "deny": {
+      "reject": {
         "usage": "/keep reject",
         "description": ["拒絕玩家自行解除刷新"],
         "tag": "OP"
@@ -374,7 +374,9 @@
             "description": ["調整領地全域設置"],
             "tag": "GUI",
             "subcommands": {
-              "tag": "land_config"
+              "*": {
+                "tag": "land_config"
+              }
             }
           }
         }
@@ -398,7 +400,7 @@
         "usage": "/land license <目標座標參數> <目標玩家參數/@> <領地權限類型> [true/def/false]",
         "description": ["調整領地玩家權限"],
         "subcommands": {
-            "*": {
+          "*": {
             "usage": "/land license <目標座標參數> <目標玩家參數/@> <領地權限類型> [true/def/false]",
             "description": ["調整領地玩家權限"],
             "tag": "GUI",
@@ -1007,7 +1009,7 @@
   },
   "shop": {
     "usage": "/shop <商品編號> [商店操作類型] <商品數量>",
-    "description": [""],
+    "description": ["與商店有關的指令"],
     "tag": "GUI",
     "subcommands": {
       "*": {

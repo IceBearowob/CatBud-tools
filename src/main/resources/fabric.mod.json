@@ -25,7 +25,6 @@
 		]
 	},
 	"mixins": [
-		"catbud-tools.mixins.json",
 		{
 			"config": "catbud-tools.client.mixins.json",
 			"environment": "client"

@@ -193,7 +193,7 @@ public final class CommandInfoOverlay {
     }
     // 特殊tag的info
     private static boolean checkSpecialInfo(CommandInfo info){
-        if (info.getName().contains("shop")){
+        if (info.getTag().contains("shop")){
             return true;
         }
         return false;
