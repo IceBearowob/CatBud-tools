@@ -32,4 +32,4 @@ public class TooltipSection {
     public List<Component> getLines() {
         return lines;
     }
-}
+}

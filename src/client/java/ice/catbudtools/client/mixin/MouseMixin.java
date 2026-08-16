@@ -29,4 +29,4 @@ public class MouseMixin {
                 vertical > 0 ? -1 : 1
         );
     }
-}
+}

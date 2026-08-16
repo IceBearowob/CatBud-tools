@@ -1,6 +1,6 @@
 package ice.catbudtools.client;
 
-import ice.catbudtools.client.mixin.KeyBindingAccessor;
+import ice.catbudtools.client.mixin.KeyMappingAccessor;
 import ice.catbudtools.client.config.CatBudConfig;
 import ice.catbudtools.client.specialtooltip.SpecialEnchantRegistry;
 import ice.catbudtools.client.specialtooltip.SpecialInfoOverlay;
@@ -55,7 +55,7 @@ public class CatBudToolsClient implements ClientModInitializer {
 			);
 
 	public static InputConstants.Key getOpenItemQueryKey() {
-		return ((KeyBindingAccessor) OPEN_ITEM_QUERY_KEY).catbud$getBoundKey();
+		return ((KeyMappingAccessor) OPEN_ITEM_QUERY_KEY).catbud$getBoundKey();
 	}
 
 	@Override

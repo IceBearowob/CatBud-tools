@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ice.catbudtools.client.config.CatBudConfig;
-import ice.catbudtools.client.mixin.ChatInputSuggestorAccessor;
+import ice.catbudtools.client.mixin.CommandSuggestionsAccessor;
 import ice.catbudtools.client.mixin.ChatScreenAccessor;
 import ice.catbudtools.client.mixin.SuggestionWindowAccessor;
 import net.minecraft.client.Minecraft;
@@ -285,7 +285,7 @@ public final class CommandInfoOverlay {
         // 檢查原生 CommandSuggestions 補全選單是否存在
         CommandSuggestions suggestor = ((ChatScreenAccessor) chatScreen).catbud$getChatInputSuggestor();
         if (suggestor != null) {
-            CommandSuggestions.SuggestionsList window = ((ChatInputSuggestorAccessor) suggestor).catbud$getWindow();
+            CommandSuggestions.SuggestionsList window = ((CommandSuggestionsAccessor) suggestor).catbud$getWindow();
             if (window != null) {
                 Rect2i area = ((SuggestionWindowAccessor) window).catbud$getArea();
                 if (area != null) {
