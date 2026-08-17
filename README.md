@@ -7,7 +7,7 @@
 - 自定義Tooltip位置和顯示方法
 
 ## 版本
-CatBud Tools - 1.0.1-r9-b14-26.2   
+CatBud Tools - 1.0.1-r9-b16-26.2   
 目前支援Minecraft版本:1.21.11、26.2
 ### 依賴項
 必須安裝[YetAnotherConfigLib](https://modrinth.com/mod/yacl)!
