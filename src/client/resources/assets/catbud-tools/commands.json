@@ -809,15 +809,19 @@
               },
               "icebear": {
                 "usage": "/room config script icebear",
-                "description": ["將天界boss設定為\"冰熊\""]
+                "description": ["將天界boss設定為\"天界冰熊\""]
               },
               "systemcat": {
                 "usage": "/room config script systemcat",
-                "description": ["將天界boss設定為\"系統貓\""]
+                "description": ["將天界boss設定為\"天界系統貓\""]
               },
               "tangair": {
                 "usage": "/room config script tangair",
-                "description": ["將天界boss設定為\"會長\""]
+                "description": ["將天界boss設定為\"天界會長\""]
+              },
+              "lucifer": {
+                "usage": "/room config script lucifer",
+                "description": ["將魔界boss設定為\"魔界路西法\""]
               }
             }
           },
