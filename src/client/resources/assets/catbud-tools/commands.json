@@ -196,7 +196,8 @@
   },
   "countries": {
     "usage": "/countries",
-    "description": ["查看所有玩家使用的語言(遊戲設置)"]
+    "description": ["查看所有玩家使用的語言(遊戲設置)"],
+    "tag": "OP"
   },
   "detached": {
     "usage": "/detached",
@@ -322,15 +323,18 @@
       "直接輸入會直接切換狀態",
       "true:隱形;false:解除隱形",
       "- 隱形時玩家無法看到你，但依然有方法可以知道"
-    ]
+    ],
+    "tag": "OP"
   },
   "hosts": {
     "usage": "/hosts",
-    "description": ["查看玩家連線到哪個貓芽伺服器地址"]
+    "description": ["查看玩家連線到哪個貓芽伺服器地址"],
+    "tag": "OP"
   },
   "inspect": {
     "usage": "/inspect",
-    "description": ["未知指令"]
+    "description": ["未知指令"],
+    "tag": "OP"
   },
   "keep": {
     "usage": "/keep [重生操作類型]",
@@ -354,7 +358,8 @@
   },
   "ips": {
     "usage": "/ips",
-    "description": ["查看所有玩家的IP"]
+    "description": ["查看所有玩家的IP"],
+    "tag": "OP"
   },
   "land": {
     "usage": "/land [領地操作類型]",
@@ -590,7 +595,8 @@
     "description": [
       "給予玩家特定分量的貓幣",
       "在測試服輸入電子郵件沒用，可以寫到份量就好"
-    ]
+    ],
+    "tag": "OP"
   },
   "raffle": {
     "usage": "/raffle <抽獎操作類型>",
