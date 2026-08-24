@@ -57,7 +57,7 @@
     "tag": "GUI"
   },
   "ban-day": {
-    "usage": "/ban-day <目標玩家參數> <天數(1/3/9)> <原因>",
+    "usage": "/ban-day <目標玩家參數> <天數(1/3/7)> <原因>",
     "description": ["將玩家以特定天數ban掉(只有R/SR/SSR的天數選項)"],
     "tag": "OP"
   },
