@@ -303,5 +303,8 @@
     "sky_island_crystal": {
         "lore": ["點右鍵就能進入空島"],
         "tip": []
+    },
+    "map_uncopyable_ingredient": {
+        "lore": ["能將「地圖」的可複製機制停用"]
     }
 }
