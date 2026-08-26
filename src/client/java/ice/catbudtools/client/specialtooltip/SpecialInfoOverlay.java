@@ -296,6 +296,13 @@ public final class SpecialInfoOverlay {
 				lines.add(Component.literal(tipLine).withStyle(style -> style.withColor(ChatFormatting.GRAY)));
 			}
 		}
+		// 擬人化的common tip
+		if (id.contains("humanoid_armor_stand_spirit")) {
+			itemInfo = SpecialItemRegistry.get("humanoid_armor_stand_spirit_common");
+			for (String tipLine : itemInfo.getTip()) {
+				lines.add(Component.literal(tipLine).withStyle(style -> style.withColor(ChatFormatting.GRAY)));
+			}
+		}
 		sections.add(
 			new TooltipSection(
 				TooltipSection.Type.SPECIAL_ITEM,

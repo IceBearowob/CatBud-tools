@@ -456,19 +456,20 @@
     }
   },
   "log": {
-    "usage": "/log [搜索半徑] -p [玩家參數] -t [紀錄類型] -m [物品或方塊材質]",
+    "usage": "/log [搜索半徑] -p [玩家參數] -t [紀錄類型] -m [物品或方塊材質] -e [實體]",
     "description": [
       "以半徑x格查詢紀錄，半徑只能在0~128之間",
       "-p／-player 玩家名稱、暱稱或 UUID，多個以逗號分隔",
       "-t／-type 紀錄類型，多個以逗號分隔",
-      "-m／-material 物品或方塊材質，多個以逗號分隔"
+      "-m／-material 物品或方塊材質，多個以逗號分隔",
+      "-e／-entity 實體類型，多個以逗號分隔"
     ],
     "tag": "GUI"
   },
   "mail": {
     "usage": "/mail <郵件操作類型>",
     "description": ["與郵件有關的指令"],
-    "tip": "GUI",
+    "tag": "GUI",
     "subcommands": {
       "clear": {
         "usage": "/mail clear <解除安全鎖鑰匙>",
@@ -480,7 +481,7 @@
       "log": {
         "usage": "/mail log [頁數]",
         "description": ["開啟對應頁數的郵件發送紀錄GUI"],
-        "tip": "GUI"
+        "tag": "GUI"
       },
       "msg": {
         "usage": "/mail msg <目標玩家參數> [郵件標題] [郵件內文]",
@@ -489,7 +490,7 @@
       "page": {
         "usage": "/mail page [頁數]",
         "description": ["開啟對應頁數的郵件GUI"],
-        "tip": "GUI"
+        "tag": "GUI"
       },
       "pay": {
         "usage": "/mail pay <目標玩家參數> <要發送的金額> [郵件標題] [郵件內文]",

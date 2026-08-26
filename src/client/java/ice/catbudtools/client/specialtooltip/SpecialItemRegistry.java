@@ -49,10 +49,10 @@ public final class SpecialItemRegistry {
     }
 
     /**
-     * 取得指定附魔路徑（path）的特附資料，例如 {@code "landmark"}。
+     * 取得指定物品路徑（path）的特附資料，例如 {@code "landmark"}。
      * 若尚未載入則自動呼叫 {@link #load()}。
      *
-     * @param path 附魔的 path 部分（不含命名空間前綴）
+     * @param path 物品的 path 部分（不含命名空間前綴）
      * @return 對應的 {@link SpecialItemInfo}，或 {@code null}（若不存在）
      */
     public static SpecialItemInfo get(String path) {

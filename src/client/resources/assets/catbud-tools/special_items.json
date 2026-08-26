@@ -2,78 +2,66 @@
     "mimicry_card.evoker": {
         "lore": [
             "右鍵會產生「喚魔者尖牙」"
-        ],
-        "tip": []
+        ]
     },
     "mimicry_card.ghast": {
         "lore": [
             "右鍵會發射「火球」"
-        ],
-        "tip": []
+        ]
     },
     "mimicry_card.shulker": {
         "lore": [
             "右鍵會發射「界伏彈」",
             "不會受到「摔落」傷害"
-        ],
-        "tip": []
+        ]
     },
     "mimicry_card.magma_cube": {
         "lore": [
             "近戰攻擊給予目標「滲漿 I」狀態效果 300 刻（15 秒）",
             "不會受到「火焰」傷害",
             "受到的「凍傷」傷害更高"
-        ],
-        "tip": []
+        ]
     },
     "mimicry_card.slime": {
         "lore": [
             "近戰攻擊給予目標「滲漿 I」狀態效果 900 刻（45 秒）"
-        ],
-        "tip": []
+        ]
     },
     "mimicry_card.silverfish": {
         "lore": [
             "近戰攻擊給予目標「蛀蝕 I」狀態效果 900 刻（45 秒）"
-        ],
-        "tip": []
+        ]
     },
     "mimicry_card.spider": {
         "lore": [
             "近戰攻擊給予目標「結網 I」狀態效果 900 刻（45 秒）"
-        ],
-        "tip": []
+        ]
     },
     "mimicry_card.cave_spider": {
         "lore": [
             "近戰攻擊給予目標「劇毒 I」狀態效果 300 刻（15 秒）"
-        ],
-        "tip": []
+        ]
     },
     "mimicry_card.wither_skeleton": {
         "lore": [
             "近戰攻擊給予目標「凋零 I」狀態效果 200 刻（10 秒）"
-        ],
-        "tip": []
+        ]
     },
     "mimicry_card.warden": {
         "lore": [
             "右鍵會產生「音爆」"
-        ],
-        "tip": []
+        ]
     },
     "mimicry_card.ender_dragon": {
         "lore": [
             "右鍵會發射「龍炎彈」"
-        ],
-        "tip": []
+        ]
     },
     "mimicry_card.wither": {
         "lore": [
             "右鍵會發射「凋零頭顱」",
             "生命值小於 50% 時，會免疫射出的「箭」和投擲的「三叉戟」"
-        ],
-        "tip": []
+        ]
     },
     "mimicry_card.blaze": {
         "lore": [
@@ -81,104 +69,80 @@
             "不會受到「火焰」傷害",
             "碰到「水」／被「雨」淋／被「雪球」砸／被「飛濺水瓶」砸時，會受傷",
             "受到的「凍傷」傷害更高"
-        ],
-        "tip": []
+        ]
     },
     "mimicry_card.breeze": {
         "lore": [
             "右鍵會扔出「風彈」（需要領地「生成實體」權限）",
             "「投射物」只有「風彈」會對自身造成傷害",
             "不會受到「摔落」傷害"
-        ],
-        "tip": []
+        ]
     },
     "mimicry_card.elder_guardian": {
         "lore": [
             "右鍵長按能攻擊已鎖定的「生物」（如果距離太遠或者有遮擋物則無法被鎖定）",
             "在水下不會消耗「氧氣值」",
             "攻擊成功時，會給目標 6000 刻的「挖掘疲勞 III」效果"
-        ],
-        "tip": []
+        ]
     },
     "mimicry_card.guardian": {
         "lore": [
             "右鍵長按能攻擊已鎖定的「生物」（如果距離太遠或者有遮擋物則無法被鎖定）",
             "在水下不會消耗「氧氣值」"
-        ],
-        "tip": []
+        ]
     },
     "mimicry_card.creeper": {
         "lore": [
             "右鍵長按累積 30 刻會「自爆」"
-        ],
-        "tip": []
+        ]
     },
     "mimicry_card.enderman": {
         "lore": [
             "右鍵使用後「隨機傳送至附近」，冷卻 40 刻",
             "碰到「水」／被「雨」淋時，會受傷",
             "完全忽視「投射物」碰撞，並強制「隨機傳送至附近」"
-        ],
-        "tip": []
+        ]
     },
 
     "humanoid_armor_stand_spirit_enthusiastic": {
         "lore": [
             "跟隨玩家並保持約 2 格距離",
             "玩家看向它時會停在原地開心跳躍"
-        ],
-        "tip": []
+        ]
     },
     "humanoid_armor_stand_spirit_guardian": {
-        "lore": [
-            "駐守型",
-            "主動攻擊活動範圍內的敵對生物，受攻擊時反擊，戰鬥後返回原位"
-        ],
-        "tip": []
+        "lore": ["主動攻擊活動範圍內的敵對生物，受攻擊時反擊，戰鬥後返回原位"]
     },
     "humanoid_armor_stand_spirit_hostile": {
-        "lore": [
-            "駐守型",
-            "主動追擊生存／冒險模式玩家，戰鬥後返回原位"
-        ],
-        "tip": []
+        "lore": ["主動追擊生存／冒險模式玩家，戰鬥後返回原位"]
     },
     "humanoid_armor_stand_spirit_wandering": {
         "lore": [
             "在活動範圍內隨機走動",
             "停下時觀察玩家、生物、告示牌或隨機方向"
-        ],
-        "tip": []
+        ]
     },
     "humanoid_armor_stand_spirit_mischievous": {
         "lore": [
             "偷偷從背後接近玩家、敲一下後逃跑；被玩家發現時也會立即逃跑"
-        ],
-        "tip": []
+        ]
     },
     "humanoid_armor_stand_spirit_timid": {
         "lore": [
             "主動遠離附近玩家",
             "無路可逃時會面向玩家並顫抖"
-        ],
-        "tip": []
+        ]
     },
     "humanoid_armor_stand_spirit_grumpy": {
         "lore": [
             "嘗試擋在玩家行進方向並盯著玩家",
             "被攻擊後會回擊一次"
-        ],
-        "tip": []
+        ]
     },
     "humanoid_armor_stand_spirit_watchful": {
-        "lore": [
-            "駐守型",
-            "平時偶爾轉頭，附近有玩家時會高機率持續看向玩家"
-        ],
-        "tip": []
+        "lore": ["平時偶爾轉頭，附近有玩家時會高機率持續看向玩家"]
     },
-    "humanoid_armor_stand_spirit": {
-        "lore": [],
+    "humanoid_armor_stand_spirit_common": {
         "tip": [
             "只能在「擬人化盔甲座」右鍵使用",
             "「擬人化盔甲座」死亡後會返還對應的「擬人化盔甲座靈魂」",
@@ -207,8 +171,7 @@
         "lore": [
             "- 材質為「不死圖騰」，可穿戴於頭上",
             "- 玩偶會是自己的紋理、名稱"
-        ],
-        "tip": []
+        ]
     },
 
     "power_disable_alarm": {
@@ -239,70 +202,55 @@
     },
     "armor_stand_arms": {
         "lore": [
-            "最大堆疊 64，可重複使用"
-        ],
-        "tip": []
+            "最大堆疊 64，可重複使用",
+            "給盔甲架裝上手臂"
+        ]
     },
     "item_frame_transparent_masking": {
         "lore": [
-            "最大堆疊 64，可重複使用"
+            "最大堆疊 64，可重複使用",
+            "可以讓展示框隱形"
         ],
-        "tip": []
+        "tip": ["需要有物品放在展示框上才能使用"]
     },
     "armor_stand_miniaturize": {
-        "lore": [
-            "對著「盔甲座」使用後能將「盔甲座」變小"
-        ],
-        "tip": []
+        "lore": ["對著「盔甲座」使用後能將「盔甲座」變小"]
     },
     "humanoid_armor_stand": {
-        "lore": [
-            "對著有「手臂」的「盔甲座」使用後能將「盔甲座」變成自身外觀（20 血量）"
-        ],
-        "tip": []
+        "lore": ["對著有「手臂」的「盔甲座」使用後能將「盔甲座」變成自身外觀（20 血量）"]
     },
     "silent_mob_needle": {
-        "lore": [
-            "對生物使用後，生物不會發出聲音"
-        ],
-        "tip": [
-            "不可使用在玩家身上!"
-        ]
+        "lore": ["對生物使用後，生物不會發出聲音"],
+        "tip": ["不可使用在玩家身上!"]
     },
     "landmark": {
         "lore": [
             "存在「紅石信號」時顯示「懸浮文字」在 Y + 3 格處，",
             "玩家靠近到一定距離內會隱藏顯示"
-        ],
-        "tip": []
+        ]
     },
     "arrow_block": {
         "lore": [
             "周圍有紅石信號時會顯示動畫"
-        ],
-        "tip": []
+        ]
     },
     "blessing_shrine.coin_event": {
         "lore": [
             "噴出錢幣／紅石信號越強，半徑 32 方塊內事件效果越頻繁。"
-        ],
-        "tip": []
+        ]
     },
     "blessing_shrine.meteor_event": {
         "lore": [
             "掉落流星／紅石信號越強，半徑 32 方塊內事件效果越頻繁。"
-        ],
-        "tip": []
+        ]
     },
     "blessing_shrine.meteorite_event": {
         "lore": [
             "掉落隕石／紅石信號越強，半徑 32 方塊內事件效果越頻繁。"
-        ],
-        "tip": []
+        ]
     },
     "sky_island_crystal": {
-        "lore": ["點右鍵就能進入空島"],
-        "tip": []
+        "lore": ["點右鍵就能進入空島"]
     },
     "map_uncopyable_ingredient": {
         "lore": ["能將「地圖」的可複製機制停用"]
