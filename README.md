@@ -20,7 +20,7 @@ Java 版 1.21.6 ~ 26.2 登入．推薦 26.2
 - cloudflare.catbud.net (當前預設線路)  
 - tcpshield.catbud.net
 ### 萌新手冊: 
-[BlueRiver1214製作](https://drive.google.com/file/d/1fobEcg0DI7lwbmtKBDyWiLmoyVcFZb3s/view)  
+[V5.0 - BlueRiver1214 製作](https://drive.google.com/file/d/1KmiqM9i4h_8dwSzqH6x7-60Sxk7cmHol/view)  
 ### 群組連結:
 <https://discord.gg/catbud>
 ### 官方網站:
