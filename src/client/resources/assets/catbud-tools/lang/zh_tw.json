@@ -415,6 +415,7 @@
     "config.tab_pass_remaining_simplifier": "簡化 TAB 的月卡剩餘時間",
     "config.tab_unfriend_players_simplifier": "簡化 TAB 的非好友清單",
     "config.logging_sing_dialog": "登入時顯示簽到對話框",
+    "config.restart_countdown_broadcast": "重啟倒數廣播訊息",
     "config.common": "調整玩家資訊顯示功能\"%s\"",
     "land_config.do_explodes": "爆炸",
     "land_config.do_insomnia": "夜魅在夜晚生成",
