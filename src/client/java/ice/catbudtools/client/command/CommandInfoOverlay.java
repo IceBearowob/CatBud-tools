@@ -69,7 +69,7 @@ public final class CommandInfoOverlay {
 
         // desc
         if (tag.equals("special_item")) {
-            // 處裡賽季武器
+            // 處理賽季武器
             if (special[2].contains("season")) {
                 String[] season = special[2].split("\\.");
                 String item = season.length > 2 ? season[2] : "";
@@ -86,7 +86,8 @@ public final class CommandInfoOverlay {
             } else {
                 String itemName = ServerLangRegistry.getRaw(rawKey);
                 if (itemName == null) {
-                    itemName = ServerLangRegistry.getRaw("styles." + special[2]);
+                    rawKey = special[2].replaceFirst("style", "styles");
+                    itemName = ServerLangRegistry.getRaw(rawKey);
                 }
                 Component itemComp = itemName != null ? Component.literal(itemName) : Component.translatable(rawKey);
                 lines.add(
@@ -139,7 +140,6 @@ public final class CommandInfoOverlay {
             if (fullKey == null) return lines;
             String title = ServerLangRegistry.getRaw(fullKey);
             if (title == null) return lines;
-            List<String> lore = collectLore(fullKey);
             // usage
             lines.add(
                 Component.literal("/buff " + buffName).append(" [true/def/false]")
@@ -148,30 +148,23 @@ public final class CommandInfoOverlay {
             // desc (中文標題)
             lines.add(Component.translatable("buff.common", Component.literal(title))
                 .withStyle(style -> style.withColor(ChatFormatting.WHITE)));
-            // lore
-            for (String descLine : lore) {
-                lines.add(Component.literal("  " + descLine).withStyle(style -> style.withColor(ChatFormatting.GRAY)));
-            }
-        } else if (tag.equals("config") && function.length > 1) {
+        }
+        if (tag.equals("config") && function.length > 1) {
             String configName = function[1];
             String fullKey = ServerLangRegistry.findKeyBySuffix(".config." + configName);
             if (fullKey == null) return lines;
             String title = ServerLangRegistry.getRaw(fullKey);
             if (title == null) return lines;
-            List<String> lore = collectLore(fullKey);
             // usage
             lines.add(
                 Component.literal("/config " + configName).append(" [true/def/false]")
                 .withStyle(style -> style.withColor(ChatFormatting.YELLOW))
             );
             // desc (中文標題)
-            lines.add(Component.translatable("function.common", Component.literal(title))
+            lines.add(Component.translatable("config.common", Component.literal(title))
                 .withStyle(style -> style.withColor(ChatFormatting.WHITE)));
-            // lore
-            for (String descLine : lore) {
-                lines.add(Component.literal("  " + descLine).withStyle(style -> style.withColor(ChatFormatting.GRAY)));
-            }
-        } else if (tag.equals("land_config") && function.length > 3) {
+        }
+        if (tag.equals("land_config") && function.length > 3) {
             String landconfig = function[3];
             String fullKey = "plugins.territorial_director.config." + landconfig;
             String title = ServerLangRegistry.getRaw(fullKey);
@@ -189,7 +182,8 @@ public final class CommandInfoOverlay {
             for (String descLine : lore) {
                 lines.add(Component.literal("  " + descLine).withStyle(style -> style.withColor(ChatFormatting.GRAY)));
             }
-        } else if (tag.equals("land_license") && function.length > 4) {
+        }
+        if (tag.equals("land_license") && function.length > 4) {
             String landLicenseName = function[4];
             String title;
             List<String> lore;
@@ -229,15 +223,12 @@ public final class CommandInfoOverlay {
         if (mode.length <= 2) {
             return lines;
         }
-
         String modeName = mode[2];
         String fullKey = "plugins." + modeName + "." + modeName;
         String title = ServerLangRegistry.getRaw(fullKey);
         if (title == null) {
             return lines;
         }
-        List<String> lore = collectLore(fullKey);
-
         // usage
         lines.add(
             Component.literal(text).withStyle(style -> style.withColor(ChatFormatting.YELLOW))
@@ -247,10 +238,6 @@ public final class CommandInfoOverlay {
             Component.translatable("mode.common", Component.literal(title))
             .withStyle(style -> style.withColor(ChatFormatting.WHITE))
         );
-        // lore
-        for (String descLine : lore) {
-            lines.add(Component.literal("  " + descLine).withStyle(style -> style.withColor(ChatFormatting.GRAY)));
-        }
         return lines;
     }
     // /shop 專用info
