@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ice.catbudtools.client.config.CatBudConfig;
+import ice.catbudtools.client.lang.ServerLangRegistry;
 import ice.catbudtools.client.mixin.CommandSuggestionsAccessor;
 import ice.catbudtools.client.mixin.ChatScreenAccessor;
 import ice.catbudtools.client.mixin.SuggestionWindowAccessor;
@@ -52,113 +53,204 @@ public final class CommandInfoOverlay {
     private static List<Component> specialCommandInfo(String text, String tag) {
         List<Component> lines = new ArrayList<>();
         String[] special = text.split(" ");
-        String key = "";
-        if (tag.equals("special_item") || tag.equals("raffle")){
-            key = "items." + special[2];
+        if (special.length < 3) {
+            return lines;
         }
-        else if (tag.equals("special_entity")){
-            key = "entities." + special[2];
+
+        String rawKey = "";
+        if (tag.equals("special_item") || tag.equals("raffle")) {
+            rawKey = "items." + special[2];
+        } else if (tag.equals("special_entity")) {
+            rawKey = "entities." + special[2];
         }
+
         // usage
         lines.add(Component.literal(text).withStyle(style -> style.withColor(ChatFormatting.YELLOW)));
+
         // desc
-        if (tag.equals("special_item")){
-            // 處裡賽季武器的玩意
-            if (special[2].contains("season")){
+        if (tag.equals("special_item")) {
+            // 處裡賽季武器
+            if (special[2].contains("season")) {
                 String[] season = special[2].split("\\.");
-                String item = season[2];
-                if (item.contains("_0") || item.contains("_1")){
-                    item = item.substring(0,item.indexOf("_",-1));
+                String item = season.length > 2 ? season[2] : "";
+                if (item.contains("_0") || item.contains("_1")) {
+                    item = item.substring(0, item.indexOf("_", -1));
                 }
-                key = "items.seasons.nameless." + item;
+                String sKey = "seasons.nameless." + item;
+                String sName = ServerLangRegistry.getRaw(sKey);
+                Component itemComp = sName != null ? Component.literal(sName) : Component.translatable(sKey);
                 lines.add(
-                    Component.translatable("items.seasons.common", season[1], Component.translatable(key))
+                    Component.translatable("seasons.common", season.length > 1 ? season[1] : "", itemComp)
                     .withStyle(style -> style.withColor(ChatFormatting.WHITE))
                 );
-            }else{
+            } else {
+                String itemName = ServerLangRegistry.getRaw(rawKey);
+                if (itemName == null) {
+                    itemName = ServerLangRegistry.getRaw("styles." + special[2]);
+                }
+                Component itemComp = itemName != null ? Component.literal(itemName) : Component.translatable(rawKey);
                 lines.add(
-                    Component.translatable("items.common",Component.translatable(key))
+                    Component.translatable("items.common", itemComp)
                     .withStyle(style -> style.withColor(ChatFormatting.WHITE))
                 );
             }
         }
-        if (tag.equals("special_entity")){
+        if (tag.equals("special_entity")) {
+            String entName = ServerLangRegistry.getRaw(rawKey);
+            Component entComp = entName != null ? Component.literal(entName) : Component.translatable(rawKey);
             lines.add(
-                Component.translatable("entities.common",Component.translatable(key))
+                Component.translatable("entities.common", entComp)
                 .withStyle(style -> style.withColor(ChatFormatting.WHITE))
             );
         }
-        if (tag.equals("raffle")){
+        if (tag.equals("raffle")) {
+            String itemName = ServerLangRegistry.getRaw(rawKey);
+            if (itemName == null) {
+                itemName = ServerLangRegistry.getRaw("styles." + special[2]);
+            }
+            Component itemComp = itemName != null ? Component.literal(itemName) : Component.translatable(rawKey);
             lines.add(
-                Component.translatable("raffle.common",Component.translatable(key))
+                Component.translatable("raffle.common", itemComp)
                 .withStyle(style -> style.withColor(ChatFormatting.WHITE))
             );
         }
         return lines;
     }
+
+    // 收集 lore 行 (parentKey.lore.0, parentKey.lore.1, ...)
+    private static List<String> collectLore(String parentKey) {
+        List<String> lore = new ArrayList<>();
+        for (int i = 0; ; i++) {
+            String line = ServerLangRegistry.getRaw(parentKey + ".lore." + i);
+            if (line == null) break;
+            lore.add(line);
+        }
+        return lore;
+    }
+
     // /buff /config /land config /land license 專用info
-    private static List<Component> configCommandInfo(String text, String tag) {
+    private static List<Component> functionCommandInfo(String text, String tag) {
         List<Component> lines = new ArrayList<>();
-        String[] config = text.split(" ");
-        String key = "";
-        if (tag.equals("buff")) {
-            key = "buff." + config[1];
+        String[] function = text.split(" ");
+
+        if (tag.equals("buff") && function.length > 1) {
+            String buffName = function[1];
+            String fullKey = ServerLangRegistry.findKeyBySuffix(".assistive." + buffName);
+            if (fullKey == null) return lines;
+            String title = ServerLangRegistry.getRaw(fullKey);
+            if (title == null) return lines;
+            List<String> lore = collectLore(fullKey);
             // usage
             lines.add(
-                Component.literal("/buff " + config[1]).append(" [true/def/false]")
+                Component.literal("/buff " + buffName).append(" [true/def/false]")
                 .withStyle(style -> style.withColor(ChatFormatting.YELLOW))
             );
-            // desc
-            lines.add(Component.translatable("buff.common",Component.translatable(key)).withStyle(style -> style.withColor(ChatFormatting.WHITE)));
-        }
-        if (tag.equals("config")) {
-            key = "config." + config[1];
+            // desc (中文標題)
+            lines.add(Component.translatable("buff.common", Component.literal(title))
+                .withStyle(style -> style.withColor(ChatFormatting.WHITE)));
+            // lore
+            for (String descLine : lore) {
+                lines.add(Component.literal("  " + descLine).withStyle(style -> style.withColor(ChatFormatting.GRAY)));
+            }
+        } else if (tag.equals("config") && function.length > 1) {
+            String configName = function[1];
+            String fullKey = ServerLangRegistry.findKeyBySuffix(".config." + configName);
+            if (fullKey == null) return lines;
+            String title = ServerLangRegistry.getRaw(fullKey);
+            if (title == null) return lines;
+            List<String> lore = collectLore(fullKey);
             // usage
             lines.add(
-                Component.literal("/config " + config[1]).append(" [true/def/false]")
+                Component.literal("/config " + configName).append(" [true/def/false]")
                 .withStyle(style -> style.withColor(ChatFormatting.YELLOW))
             );
-            // desc
-            lines.add(Component.translatable("config.common",Component.translatable(key)).withStyle(style -> style.withColor(ChatFormatting.WHITE)));
-        }
-        if (tag.equals("land_config")) {
-            key = "land_config." + config[3];
+            // desc (中文標題)
+            lines.add(Component.translatable("function.common", Component.literal(title))
+                .withStyle(style -> style.withColor(ChatFormatting.WHITE)));
+            // lore
+            for (String descLine : lore) {
+                lines.add(Component.literal("  " + descLine).withStyle(style -> style.withColor(ChatFormatting.GRAY)));
+            }
+        } else if (tag.equals("land_config") && function.length > 3) {
+            String landconfig = function[3];
+            String fullKey = "plugins.territorial_director.config." + landconfig;
+            String title = ServerLangRegistry.getRaw(fullKey);
+            if (title == null) return lines;
+            List<String> lore = collectLore(fullKey);
             // usage
             lines.add(
-                Component.literal("/land config " + config[2] + " " + config[3]).append(" [true/def/false]")
+                Component.literal("/land config " + function[2] + " " + landconfig).append(" [true/def/false]")
                 .withStyle(style -> style.withColor(ChatFormatting.YELLOW))
             );
-            // desc
-            lines.add(Component.translatable("land_config.common",Component.translatable(key)).withStyle(style -> style.withColor(ChatFormatting.WHITE)));
-        }
-        if (tag.equals("land_license")) {
-            key = "land_license." + config[4];
+            // desc (中文標題)
+            lines.add(Component.translatable("land_config.common", Component.literal(title))
+                .withStyle(style -> style.withColor(ChatFormatting.WHITE)));
+            // lore
+            for (String descLine : lore) {
+                lines.add(Component.literal("  " + descLine).withStyle(style -> style.withColor(ChatFormatting.GRAY)));
+            }
+        } else if (tag.equals("land_license") && function.length > 4) {
+            String landLicenseName = function[4];
+            String title;
+            List<String> lore;
+            if (landLicenseName.equals("@")) {
+                title = "所有權限";
+                lore = java.util.Collections.emptyList();
+            } else {
+                String fullKey = "plugins.territorial_director.license." + landLicenseName;
+                title = ServerLangRegistry.getRaw(fullKey);
+                if (title == null) return lines;
+                lore = collectLore(fullKey);
+            }
             // usage
             lines.add(
-                Component.literal("/land license " + config[2] + " " + config[3] + " " + config[4]).append(" [true/def/false]")
+                Component.literal("/land license " + function[2] + " " + function[3] + " " + landLicenseName).append(" [true/def/false]")
                 .withStyle(style -> style.withColor(ChatFormatting.YELLOW))
             );
-            // desc
-            lines.add(Component.translatable("land_license.common",Component.translatable(key)).withStyle(style -> style.withColor(ChatFormatting.WHITE)));
+            // desc (中文標題)
+            lines.add(Component.translatable("land_license.common", Component.literal(title))
+                .withStyle(style -> style.withColor(ChatFormatting.WHITE)));
+            // lore
+            for (String descLine : lore) {
+                lines.add(Component.literal("  " + descLine).withStyle(style -> style.withColor(ChatFormatting.GRAY)));
+            }
+        } else {
+            return lines;
         }
 
         lines.add(Component.literal("true:開啟;def:預設值;false:關閉").withStyle(style -> style.withColor(ChatFormatting.WHITE)));
         return lines;
     }
+
     // /room mode 專用info
     private static List<Component> modeCommandInfo(String text) {
         List<Component> lines = new ArrayList<>();
         String[] mode = text.split(" ");
-        String key = "mode." + mode[2];
+        if (mode.length <= 2) {
+            return lines;
+        }
+
+        String modeName = mode[2];
+        String fullKey = "plugins." + modeName + "." + modeName;
+        String title = ServerLangRegistry.getRaw(fullKey);
+        if (title == null) {
+            return lines;
+        }
+        List<String> lore = collectLore(fullKey);
+
         // usage
         lines.add(
             Component.literal(text).withStyle(style -> style.withColor(ChatFormatting.YELLOW))
         );
         // desc
         lines.add(
-            Component.translatable("mode.common",Component.translatable(key))
+            Component.translatable("mode.common", Component.literal(title))
             .withStyle(style -> style.withColor(ChatFormatting.WHITE))
         );
+        // lore
+        for (String descLine : lore) {
+            lines.add(Component.literal("  " + descLine).withStyle(style -> style.withColor(ChatFormatting.GRAY)));
+        }
         return lines;
     }
     // /shop 專用info
@@ -242,7 +334,7 @@ public final class CommandInfoOverlay {
         String tag = info.getTag();
         if (checkWildCardInfo(info)){
             if (tag.equals("buff") || tag.equals("config") || tag.contains("land")){
-                lines.addAll(configCommandInfo(text, tag));
+                lines.addAll(functionCommandInfo(text, tag));
             }
             if (tag.equals("mode")){
                 lines.addAll(modeCommandInfo(text));

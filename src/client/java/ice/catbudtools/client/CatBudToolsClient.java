@@ -8,15 +8,19 @@ import ice.catbudtools.client.specialtooltip.SpecialItemRegistry;
 import ice.catbudtools.client.specialtooltip.SpecialDetector;
 import ice.catbudtools.client.command.CatBudCommandRegistry;
 import ice.catbudtools.client.command.CommandInfoOverlay;
+import ice.catbudtools.client.lang.ServerLangRegistry;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
 import net.fabricmc.fabric.api.client.keymapping.v1.KeyMappingHelper;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.fabricmc.fabric.api.client.screen.v1.ScreenEvents;
+import net.fabricmc.fabric.api.resource.v1.ResourceLoader;
 import net.minecraft.client.multiplayer.ServerData;
 import net.minecraft.client.KeyMapping;
 import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
+import net.minecraft.server.packs.PackType;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.client.Minecraft;
 import org.lwjgl.glfw.GLFW;
@@ -64,6 +68,24 @@ public class CatBudToolsClient implements ClientModInitializer {
 		CatBudCommandRegistry.load();
 		SpecialEnchantRegistry.load();
 		SpecialItemRegistry.load();
+
+		// 註冊伺服器材質包重載監聽器 (v1)
+		ResourceLoader.get(PackType.CLIENT_RESOURCES).registerReloadListener(
+				Identifier.fromNamespaceAndPath("catbud-tools", "server_lang_listener"),
+				(sharedState, backgroundExecutor, barrier, gameExecutor) -> {
+					return barrier.<Void>wait(null).thenRunAsync(() -> {
+						if (isCatBudServer()) {
+							ServerLangRegistry.reload();
+						}
+					}, gameExecutor);
+				}
+		);
+
+		// 離開伺服器時清空快取
+		ClientPlayConnectionEvents.DISCONNECT.register((handler, client) -> {
+			ServerLangRegistry.clearAll();
+		});
+
 		// Tooltip 偵測特殊物品
 		ItemTooltipCallback.EVENT.register((stack, context, type, lines) -> {
 				CatBudConfig config = CatBudConfig.getInstance();
