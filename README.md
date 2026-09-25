@@ -2,9 +2,8 @@
 
 ## 功能列表
 
-- 在貓芽的特附附魔書及特殊物品可以顯示說明
-- 遊戲內貓芽指令指引
-- 自定義Tooltip位置和顯示方法
+- 在貓芽的特殊附魔及特殊物品上可以查看說明
+- 遊戲內貓芽指令說明
 
 ## 依賴項
 必須安裝[YetAnotherConfigLib](https://modrinth.com/mod/yacl)!
@@ -15,7 +14,7 @@
 ## 貓芽伺服器
 
 ### 連線地址:
-Java 版 1.21.6 ~ 26.2 登入．推薦 26.2 
+Java 版 1.21.6 ~ 26.3 登入．推薦 26.2 
 - catbud.net (使用預設線路)
 - cloudflare.catbud.net (當前預設線路)  
 - tcpshield.catbud.net
@@ -27,4 +26,4 @@ Java 版 1.21.6 ~ 26.2 登入．推薦 26.2
 <https://catbud.net/>
 
 ## 參考來源
-本模組部分資訊來自[貓芽伺服器](https://discord.gg/catbud)及[CatBudMC](https://github.com/CatBudMC)
+本模組部分資訊來自[貓芽伺服器](https://discord.gg/catbud)

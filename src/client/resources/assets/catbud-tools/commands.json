@@ -466,6 +466,13 @@
     ],
     "tag": "GUI"
   },
+  "lucky": {
+    "usage": "/lucky [玩家參數]",
+    "description": [
+      "獲得行政專屬的「幸運草」（盾牌）"
+    ],
+    "tag": "OP"
+  },
   "mail": {
     "usage": "/mail <郵件操作類型>",
     "description": ["與郵件有關的指令"],
