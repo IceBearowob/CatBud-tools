@@ -1,12 +1,17 @@
 package ice.catbudtools.client.specialtooltip;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.lwjgl.glfw.GLFW;
 
 import ice.catbudtools.client.config.CatBudConfig;
 import ice.catbudtools.client.CatBudToolsClient;
+import ice.catbudtools.client.lang.ServerLangRegistry;
+import net.minecraft.core.Holder;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
@@ -16,6 +21,7 @@ import net.minecraft.world.item.enchantment.ItemEnchantments;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.TextColor;
 import net.minecraft.network.chat.Component;
 import net.minecraft.ChatFormatting;
 
@@ -24,8 +30,6 @@ import net.minecraft.ChatFormatting;
  */
 public final class SpecialInfoOverlay {
 	private static final String CATBUD_ENCHANTMENT_NAMESPACE = "addons";
-
-	private static MutableComponent catbudTranslate(String key) {return Component.translatable(key);}
 	private static ItemStack hoveredStack = ItemStack.EMPTY;
 	private static ItemStack lastHoveredStack = ItemStack.EMPTY;
 	private static boolean tooltipActive = false;
@@ -141,7 +145,7 @@ public final class SpecialInfoOverlay {
 		// line
 		List<Component> lines = new ArrayList<>();
 
-		lines.add(hoveredStack.getHoverName());
+		lines.add(Component.empty().append(hoveredStack.getHoverName()).withStyle(hoveredStack.getRarity().color()));
 
 		for (TooltipSection section : displaySections) {
 			lines.addAll(section.getLines());
@@ -160,7 +164,8 @@ public final class SpecialInfoOverlay {
 			}
 			lines.add(
 				Component.literal(
-					"透過滾輪切換特附頁面顯示(" + (enchantPage + 1) + "/" + totalPage + ")"));
+					"透過滾輪切換特附頁面顯示(" + (enchantPage + 1) + "/" + totalPage + ")")
+					.withStyle(style -> style.withColor(ChatFormatting.GRAY)));
 		}
 		// 依據玩家的 Config 設定動態計算 Tooltip 在螢幕上的 X, Y 繪製座標
 		Font font = client.font;
@@ -204,8 +209,7 @@ public final class SpecialInfoOverlay {
 
 		context.fill(x - 4, y - 4, x + width, y + height, 0xE0101010);
 		for (int index = 0; index < lines.size(); index++) {
-			int color = index == 0 ? 0xFFFFD85A : (index == 1 ? 0xFFFFFFFF : 0xFFB8B8B8);
-			context.text(font, lines.get(index), x, y + index * 11, color);
+			context.text(font, lines.get(index), x, y + index * 11, 0xFFFFFFFF);
 		}
 	}
 	// 特附info
@@ -235,32 +239,33 @@ public final class SpecialInfoOverlay {
 						.orElse(false))
 				.forEach(enchantment -> enchantment.unwrapKey().ifPresent(key -> {
 					String path = key.identifier().getPath();
-					SpecialEnchantInfo enchantInfo = SpecialEnchantRegistry.get(path);
-					String enchantName = enchantInfo != null ? enchantInfo.getName() : path;
 					int level = enchantments.getLevel(enchantment);
 					List<Component> enchantLines = new ArrayList<>();
-					enchantLines.add(
-						catbudTranslate(enchantName).append(Component.literal(" " + level))
-							.withStyle(style -> style.withColor(ChatFormatting.WHITE)));
+					MutableComponent title = enchantment.value().description().copy();
+					if (title.getStyle().getColor() == null) {
+						title.withStyle(ChatFormatting.WHITE);
+					}
+					title.append(Component.literal(" " + level).withStyle(style -> style.withColor(ChatFormatting.WHITE)));
+					enchantLines.add(title);
 
-					// 從 special_enchants.json 讀取 lore 與 conflict
-					if (enchantInfo != null) {
-						for (String loreLine : enchantInfo.getLore()) {
-							enchantLines.add(
-								Component.literal("  " + loreLine)
-								.withStyle(style -> style.withColor(ChatFormatting.GRAY)));
-						}
-						// conflict(只在附魔書上顯示）
-						if (stack.is(Items.ENCHANTED_BOOK) && config.showDetailedEnchantInfo) {
-							enchantLines.add(Component.literal("最大等級 " + enchantInfo.getMaxlevel()).withStyle(style -> style.withColor(ChatFormatting.GRAY)));
-							if (!enchantInfo.getConflict().isEmpty()) {
-								enchantLines.add(Component.literal(""));
-								enchantLines.add(Component.literal("與另外" + enchantInfo.getConflict().size() + "個衝突"));
-								for (String conflictLine : enchantInfo.getConflict()) {
-									enchantLines.add(
-										Component.literal("  " + conflictLine)
-										.withStyle(style -> style.withColor(ChatFormatting.WHITE)));
-								}
+					// 從伺服器材質包讀取 lore (enchantment.addons.<path>.lore.0, .lore.1, ...)
+					List<String> loreLines = collectEnchantLore(path);
+					for (String loreLine : loreLines) {
+						enchantLines.add(
+							Component.literal("  " + loreLine)
+							.withStyle(style -> style.withColor(ChatFormatting.GRAY)));
+					}
+					// conflict 與 maxlevel（只在附魔書上顯示，由伺服器動態提供）
+					if (stack.is(Items.ENCHANTED_BOOK) && config.showDetailedEnchantInfo) {
+						int maxLevel = enchantment.value().getMaxLevel();
+						enchantLines.add(Component.literal("最大等級 " + maxLevel).withStyle(style -> style.withColor(ChatFormatting.GRAY)));
+						List<Component> conflicts = getConflicts(enchantment);
+						if (!conflicts.isEmpty()) {
+							enchantLines.add(Component.literal(""));
+							enchantLines.add(Component.literal("與另外" + conflicts.size() + "個衝突").withStyle(style -> style.withColor(ChatFormatting.GRAY)));
+							for (Component conflictComp : conflicts) {
+								enchantLines.add(
+									Component.literal("  ").append(conflictComp));
 							}
 						}
 					}
@@ -274,6 +279,41 @@ public final class SpecialInfoOverlay {
 
 		return sections;
 	}
+
+	private static List<Component> getConflicts(Holder<Enchantment> targetEnchant) {
+		Minecraft client = Minecraft.getInstance();
+		if (client.level == null) {
+			return Collections.emptyList();
+		}
+		return client.level.registryAccess()
+				.lookup(Registries.ENCHANTMENT)
+				.map(lookup -> lookup.listElements()
+						.filter(other -> !other.equals(targetEnchant))
+						.filter(other -> !Enchantment.areCompatible(targetEnchant, other))
+						.map(other -> {
+							MutableComponent desc = other.value().description().copy();
+							if (desc.getStyle().getColor() != TextColor.GOLD) {
+								desc.withStyle(ChatFormatting.GRAY);
+							}
+							return (Component) desc;
+						})
+						.toList())
+				.orElse(Collections.emptyList());
+	}
+
+	private static List<String> collectEnchantLore(String path) {
+		List<String> lore = new ArrayList<>();
+		String baseKey = "enchantment.addons." + path + ".lore.";
+		for (int i = 0; ; i++) {
+			String line = ServerLangRegistry.getRaw(baseKey + i);
+			if (line == null) {
+				break;
+			}
+			lore.add(line);
+		}
+		return lore;
+	}
+
 	// 特殊物品info
 	private static List<TooltipSection> getSpecialItemInfoSections(ItemStack stack) {
 

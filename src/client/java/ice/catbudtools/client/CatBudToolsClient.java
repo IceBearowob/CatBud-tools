@@ -2,7 +2,6 @@ package ice.catbudtools.client;
 
 import ice.catbudtools.client.mixin.KeyMappingAccessor;
 import ice.catbudtools.client.config.CatBudConfig;
-import ice.catbudtools.client.specialtooltip.SpecialEnchantRegistry;
 import ice.catbudtools.client.specialtooltip.SpecialInfoOverlay;
 import ice.catbudtools.client.specialtooltip.SpecialItemRegistry;
 import ice.catbudtools.client.specialtooltip.SpecialDetector;
@@ -66,7 +65,6 @@ public class CatBudToolsClient implements ClientModInitializer {
 	public void onInitializeClient() {
 		CatBudConfig.load();
 		CatBudCommandRegistry.load();
-		SpecialEnchantRegistry.load();
 		SpecialItemRegistry.load();
 
 		// 註冊伺服器材質包重載監聽器 (v1)
